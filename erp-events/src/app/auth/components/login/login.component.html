@@ -1,0 +1,27 @@
+<div class="mat-typography" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 16px;">
+  <mat-card style="width: 100%; max-width: 400px;">
+    <mat-card-header>
+      <mat-card-title>Iniciar sesión</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 24px;">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="password" required />
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" style="width: 100%;" type="submit" [disabled]="form.invalid">
+          Ingresar
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+  
