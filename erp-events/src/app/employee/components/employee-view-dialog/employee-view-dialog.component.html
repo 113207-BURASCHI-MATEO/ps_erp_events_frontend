@@ -1,0 +1,44 @@
+<mat-card class="mat-elevation-z4">
+
+  <mat-card-header>
+    <mat-card-title class="mat-title">Detalles del Empleado</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="mat-body-1">
+
+    <mat-list>
+      <mat-list-item>
+        <strong>Nombre:</strong>&nbsp;{{ employee.firstName }} {{ employee.lastName }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>Documento:</strong>&nbsp;{{ employee.documentType }} {{ employee.documentNumber }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>Email:</strong>&nbsp;{{ employee.email }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>CUIT:</strong>&nbsp;{{ employee.cuit }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>Nacimiento:</strong>&nbsp;{{ employee.birthDate }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>CBU o Alias:</strong>&nbsp;{{ employee.aliasOrCbu }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>Puesto:</strong>&nbsp;{{ employee.position }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>Contratación:</strong>&nbsp;{{ employee.hireDate }}
+      </mat-list-item>
+    </mat-list>
+
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-stroked-button color="primary" mat-dialog-close>Cerrar</button>
+  </mat-card-actions>
+
+</mat-card>
+
+

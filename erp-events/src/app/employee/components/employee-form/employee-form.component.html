@@ -1,0 +1,83 @@
+<div class="mat-typography" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 24px;">
+  <mat-card style="width: 100%; max-width: 900px;">
+    <mat-card-title>{{ employeeId ? 'Editar Empleado' : 'Nuevo Empleado' }}</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="firstName" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Apellido</mat-label>
+            <input matInput formControlName="lastName" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de documento</mat-label>
+            <mat-select formControlName="documentType">
+              <mat-option value="DNI">DNI</mat-option>
+              <mat-option value="CUIT">CUIT</mat-option>
+              <mat-option value="PASSPORT">Pasaporte</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Número de documento</mat-label>
+            <input matInput formControlName="documentNumber" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>CUIT</mat-label>
+            <input matInput formControlName="cuit" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha de nacimiento</mat-label>
+            <input matInput type="date" formControlName="birthDate" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Alias o CBU</mat-label>
+            <input matInput formControlName="aliasOrCbu" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="password" formControlName="password" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha de contratación</mat-label>
+            <input matInput type="date" formControlName="hireDate" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="mat-column-span">
+            <mat-label>Puesto</mat-label>
+            <input matInput formControlName="position" />
+          </mat-form-field>
+        </div>
+
+        <!-- Botones -->
+        <div style="display: flex; justify-content: space-between; margin-top: 24px;">
+          <button mat-stroked-button color="accent" type="button" (click)="goBack()">
+            Volver
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+            {{ employeeId ? 'Editar empleado' : 'Crear empleado' }}
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+  
