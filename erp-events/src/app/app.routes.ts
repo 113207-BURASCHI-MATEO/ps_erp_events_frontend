@@ -4,7 +4,7 @@ import { authGuard } from './auth/guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'register',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -37,6 +37,39 @@ export const routes: Routes = [
     path: 'employees/edit/:id',
     loadComponent: () => import('./employee/components/employee-form/employee-form.component').then(m => m.EmployeeFormComponent),
     canActivate: [authGuard]
+  },
+  {
+    path: 'suppliers',
+    loadComponent: () =>
+      import('./supplier/components/supplier-list/supplier-list.component').then(m => m.SupplierListComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'suppliers/create',
+    loadComponent: () =>
+      import('./supplier/components/supplier-form/supplier-form.component').then(m => m.SupplierFormComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'suppliers/edit/:id',
+    loadComponent: () =>
+      import('./supplier/components/supplier-form/supplier-form.component').then(m => m.SupplierFormComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'events',
+    loadComponent: () =>
+      import('./event/components/event-list/event-list.component').then(m => m.EventListComponent)
+  },
+  {
+    path: 'events/create',
+    loadComponent: () =>
+      import('./event/components/event-form/event-form.component').then(m => m.EventFormComponent)
+  },
+  {
+    path: 'events/edit/:id',
+    loadComponent: () =>
+      import('./event/components/event-form/event-form.component').then(m => m.EventFormComponent)
   }
 ];
 

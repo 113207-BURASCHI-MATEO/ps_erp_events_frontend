@@ -10,7 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { EmployeeService } from '../../services/employee.service';
+import { EmployeeService } from '../../../services/employee.service';
 import {
   Employee,
   EmployeePost,
@@ -67,16 +67,6 @@ export class EmployeeFormComponent {
       }
     });
   }
-
-  /* onSubmit() {
-    if (this.form.valid) {
-      const data: EmployeePost = this.form.value;
-      this.service.create(data).subscribe({
-        next: () => this.router.navigate(['/employees']),
-        error: (err) => console.error('Error al crear empleado:', err)
-      });
-    }
-  } */
 
   onSubmit(): void {
     if (this.form.invalid) return;

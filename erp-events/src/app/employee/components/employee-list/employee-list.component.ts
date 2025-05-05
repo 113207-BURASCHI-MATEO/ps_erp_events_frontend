@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
-import { EmployeeService } from '../../services/employee.service';
+import { EmployeeService } from '../../../services/employee.service';
 import { Employee } from '../../../models/employee.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -119,11 +119,32 @@ export class EmployeeListComponent implements OnInit{
   }
   
   exportToPdf(): void {
-    this.exportService.exportEmployeesToPdf(this.employees);
+    this.exportService.exportToPdf(
+      this.employees,
+      'Empleados',
+      [['Nombre', 'Apellido', 'Documento', 'Email', 'Puesto']],
+      emp => [
+        emp.firstName,
+        emp.lastName,
+        `${emp.documentType}: ${emp.documentNumber}`,
+        emp.email,
+        emp.position
+      ]
+    );
   }
   
   exportToExcel(): void {
-    this.exportService.exportEmployeesToExcel(this.employees);
+    this.exportService.exportToExcel(
+      this.employees,
+      'Empleados',
+      emp => ({
+        Nombre: emp.firstName,
+        Apellido: emp.lastName,
+        Documento: `${emp.documentType}: ${emp.documentNumber}`,
+        Email: emp.email,
+        Puesto: emp.position
+      })
+    );
   }
   
 }

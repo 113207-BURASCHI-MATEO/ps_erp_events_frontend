@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -37,5 +37,9 @@ export class LoginComponent {
         error: (err) => console.error('Error al iniciar sesión', err)
       });
     }
+  }
+
+  goToRegister(): void {
+    this.router.navigate(['/register']);
   }
 }

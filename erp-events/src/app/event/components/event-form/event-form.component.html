@@ -1,0 +1,68 @@
+<div class="mat-typography" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 24px;">
+    <mat-card style="width: 100%; max-width: 900px;">
+      <mat-card-title>{{ eventId ? 'Editar Evento' : 'Nuevo Evento' }}</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <mat-form-field appearance="outline">
+              <mat-label>Título</mat-label>
+              <input matInput formControlName="title" />
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo de evento</mat-label>
+              <mat-select formControlName="eventType">
+                <mat-option value="CORPORATE">CORPORATE</mat-option>
+                <mat-option value="SOCIAL">SOCIAL</mat-option>
+                <mat-option value="CULTURAL">CULTURAL</mat-option>
+                <mat-option value="ENTERTAINMENT">ENTERTAINMENT</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Inicio</mat-label>
+              <input matInput type="datetime-local" formControlName="startDate" />
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Fin</mat-label>
+              <input matInput type="datetime-local" formControlName="endDate" />
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Estado</mat-label>
+              <mat-select formControlName="status">
+                <mat-option value="CONFIRMED">CONFIRMED</mat-option>
+                <mat-option value="IN_PROGRESS">IN_PROGRESS</mat-option>
+                <mat-option value="CANCELLED">CANCELLED</mat-option>
+                <mat-option value="COMPLETED">COMPLETED</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Cliente</mat-label>
+              <input matInput formControlName="clientId" />
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline" class="mat-column-span">
+              <mat-label>Descripción</mat-label>
+              <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+          </div>
+  
+          <!-- Botones -->
+          <div style="display: flex; justify-content: space-between; margin-top: 24px;">
+            <button mat-stroked-button color="accent" type="button" (click)="goBack()">
+              Volver
+            </button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+              {{ eventId ? 'Editar evento' : 'Crear evento' }}
+            </button>
+          </div>
+  
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

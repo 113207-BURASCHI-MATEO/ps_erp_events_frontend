@@ -1,0 +1,40 @@
+<mat-card class="mat-elevation-z4">
+
+    <mat-card-header>
+      <mat-card-title class="mat-title">Detalles del Proveedor</mat-card-title>
+    </mat-card-header>
+  
+    <mat-card-content class="mat-body-1">
+  
+      <mat-list>
+        <mat-list-item>
+          <strong>Nombre:</strong>&nbsp;{{ supplier.name }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>CUIT:</strong>&nbsp;{{ supplier.cuit }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>Email:</strong>&nbsp;{{ supplier.email }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>Teléfono:</strong>&nbsp;{{ supplier.phoneNumber }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>CBU o Alias:</strong>&nbsp;{{ supplier.aliasOrCbu }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>Tipo:</strong>&nbsp;{{ supplier.supplierType }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>Dirección:</strong>&nbsp;{{ supplier.address }}
+        </mat-list-item>
+      </mat-list>
+  
+    </mat-card-content>
+  
+    <mat-card-actions align="end">
+      <button mat-stroked-button color="primary" mat-dialog-close>Cerrar</button>
+    </mat-card-actions>
+  
+  </mat-card>
+  

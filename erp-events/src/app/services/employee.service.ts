@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Employee, EmployeePost, EmployeePut } from '../../models/employee.model';
+import { Employee, EmployeePost, EmployeePut } from '../models/employee.model';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { map, Observable } from 'rxjs';
 })
 export class EmployeeService {
 
-  private baseUrl = 'http://localhost:8080/employees'; // Cambiar si es necesario
+  private baseUrl = 'http://localhost:8080/employees';
 
   constructor(private http: HttpClient) {}
 

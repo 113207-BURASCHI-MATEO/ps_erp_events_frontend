@@ -1,0 +1,36 @@
+<mat-card class="mat-elevation-z4">
+    <mat-card-header>
+      <mat-card-title class="mat-title">Detalles del Evento</mat-card-title>
+    </mat-card-header>
+  
+    <mat-card-content class="mat-body-1">
+      <mat-list>
+        <mat-list-item>
+          <strong>Título:</strong>&nbsp;{{ event.title }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>Descripción:</strong>&nbsp;{{ event.description }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>Tipo:</strong>&nbsp;{{ event.eventType }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>Inicio:</strong>&nbsp;{{ event.startDate | date:'short' }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>Fin:</strong>&nbsp;{{ event.endDate | date:'short' }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>Estado:</strong>&nbsp;{{ event.status }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>Cliente:</strong>&nbsp;{{ event.client?.firstName }} {{ event.client?.lastName }}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  
+    <mat-card-actions align="end">
+      <button mat-stroked-button color="primary" mat-dialog-close>Cerrar</button>
+    </mat-card-actions>
+  </mat-card>
+  
