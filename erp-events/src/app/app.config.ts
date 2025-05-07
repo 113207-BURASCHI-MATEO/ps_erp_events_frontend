@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withFetch } from '@angular/common/http';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 
 export const appConfig: ApplicationConfig = {
@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

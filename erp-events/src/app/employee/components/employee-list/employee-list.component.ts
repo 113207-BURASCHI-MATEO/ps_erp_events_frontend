@@ -87,7 +87,7 @@ export class EmployeeListComponent implements OnInit{
   }
 
   viewEmployee(id: number): void {
-    const empleado = this.employees.find(e => e.id === id);
+    const empleado = this.employees.find(e => e.idEmployee === id);
     if (!empleado) return;
   
     this.dialog.open(EmployeeViewDialogComponent, {
@@ -107,7 +107,7 @@ export class EmployeeListComponent implements OnInit{
     if (confirmDelete) {
       this.employeeService.delete(id).subscribe({
         next: () => {
-          this.employees = this.employees.filter(e => e.id !== id);
+          this.employees = this.employees.filter(e => e.idEmployee !== id);
         },
         error: (err) => console.error('Error al eliminar empleado', err),
       });

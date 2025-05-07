@@ -1,8 +1,10 @@
+import { DocumentType } from "./generic.model";
+
 export interface Employee {
-  id: number;
+  idEmployee: number;
   firstName: string;
   lastName: string;
-  documentType: 'DNI' | 'PASSPORT' | string;
+  documentType: DocumentType | string;
   documentNumber: string;
   email: string;
   cuit: string;
@@ -18,7 +20,7 @@ export interface Employee {
 export interface EmployeePost {
   firstName: string;
   lastName: string;
-  documentType: 'DNI' | 'PASSPORT' | string;
+  documentType: DocumentType | string;
   documentNumber: string;
   email: string;
   cuit: string;
@@ -30,10 +32,10 @@ export interface EmployeePost {
 }
 
 export interface EmployeePut {
-  id: number;
+  idEmployee: number;
   firstName: string;
   lastName: string;
-  documentType: 'DNI' | 'CUIT' | 'PASSPORT' | string;
+  documentType: DocumentType | string;
   documentNumber: string;
   email: string;
   cuit: string;

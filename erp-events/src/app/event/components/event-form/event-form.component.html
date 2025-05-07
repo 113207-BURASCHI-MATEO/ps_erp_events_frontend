@@ -1,68 +1,362 @@
-<div class="mat-typography" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 24px;">
-    <mat-card style="width: 100%; max-width: 900px;">
-      <mat-card-title>{{ eventId ? 'Editar Evento' : 'Nuevo Evento' }}</mat-card-title>
-      <mat-card-content>
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <mat-form-field appearance="outline">
-              <mat-label>Título</mat-label>
+<div
+  class="mat-typography"
+  style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 24px;
+  "
+>
+  <mat-card style="width: 100%; max-width: 900px">
+    <mat-card-title>{{
+      eventId ? "Editar Evento" : "Nuevo Evento"
+    }}</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
+          <mat-form-field appearance="outline">
+            <mat-label>Título</mat-label>
+            <input matInput formControlName="title" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de evento</mat-label>
+            <mat-select formControlName="eventType">
+              <mat-option value="CORPORATE">CORPORATE</mat-option>
+              <mat-option value="SOCIAL">SOCIAL</mat-option>
+              <mat-option value="CULTURAL">CULTURAL</mat-option>
+              <mat-option value="ENTERTAINMENT">ENTERTAINMENT</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Inicio</mat-label>
+            <input matInput type="datetime-local" formControlName="startDate" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fin</mat-label>
+            <input matInput type="datetime-local" formControlName="endDate" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Estado</mat-label>
+            <mat-select formControlName="status">
+              <mat-option value="CONFIRMED">CONFIRMED</mat-option>
+              <mat-option value="IN_PROGRESS">IN_PROGRESS</mat-option>
+              <mat-option value="CANCELLED">CANCELLED</mat-option>
+              <mat-option value="COMPLETED">COMPLETED</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- <mat-form-field appearance="outline">
+            <mat-label>Tipo de documento</mat-label>
+            <mat-select formControlName="clientDocumentType">
+              <mat-option value="DNI">DNI</mat-option>
+              <mat-option value="CUIT">CUIT</mat-option>
+              <mat-option value="PASSPORT">PASAPORTE</mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline">
+            <mat-label>Número de documento</mat-label>
+            <input matInput formControlName="clientDocumentNumber" />
+          </mat-form-field> -->
+
+          <mat-form-field appearance="outline" class="mat-column-span">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+          </mat-form-field>
+
+          <!-- Documento del Cliente -->
+          <h5 class="mt-2 p-2 pb-4">Cliente</h5>
+          <div class="full-width">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Tipo de documento</mat-label>
+              <mat-select formControlName="clientDocumentType">
+                <mat-option value="DNI">DNI</mat-option>
+                <mat-option value="CUIT">CUIT</mat-option>
+                <mat-option value="PASSPORT">PASAPORTE</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="full-width">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Número de documento</mat-label>
+              <input matInput formControlName="clientDocumentNumber" />
+              <!-- <mat-error *ngIf="form.get('clientDocumentNumber')?.hasError('clientExists')">
+        Ya existe un cliente con este documento.
+      </mat-error> -->
+            </mat-form-field>
+          </div>
+
+          <!-- @if cliente encontrado -->
+          @if (foundClient; as client) {
+          <p>
+            Cliente encontrado:
+            <strong>{{ client.firstName }} {{ client.lastName }}</strong>
+          </p>
+          } @else { @if (showClientForm) {
+          <div formGroupName="clientForm" class="mat-elevation-z2 p-3 mt-3">
+            <h4>Nuevo Cliente</h4>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="firstName" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Apellido</mat-label>
+              <input matInput formControlName="lastName" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Teléfono</mat-label>
+              <input matInput formControlName="phoneNumber" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Alias o CBU</mat-label>
+              <input matInput formControlName="aliasCbu" />
+            </mat-form-field>
+          </div>
+          } }
+        </div>
+
+        <!-- Ubicacion -->
+
+        <!-- Bloque de selección de ubicación existente o nueva -->
+        <div class="mat-grid-list">
+          <h5 class="mt-2 p-2 pb-4">Ubicacion</h5>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Ubicación existente</mat-label>
+            <mat-select
+              formControlName="locationId"
+              [disabled]="form.get('isNewLocation')?.value"
+            >
+              <mat-option
+                *ngFor="let loc of locations"
+                [value]="loc.idLocation"
+              >
+                {{ loc.fantasyName }} - {{ loc.streetAddress }} {{ loc.number }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-checkbox formControlName="isNewLocation">
+            Ubicación nueva
+          </mat-checkbox>
+        </div>
+
+        <!-- Formulario de ubicación nuevo (habilitado solo si isNewLocation es true) -->
+        <div
+          formGroupName="locationForm"
+          *ngIf="form.get('isNewLocation')?.value"
+        >
+          <h5>Nueva ubicación</h5>
+          <div class="mat-grid-list">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Nombre fantasía</mat-label>
+              <input matInput formControlName="fantasyName" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Calle</mat-label>
+              <input matInput formControlName="streetAddress" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Número</mat-label>
+              <input matInput type="number" formControlName="number" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Ciudad</mat-label>
+              <input matInput formControlName="city" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Provincia</mat-label>
+              <mat-select formControlName="province">
+                <mat-option
+                  *ngFor="let prov of ProvinceOptions"
+                  [value]="prov"
+                  >{{ prov }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>País</mat-label>
+              <mat-select formControlName="country">
+                <mat-option *ngFor="let c of CountryOptions" [value]="c">{{
+                  c
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Código Postal</mat-label>
+              <input matInput type="number" formControlName="postalCode" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Latitud</mat-label>
+              <input matInput type="number" formControlName="latitude" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Longitud</mat-label>
+              <input matInput type="number" formControlName="longitude" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Tareas -->
+        <div [formGroup]="taskForm" class="row g-3 pb-5">
+          <h5 class="mt-2 p-2 pb-4">Tareas</h5>
+
+          <div class="col-md-3">
+            <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>Título de la tarea</mat-label>
               <input matInput formControlName="title" />
             </mat-form-field>
-  
-            <mat-form-field appearance="outline">
-              <mat-label>Tipo de evento</mat-label>
-              <mat-select formControlName="eventType">
-                <mat-option value="CORPORATE">CORPORATE</mat-option>
-                <mat-option value="SOCIAL">SOCIAL</mat-option>
-                <mat-option value="CULTURAL">CULTURAL</mat-option>
-                <mat-option value="ENTERTAINMENT">ENTERTAINMENT</mat-option>
-              </mat-select>
+          </div>
+
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>Descripción</mat-label>
+              <input matInput formControlName="description" />
             </mat-form-field>
-  
-            <mat-form-field appearance="outline">
-              <mat-label>Inicio</mat-label>
-              <input matInput type="datetime-local" formControlName="startDate" />
-            </mat-form-field>
-  
-            <mat-form-field appearance="outline">
-              <mat-label>Fin</mat-label>
-              <input matInput type="datetime-local" formControlName="endDate" />
-            </mat-form-field>
-  
-            <mat-form-field appearance="outline">
+          </div>
+
+          <div class="col-md-3">
+            <mat-form-field appearance="outline" style="width: 100%">
               <mat-label>Estado</mat-label>
               <mat-select formControlName="status">
-                <mat-option value="CONFIRMED">CONFIRMED</mat-option>
-                <mat-option value="IN_PROGRESS">IN_PROGRESS</mat-option>
-                <mat-option value="CANCELLED">CANCELLED</mat-option>
-                <mat-option value="COMPLETED">COMPLETED</mat-option>
+                <mat-option value="PENDING">Pendiente</mat-option>
+                <mat-option value="IN_PROGRESS">En progreso</mat-option>
+                <mat-option value="COMPLETED">Completada</mat-option>
+                <mat-option value="CANCELLED">Cancelada</mat-option>
               </mat-select>
             </mat-form-field>
-  
-            <mat-form-field appearance="outline">
-              <mat-label>Cliente</mat-label>
-              <input matInput formControlName="clientId" />
-            </mat-form-field>
-  
-            <mat-form-field appearance="outline" class="mat-column-span">
-              <mat-label>Descripción</mat-label>
-              <textarea matInput formControlName="description"></textarea>
-            </mat-form-field>
           </div>
-  
-          <!-- Botones -->
-          <div style="display: flex; justify-content: space-between; margin-top: 24px;">
-            <button mat-stroked-button color="accent" type="button" (click)="goBack()">
-              Volver
+
+          <div
+            class="col-md-2 d-flex align-items-center justify-content-center"
+          >
+            <button mat-icon-button color="primary" (click)="addTask()">
+              <mat-icon>add</mat-icon>
             </button>
-            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-              {{ eventId ? 'Editar evento' : 'Crear evento' }}
+            <button
+              *ngIf="taskIndex !== undefined"
+              mat-icon-button
+              color="warn"
+              (click)="cancelTaskEdit()"
+            >
+              <mat-icon>cancel</mat-icon>
             </button>
           </div>
-  
-        </form>
-      </mat-card-content>
-    </mat-card>
-  </div>
-  
+
+          <!-- Lista de tareas -->
+          <div class="col-12" *ngIf="tasks.length > 0">
+            <h5 class="mb-3">Lista de Tareas</h5>
+            <div class="list-group">
+              <div
+                *ngFor="let task of tasks; let i = index"
+                class="d-flex justify-content-between align-items-center mb-2"
+              >
+                <button
+                  type="button"
+                  class="list-group-item list-group-item-action btn btn-primary btn-sm me-2"
+                  (click)="setTaskValue(i)"
+                >
+                  {{ task.title }} - {{ task.status }}
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                  (click)="removeTask(i)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empleados -->
+       <!--  <h5 class="mt-4 mb-2">Empleados asignados</h5>
+        <div
+          class="mat-elevation-z1"
+          style="
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+          "
+        >
+          <div *ngFor="let emp of employees">
+           <mat-checkbox
+              [checked]="selectedEmployeeIds.includes(emp.id)"
+              (change)="toggleEmployeeSelection(emp.id)"
+            >
+              {{ emp.firstName }} {{ emp.lastName }}
+            </mat-checkbox>
+            <mat-checkbox
+              [checked]="isEmployeeSelected(emp.id)"
+              (change)="onEmployeeCheckboxChange($event.checked, emp.id)"
+            >
+              {{ emp.firstName }} {{ emp.lastName }}
+            </mat-checkbox>
+          </div>
+        </div> -->
+
+        <div class="mat-elevation-z2 p-3 mt-5">
+            <h4>Seleccionar empleados</h4>
+            <div class="mat-grid-list" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+              @for (emp of employees; track emp.idEmployee) {
+                <mat-checkbox
+                  [checked]="selectedEmployeeIds.includes(emp.idEmployee)"
+                  (change)="toggleEmployeeSelection(emp.idEmployee, $event.checked)">
+                  {{ emp.firstName }} {{ emp.lastName }}
+                </mat-checkbox>
+              }
+            </div>
+          </div>
+
+        <!-- Botones -->
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-top: 24px;
+          "
+        >
+          <button
+            mat-stroked-button
+            color="accent"
+            type="button"
+            (click)="goBack()"
+          >
+            Volver
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid"
+          >
+            {{ eventId ? "Editar evento" : "Crear evento" }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

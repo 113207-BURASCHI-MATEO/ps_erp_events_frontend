@@ -1,4 +1,5 @@
 import { Client } from './client.model';
+import { Location } from './location.model';
 import { Task } from './task.model';
 
 export type EventType = 'CORPORATE' | 'SOCIAL' | 'CULTURAL' | 'ENTERTAINMENT';
@@ -21,6 +22,7 @@ export interface Event {
   creationDate: string;
   updateDate: string;
   client: Client;
+  location: Location;
   employees: number[];
   suppliers: number[];
   guests: number[];
@@ -35,6 +37,7 @@ export interface EventPost {
   endDate: string;
   status: EventStatus | string;
   clientId: number;
+  locationId: number;
   employeeIds?: number[];
   supplierIds?: number[];
   guestIds?: number[];
@@ -48,6 +51,7 @@ export interface EventPut {
   startDate: string;
   endDate: string;
   status: EventStatus | string;
+  locationId: number;
   employeeIds?: number[];
   supplierIds?: number[];
   guestIds?: number[];
