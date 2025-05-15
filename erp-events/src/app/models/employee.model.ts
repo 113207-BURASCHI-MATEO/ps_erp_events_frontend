@@ -9,7 +9,7 @@ export interface Employee {
   email: string;
   cuit: string;
   birthDate: string;
-  aliasOrCbu: string;
+  aliasCbu: string;
   hireDate: string;
   position: string;
   creationDate: string;
@@ -25,7 +25,7 @@ export interface EmployeePost {
   email: string;
   cuit: string;
   birthDate: string;
-  aliasOrCbu: string;
+  aliasCbu: string;
   password: string;
   hireDate: string;
   position: string;
@@ -40,7 +40,7 @@ export interface EmployeePut {
   email: string;
   cuit: string;
   birthDate: string;
-  aliasOrCbu: string;
+  aliasCbu: string;
   hireDate: string;
   position: string;
 }

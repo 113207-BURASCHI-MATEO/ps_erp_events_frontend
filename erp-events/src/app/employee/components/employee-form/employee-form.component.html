@@ -1,10 +1,15 @@
-<div class="mat-typography" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 24px;">
-  <mat-card style="width: 100%; max-width: 900px;">
-    <mat-card-title>{{ employeeId ? 'Editar Empleado' : 'Nuevo Empleado' }}</mat-card-title>
+<div class="form-container">
+  <mat-card class="form-card">
+    <mat-card-title class="mb-3">
+      <h1 class="title">
+        <mat-icon matListItemIcon>article</mat-icon>
+        {{ employeeId ? "Editar Empleado" : "Nuevo Empleado" }}
+      </h1>
+    </mat-card-title>
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="form-grid">
+          <!-- Primera fila -->
           <mat-form-field appearance="outline">
             <mat-label>Nombre</mat-label>
             <input matInput formControlName="firstName" />
@@ -15,6 +20,7 @@
             <input matInput formControlName="lastName" />
           </mat-form-field>
 
+          <!-- Segunda fila -->
           <mat-form-field appearance="outline">
             <mat-label>Tipo de documento</mat-label>
             <mat-select formControlName="documentType">
@@ -29,6 +35,7 @@
             <input matInput formControlName="documentNumber" />
           </mat-form-field>
 
+          <!-- Tercera fila -->
           <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
             <input matInput type="email" formControlName="email" />
@@ -39,9 +46,23 @@
             <input matInput formControlName="cuit" />
           </mat-form-field>
 
+          <!-- Cuarta fila -->
           <mat-form-field appearance="outline">
             <mat-label>Fecha de nacimiento</mat-label>
-            <input matInput type="date" formControlName="birthDate" />
+            <input
+              matInput
+              [matDatepicker]="birthDatePicker"
+              formControlName="birthDate"
+              placeholder="dd/mm/aaaa"
+            />
+            <mat-datepicker-toggle matSuffix [for]="birthDatePicker">
+              <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker
+              #birthDatePicker
+            >
+            
+            </mat-datepicker>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
@@ -49,35 +70,65 @@
             <input matInput formControlName="aliasOrCbu" />
           </mat-form-field>
 
+          <!-- Quinta fila -->
           <mat-form-field appearance="outline">
             <mat-label>Contraseña</mat-label>
-            <input matInput type="password" formControlName="password" />
+            <input
+              matInput
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hidePassword = !hidePassword"
+              type="button"
+              [attr.aria-label]="'Mostrar contraseña'"
+              [attr.aria-pressed]="!hidePassword"
+            >
+              <mat-icon>{{
+                hidePassword ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Fecha de contratación</mat-label>
-            <input matInput type="date" formControlName="hireDate" />
+            <input
+              matInput
+              [matDatepicker]="hireDatePicker"
+              formControlName="hireDate"
+              placeholder="dd/mm/aaaa"
+            />
+            <mat-datepicker-toggle matSuffix [for]="hireDatePicker">
+              <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #hireDatePicker></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="mat-column-span">
+          <!-- Sexta fila - Campo que ocupa todo el ancho -->
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Puesto</mat-label>
             <input matInput formControlName="position" />
           </mat-form-field>
         </div>
 
-        <!-- Botones -->
-        <div style="display: flex; justify-content: space-between; margin-top: 24px;">
-          <button mat-stroked-button color="accent" type="button" (click)="goBack()">
+        <!-- Botones de acción -->
+        <div class="action-buttons">
+          <button mat-stroked-button type="button" (click)="goBack()">
             Volver
           </button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-            {{ employeeId ? 'Editar empleado' : 'Crear empleado' }}
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid"
+          >
+            {{ employeeId ? "Guardar cambios" : "Crear empleado" }}
           </button>
         </div>
-
       </form>
     </mat-card-content>
   </mat-card>
 </div>
 
-  

@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -17,13 +18,13 @@ import { Router } from '@angular/router';
     MatCardModule
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.scss'
 })
 export class LoginComponent {
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private alertService: AlertService) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -33,9 +34,17 @@ export class LoginComponent {
   onSubmit() {
     if (this.form.valid) {
       this.authService.login(this.form.value).subscribe({
-        next: () => this.router.navigate(['/landing']),
-        error: (err) => console.error('Error al iniciar sesión', err)
+        next: () => {
+          this.alertService.showSuccessToast('Inicio de sesión exitoso.');
+          this.router.navigate(['/landing']);
+        },
+        error: (err) => {
+          console.error('Error al iniciar sesión', err);
+          this.alertService.showErrorToast(`Error: ${err.error.message}`);
+        }
       });
+    } else {
+      this.alertService.showErrorToast('Por favor, complete los campos correctamente.');
     }
   }
 

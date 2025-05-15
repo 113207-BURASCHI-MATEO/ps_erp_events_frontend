@@ -1,30 +1,30 @@
-import { Client } from './client.model';
-import { Location } from './location.model';
-import { Task } from './task.model';
+import { Client, ClientPost } from './client.model';
+import { Location, LocationPost } from './location.model';
+import { Task, TaskEventPost } from './task.model';
+import { Supplier } from './supplier.model';
+import { Employee } from './employee.model';
 
 export type EventType = 'CORPORATE' | 'SOCIAL' | 'CULTURAL' | 'ENTERTAINMENT';
-export type EventStatus =
-  | 'PENDING'
-  | 'CONFIRMED'
-  | 'IN_PROGRESS'
-  | 'CANCELLED'
-  | 'COMPLETED';
+export type EventStatus = 'PENDING' | 'CONFIRMED' | 'IN_PROGRESS' | 'CANCELLED' | 'COMPLETED';
 
+// DTO Principal
 export interface Event {
   idEvent: number;
   title: string;
   description: string;
-  eventType: string;
-  startDate: string;
+  eventType: EventType | string;
+  startDate: string; // ISO DateTime string e.g., '2025-12-31T20:00:00'
   endDate: string;
-  status: string;
+  status: EventStatus | string;
   softDelete: boolean;
   creationDate: string;
   updateDate: string;
   client: Client;
   location: Location;
-  employees: number[];
-  suppliers: number[];
+  employeesIds: number[];
+  employees: Employee[]; // Relación con información de pagos y estados
+  suppliersIds: number[];
+  suppliers: Supplier[];
   guests: number[];
   tasks: Task[];
 }
@@ -33,16 +33,17 @@ export interface EventPost {
   title: string;
   description: string;
   eventType: EventType | string;
-  startDate: string; // ISO 8601 format e.g. '2025-12-31T20:00:00'
+  startDate: string;
   endDate: string;
   status: EventStatus | string;
   clientId: number;
+  client?: ClientPost;
   locationId: number;
+  location?: LocationPost;
   employeeIds?: number[];
   supplierIds?: number[];
-  guestIds?: number[];
+  tasks: TaskEventPost[];
 }
-
 export interface EventPut {
   idEvent: number;
   title: string;
@@ -54,5 +55,4 @@ export interface EventPut {
   locationId: number;
   employeeIds?: number[];
   supplierIds?: number[];
-  guestIds?: number[];
 }

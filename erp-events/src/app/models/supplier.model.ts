@@ -7,7 +7,7 @@ export interface Supplier {
   cuit: string;
   email: string;
   phoneNumber: string;
-  aliasOrCbu: string;
+  aliasCbu: string;
   supplierType: SupplierType | string;
   address: string;
 }
@@ -17,7 +17,7 @@ export interface SupplierPost {
   cuit: string;
   email: string;
   phoneNumber: string;
-  aliasOrCbu: string;
+  aliasCbu: string;
   supplierType: SupplierType | string;
   address: string;
 }

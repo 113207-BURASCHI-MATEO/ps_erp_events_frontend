@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -7,12 +7,17 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-import { SupplierViewDialogComponent } from '../supplier-view-dialog/supplier-view-dialog.component';
 import { SupplierService } from '../../../services/supplier.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ExportService } from '../../../services/export.service';
 import { Supplier } from '../../../models/supplier.model';
+import { OptionsComponent } from '../../../shared/components/options/options.component';
+import { AgGridAngular } from '@ag-grid-community/angular';
+import { ColDef, GridApi, GridReadyEvent, ModuleRegistry } from '@ag-grid-community/core';
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+import { ViewDialogComponent } from '../../../shared/components/view-dialog/view-dialog.component';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-supplier-list',
@@ -26,12 +31,16 @@ import { Supplier } from '../../../models/supplier.model';
     FormsModule,
     MatInputModule,
     MatButtonModule,
-    SupplierViewDialogComponent
+    ViewDialogComponent,
+    OptionsComponent,
+    AgGridAngular
   ],
   templateUrl: './supplier-list.component.html',
-  styleUrl: './supplier-list.component.css'
+  styleUrl: './supplier-list.component.scss'
 })
 export class SupplierListComponent {
+
+  isBrowser: boolean;
 
   suppliers: Supplier[] = [];
   allSuppliers: Supplier[] = [];
@@ -44,16 +53,53 @@ export class SupplierListComponent {
     'supplierType',
     'actions'
   ];
+  gridApi!: GridApi<Supplier>;
   searchValue: string = '';
+
+  columnDefs: ColDef<Supplier>[] = [
+    { headerName: 'ID', field: 'idSupplier', sortable: true, filter: true },
+    { headerName: 'Nombre', field: 'name', sortable: true, filter: true },
+    { headerName: 'CUIT', field: 'cuit', sortable: true, filter: true },
+    { headerName: 'Email', field: 'email', sortable: true, filter: true },
+    { headerName: 'Teléfono', field: 'phoneNumber', sortable: true, filter: true },
+    { headerName: 'Tipo', field: 'supplierType', sortable: true, filter: true },
+    {
+      headerName: 'Acciones',
+      cellRenderer: OptionsComponent,
+      cellRendererParams: {
+        onClick: (action: 'VIEW' | 'EDIT' | 'DELETE', supplier: Supplier) => {
+          this.handleAction(action, supplier);
+        }
+      }
+    },
+  ];
+
+  defaultColDef = {
+    flex: 1,
+    minWidth: 100,
+    resizable: true
+  };
+
+  getRowId = (params: any) => params.data.idSupplier;
+
+  onGridReady(params: GridReadyEvent<Supplier>): void {
+    params.api.sizeColumnsToFit();
+    this.gridApi = params.api;
+  }
 
   constructor(
     private supplierService: SupplierService,
     private router: Router,
     private dialog: MatDialog,
-    private exportService: ExportService
-  ) {}
+    private exportService: ExportService,
+    private alertService: AlertService,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit(): void {
+    ModuleRegistry.registerModules([ClientSideRowModelModule]);
     this.supplierService.getAll().subscribe({
       next: (data) => {
         this.suppliers = data;
@@ -64,18 +110,9 @@ export class SupplierListComponent {
   }
 
   onSearch(): void {
-    const value = this.searchValue.trim().toLowerCase();
-
-    if (!value) {
-      this.suppliers = this.allSuppliers;
-      return;
+    if (this.gridApi) {
+      this.gridApi.setGridOption('quickFilterText', this.searchValue.trim().toLowerCase());
     }
-
-    this.suppliers = this.allSuppliers.filter(sup =>
-      sup.name.toLowerCase().includes(value) ||
-      sup.cuit.toLowerCase().includes(value) ||
-      sup.email.toLowerCase().includes(value)
-    );
   }
 
   goToCreate(): void {
@@ -86,10 +123,11 @@ export class SupplierListComponent {
     const supplier = this.suppliers.find(s => s.idSupplier === id);
     if (!supplier) return;
 
-    this.dialog.open(SupplierViewDialogComponent, {
+    this.dialog.open(ViewDialogComponent, {
       data: supplier,
       width: '600px',
-      maxWidth: '95vw'
+      maxWidth: '95vw',
+      maxHeight: '95vh',
     });
   }
 
@@ -98,17 +136,21 @@ export class SupplierListComponent {
   }
 
   deleteSupplier(id: number): void {
-    const confirmDelete = confirm('¿Estás seguro que deseas eliminar este proveedor?');
-
-    if (confirmDelete) {
-      this.supplierService.delete(id).subscribe({
-        next: () => {
-          this.suppliers = this.suppliers.filter(s => s.idSupplier !== id);
-        },
-        error: (err) => console.error('Error al eliminar proveedor', err),
-      });
-    }
+    this.alertService.delete('este proveedor').then(confirmed => {
+      if (confirmed) {
+        this.supplierService.delete(id).subscribe({
+          next: () => {
+            this.suppliers = this.suppliers.filter(s => s.idSupplier !== id);
+            this.alertService.showSuccessToast('Proveedor eliminado correctamente.');
+          },
+          error: () => {
+            this.alertService.showErrorToast('Error al eliminar el proveedor.');
+          }
+        });
+      }
+    });
   }
+  
 
   goHome(): void {
     this.router.navigate(['/landing']);
@@ -133,13 +175,26 @@ export class SupplierListComponent {
     this.exportService.exportToExcel(
       this.suppliers,
       'Proveedores',
-      sup => ({
-        Nombre: sup.name,
-        CUIT: sup.cuit,
-        Email: sup.email,
-        Teléfono: sup.phoneNumber,
-        Tipo: sup.supplierType
+      (sup) => ({
+        'ID': sup.idSupplier,
+        'Nombre': sup.name,
+        'CUIT': sup.cuit,
+        'Email': sup.email,
+        'Teléfono': sup.phoneNumber,
+        'Alias o CBU': sup.aliasCbu,
+        'Dirección': sup.address,
+        'Tipo de Proveedor': sup.supplierType
       })
     );
+  }
+
+  handleAction(actionType: 'VIEW' | 'EDIT' | 'DELETE', supplier: Supplier): void {
+    if (actionType === 'VIEW') {
+      this.viewSupplier(supplier.idSupplier);
+    } else if (actionType === 'EDIT') {
+      this.editSupplier(supplier.idSupplier);
+    } else if (actionType === 'DELETE') {
+      this.deleteSupplier(supplier.idSupplier);
+    }
   }
 }

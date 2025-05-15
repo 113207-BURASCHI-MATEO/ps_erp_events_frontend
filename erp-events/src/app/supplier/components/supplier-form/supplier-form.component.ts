@@ -7,7 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { SupplierService } from '../../../services/supplier.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Supplier, SupplierPost, SupplierPut } from '../../../models/supplier.model';
+import { Supplier, SupplierPost, SupplierPut, SupplierType } from '../../../models/supplier.model';
+import { MatIconModule } from '@angular/material/icon';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-supplier-form',
@@ -19,20 +21,24 @@ import { Supplier, SupplierPost, SupplierPut } from '../../../models/supplier.mo
     MatSelectModule,
     MatButtonModule,
     MatCardModule,
+    MatIconModule
   ],
   templateUrl: './supplier-form.component.html',
-  styleUrl: './supplier-form.component.css'
+  styleUrl: './supplier-form.component.scss'
 })
 export class SupplierFormComponent {
 
   form: FormGroup;
   supplierId: number | null = null;
+  supplierTypes: SupplierType[] = ['CATERING', 'DECORACION', 'SOUND', 'GASTRONOMIC', 'FURNITURE', 'ENTERTAINMENT'];
+
 
   constructor(
     private fb: FormBuilder,
     private service: SupplierService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertService: AlertService
   ) {
     this.form = this.fb.group({
       name: ['', Validators.required],
@@ -42,7 +48,7 @@ export class SupplierFormComponent {
         '',
         [Validators.required, Validators.minLength(10), Validators.maxLength(10)],
       ],
-      aliasOrCbu: ['', Validators.required],
+      aliasCbu: ['', Validators.required],
       supplierType: ['', Validators.required],
       address: ['', Validators.required],
     });
@@ -69,19 +75,25 @@ export class SupplierFormComponent {
         ...formValue
       };
       this.service.update(this.supplierId, dataPut).subscribe({
-        next: () => this.router.navigate(['/suppliers']),
+        next: () => {
+          this.alertService.showSuccessToast('Proveedor actualizado correctamente.');
+          this.router.navigate(['/suppliers']);
+        },
         error: (err) => {
-          alert('Error al actualizar proveedor: ' + err.message);
-          console.error('Error al actualizar proveedor:', err);
+          this.alertService.showErrorToast(`Error al actualizar proveedor: ${err.error.message}`);
+          console.error('Error al actualizar proveedor:', err.error.message);
         },
       });
     } else {
       const dataPost: SupplierPost = formValue;
       this.service.create(dataPost).subscribe({
-        next: () => this.router.navigate(['/suppliers']),
+        next: () => {
+          this.alertService.showSuccessToast('Proveedor creado correctamente.');
+          this.router.navigate(['/suppliers']);
+        },
         error: (err) => {
-          alert('Error al crear proveedor: ' + err.message);
-          console.error('Error al crear proveedor:', err);
+          this.alertService.showErrorToast(`Error al crear proveedor: ${err.error.message}`);
+          console.error('Error al crear proveedor:', err.error.message);
         },
       });
     }
@@ -90,9 +102,12 @@ export class SupplierFormComponent {
   loadSupplier(id: number): void {
     this.service.getById(id).subscribe({
       next: (sup: Supplier) => {
-        this.form.patchValue(sup);
+        this.form.patchValue(sup); // {...sup}
       },
-      error: (err) => console.error('Error al cargar proveedor', err),
+      error: (err) => {
+        this.alertService.showErrorToast(`Error al cargar proveedor: ${err.error.message}`);
+        console.error('Error al cargar proveedor:', err.error.message);
+      },
     });
   }
 

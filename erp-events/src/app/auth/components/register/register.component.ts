@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-register',
@@ -25,7 +26,7 @@ import { MatOptionModule } from '@angular/material/core';
     
   ],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
   form: FormGroup;
@@ -33,7 +34,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {
     this.form = this.fb.group({
       firstName: ['', Validators.required],
@@ -53,9 +55,17 @@ export class RegisterComponent {
     if (this.form.valid) {
       const user: UserRegister = this.form.value;
       this.authService.register(user).subscribe({
-        next: () => this.router.navigate(['/landing']),
-        error: (err) => console.error('Error en el registro', err)
+        next: () => {
+          this.alertService.showSuccessToast('Registro exitoso.');
+          this.router.navigate(['/landing']);
+        },
+        error: (err) => {
+          console.error('Error en el registro', err);
+          this.alertService.showErrorToast(`Error: ${err.error.message}`);
+        }
       });
+    } else {
+      this.alertService.showErrorToast('Por favor, complete todos los campos correctamente.');
     }
   }
 }

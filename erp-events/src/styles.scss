@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+:root {
+  // Primarios basados en Midnight green
+  --primary: #13505B;
+  --primary-light: #9FC2CC;
+  --primary-dark: #040404;
+
+  // Acentos con tono naranja vivo
+  --accent: #FF7F11;
+  --accent-light: #D7D9CE;
+  --accent-dark: #cc650d;
+
+  // Advertencia
+  --warn: #FF8080;
+  --warn-light: #ffc7c7;
+  --warn-dark: #c11414;
+
+  // Texto
+  --light-text: #fff;
+  --dark-text: #040404;
+}
+
+// Reset
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Manrope', sans-serif;
+  background-color: #F8F9FA;
+}
+
+// Tipografía
+body {
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 500;
+  color: var(--dark-text);
+}
+
+// Botones
+.mat-mdc-button, 
+.mat-mdc-raised-button, 
+.mat-mdc-outlined-button,
+.mat-mdc-unelevated-button {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+// Paleta aplicada
+/* .mat-primary .mat-mdc-button-persistent-ripple,
+.mat-mdc-raised-button.mat-primary {
+  background-color: var(--primary);
+} */
+
+/* .mat-accent .mat-mdc-button-persistent-ripple,
+.mat-mdc-raised-button.mat-accent {
+  background-color: var(--accent);
+} */
+
+/* .mat-warn .mat-mdc-button-persistent-ripple,
+.mat-mdc-raised-button.mat-warn {
+  background-color: var(--warn);
+} */
+
+// Estilo general
+.mat-typography,
+.mat-mdc-card,
+.mat-mdc-form-field {
+  font-family: 'Manrope', sans-serif;
+}
+
+// Jerarquía visual
+h1.mat-typography, .mat-typography h1 {
+  font-weight: 700;
+}
+h2.mat-typography, .mat-typography h2 {
+  font-weight: 600;
+}
+h3.mat-typography, .mat-typography h3 {
+  font-weight: 600;
+}
+h4.mat-typography, .mat-typography h4 {
+  font-weight: 500;
+}
+

@@ -10,6 +10,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { EmployeeService } from '../../../services/employee.service';
 import {
   Employee,
@@ -17,6 +20,7 @@ import {
   EmployeePut,
 } from '../../../models/employee.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-employee-form',
@@ -28,19 +32,24 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatSelectModule,
     MatButtonModule,
     MatCardModule,
+    MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   templateUrl: './employee-form.component.html',
-  styleUrl: './employee-form.component.css',
+  styleUrl: './employee-form.component.scss',
 })
 export class EmployeeFormComponent {
   form: FormGroup;
   employeeId: number | null = null;
+  hidePassword = true;
 
   constructor(
     private fb: FormBuilder,
     private service: EmployeeService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertService: AlertService
   ) {
     this.form = this.fb.group({
       firstName: ['', Validators.required],
@@ -82,19 +91,25 @@ export class EmployeeFormComponent {
       const { password, ...dataWithoutPass } = dataBase;
       const dataPut: EmployeePut = { id: this.employeeId, ...dataWithoutPass };
       this.service.update(this.employeeId, dataPut).subscribe({
-        next: () => this.router.navigate(['/employees']),
+        next: () => {
+          this.alertService.showSuccessToast('Empleado actualizado correctamente.');
+          this.router.navigate(['/employees']);
+        },
         error: (err) => {
-          alert('Error al actualizar empleado: ' + err.message);
-          console.error('Error al actualizar empleado:', err);
+          this.alertService.showErrorToast(`Error al actualizar empleado: ${err.error.message}`);
+          console.error('Error al actualizar empleado:', err.error.message);
         },
       });
     } else {
       const dataPost: EmployeePost = dataBase;
       this.service.create(dataPost).subscribe({
-        next: () => this.router.navigate(['/employees']),
+        next: () => {
+          this.alertService.showSuccessToast('Empleado creado correctamente.');
+          this.router.navigate(['/employees']);
+        },
         error: (err) => {
-          alert('Error al crear empleado: ' + err.message);
-          console.error('Error al crear empleado:', err);
+          this.alertService.showErrorToast(`Error al crear empleado: ${err.error.message}`);
+          console.error('Error al crear empleado:', err.error.message);
         },
       });
     }
@@ -110,7 +125,10 @@ export class EmployeeFormComponent {
           password: '', // vacía por seguridad
         });
       },
-      error: (err) => console.error('Error al cargar empleado', err),
+      error: (err) => {
+        this.alertService.showErrorToast(`Error al cargar empleado: ${err.error.message}`);
+        console.error('Error al cargar empleado', err.error.message);
+      },
     });
   }
 

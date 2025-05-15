@@ -7,3 +7,24 @@ export interface Task {
   status: TaskStatus | string;
   idEvent: number;
 }
+
+export interface TaskPost {
+  title: string;
+  description: string;
+  status: TaskStatus;
+  idEvent: number;
+}
+
+export interface TaskEventPost {
+  title: string;
+  description: string;
+  status: TaskStatus;
+}
+
+export interface TaskPut {
+  idTask: number;
+  title: string;
+  description: string;
+  status: TaskStatus;
+  idEvent: number;
+}

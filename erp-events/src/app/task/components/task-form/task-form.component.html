@@ -1,0 +1,69 @@
+<div class="form-container">
+  <mat-card class="form-card">
+    <mat-card-title class="mb-3">
+      <h1 class="title">
+        <mat-icon matListItemIcon>article</mat-icon>
+        {{ taskId ? "Editar Tarea" : "Nueva Tarea" }}
+      </h1>
+    </mat-card-title>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <!-- Primera fila -->
+          <mat-form-field appearance="outline">
+            <mat-label>Título</mat-label>
+            <input matInput formControlName="title" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Estado</mat-label>
+            <mat-select formControlName="status">
+              <mat-option value="PENDING">Pendiente</mat-option>
+              <mat-option value="IN_PROGRESS">En Progreso</mat-option>
+              <mat-option value="COMPLETED">Completada</mat-option>
+              <mat-option value="CANCELLED">Cancelada</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Segunda fila -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descripción</mat-label>
+            <textarea
+              matInput
+              formControlName="description"
+              rows="3"
+            ></textarea>
+          </mat-form-field>
+
+          <!-- Tercera fila -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Evento Asociado</mat-label>
+            <mat-select formControlName="idEvent">
+              @for (event of events; track event.idEvent) {
+              <mat-option [value]="event.idEvent">
+                {{ event.title }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="action-buttons">
+          <button mat-stroked-button type="button" (click)="goBack()">
+            Volver
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid"
+          >
+            {{ taskId ? "Guardar cambios" : "Crear tarea" }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

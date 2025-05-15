@@ -15,19 +15,20 @@ import { MatSelectModule } from '@angular/material/select';
 import { EventService } from '../../../services/event.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Event, EventPost, EventPut } from '../../../models/event.model';
-import { Task } from '../../../models/task.model';
+import { Task, TaskEventPost } from '../../../models/task.model';
 import { MatIconModule } from '@angular/material/icon';
-import { Location } from '../../../models/location.model';
+import { Location, LocationPost } from '../../../models/location.model';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LocationService } from '../../../services/location.service';
 import { Country, Province } from '../../../models/generic.model';
 import { docValidator } from '../../../validators/document.validator';
 import { ClientService } from '../../../services/client.service';
-import { Client } from '../../../models/client.model';
-import { first } from 'rxjs';
+import { Client, ClientPost } from '../../../models/client.model';
 import { Employee } from '../../../models/employee.model';
 import { EmployeeService } from '../../../services/employee.service';
-import { log } from 'console';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-event-form',
@@ -42,14 +43,16 @@ import { log } from 'console';
     MatCardModule,
     MatIconModule,
     MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   templateUrl: './event-form.component.html',
-  styleUrl: './event-form.component.css',
+  styleUrl: './event-form.component.scss',
 })
 export class EventFormComponent {
   form: FormGroup;
   eventId: number | null = null;
-  tasks: Task[] = [];
+  tasks: TaskEventPost[] = [];
   taskIndex: number | undefined;
   locations: Location[] = [];
   employees: Employee[] = [];
@@ -69,7 +72,8 @@ export class EventFormComponent {
     private route: ActivatedRoute,
     private locationService: LocationService,
     private clientService: ClientService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private alertService: AlertService
   ) {
     this.form = this.fb.group({
       title: ['', Validators.required],
@@ -104,25 +108,26 @@ export class EventFormComponent {
           { value: null, disabled: !this.isNewLocation },
           [Validators.required]
         ),
-        city: new FormControl(
-          { value: '', disabled: !this.isNewLocation },
-          [Validators.required]
-        ),
+        city: new FormControl({ value: '', disabled: !this.isNewLocation }, [
+          Validators.required,
+        ]),
         province: new FormControl(
           { value: '', disabled: !this.isNewLocation },
           [Validators.required]
         ),
-        country: new FormControl(
-          { value: '', disabled: !this.isNewLocation },
-          [Validators.required]
-        ),
+        country: new FormControl({ value: '', disabled: !this.isNewLocation }, [
+          Validators.required,
+        ]),
         postalCode: new FormControl(
           { value: null, disabled: !this.isNewLocation },
           [Validators.required]
         ),
         latitude: new FormControl({ value: '', disabled: !this.isNewLocation }),
-        longitude: new FormControl({ value: '', disabled: !this.isNewLocation })
-      }),      
+        longitude: new FormControl({
+          value: '',
+          disabled: !this.isNewLocation,
+        }),
+      }),
       clientForm: this.fb.group({
         firstName: new FormControl(
           { value: '', disabled: this.showClientForm },
@@ -145,7 +150,6 @@ export class EventFormComponent {
           [Validators.required]
         ),
       }),
-      
     });
   }
 
@@ -155,8 +159,12 @@ export class EventFormComponent {
       if (id) {
         this.eventId = +id;
         this.loadEvent(this.eventId);
-        this.form.get('isNewLocation')?.disable(); // checkbox bloqueado en edición
-        this.form.get('locationForm')?.disable(); // form no se usa en edición
+        this.form.get('isNewLocation')?.disable();
+        this.form.get('locationForm')?.disable();
+        this.form.get('clientForm')?.disable();
+        this.form.get('clientDocumentNumber')?.disable();
+        this.form.get('clientDocumentType')?.disable();
+        this.form.get('taskForm')?.disable();
       }
     });
 
@@ -172,8 +180,6 @@ export class EventFormComponent {
 
     this.loadLocations();
     this.loadEmployees();
-    console.log('Empleados:', this.employees);
-    
 
     this.form.get('clientDocumentNumber')?.statusChanges.subscribe((status) => {
       const docType = this.form.get('clientDocumentType')?.value;
@@ -182,8 +188,6 @@ export class EventFormComponent {
       if (status === 'VALID' && docType && docNumber) {
         this.clientService.getByDocument(docType, docNumber).subscribe({
           next: (client) => {
-            console.log('Cliente encontrado:', client);
-
             this.foundClient = client;
             this.showClientForm = false;
           },
@@ -204,85 +208,166 @@ export class EventFormComponent {
   loadLocations(): void {
     this.locationService.getAll().subscribe({
       next: (res) => (this.locations = res),
-      error: (err) => console.error('Error cargando ubicaciones', err),
+      error: (err) => {
+        this.alertService.showErrorToast(
+          `Error al cargar ubicaciones: ${err.error.message}`
+        );
+        console.error('Error al cargar ubicaciones', err.err.message);
+      },
     });
   }
 
   loadEmployees(): void {
     this.employeeService.getAll().subscribe({
       next: (res) => (this.employees = res),
-      error: (err) => console.error('Error cargando empleados', err),
+      error: (err) => {
+        this.alertService.showErrorToast(
+          `Error al cargar empleados: ${err.error.message}`
+        );
+        console.error('Error al cargar empleados', err.err);
+      },
     });
   }
 
   loadEvent(id: number): void {
     this.eventService.getById(id).subscribe({
       next: (event: Event) => {
-        this.form.patchValue({
-          ...event,
-          startDate: event.startDate,
-          endDate: event.endDate,
-          clientId: event.client?.idClient,
-          locationId: event.location?.idLocation,
-        });
+        this.setForm(event);
       },
-      error: (err) => console.error('Error al cargar evento', err),
+      error: (err) => {
+        this.alertService.showErrorToast(
+          `Error al cargar evento: ${err.error?.message}`
+        );
+        console.error('Error al cargar evento', err);
+      },
     });
   }
 
-  onSubmit(): void {
-    if (this.form.invalid) return;
+  setForm(event: Event): void {
+    this.form.patchValue({
+      ...event,
+      startDate: event.startDate,
+      endDate: event.endDate,
+      clientId: event.client?.idClient,
+      locationId: event.location?.idLocation,
+    });
+    this.foundClient = event.client;
+    this.tasks = event.tasks.map((task) => ({
+      title: task.title,
+      description: task.description,
+      status: task.status,
+    } as TaskEventPost));
+    this.selectedEmployeeIds = event.employeesIds;
+  }
 
-    const { isNewLocation, locationForm, taskForm, ...baseData } =
+  onSubmit(): void {
+    console.log('Form value:', this.form.value);
+
+    /* if (this.form.invalid) {
+      this.alertService.showErrorToast('Por favor, completa todos los campos requeridos.');
+      return;
+    } */
+
+    const { isNewLocation, locationForm, clientForm, taskForm, ...baseData } =
       this.form.value;
 
-    if (this.eventId) {
-      const dataPut: EventPut = {
-        idEvent: this.eventId,
-        ...baseData,
-      };
-      console.log('dataPut', dataPut);
+    const formatDate = (date: string) => new Date(date).toISOString();
 
-      /* this.eventService.update(this.eventId, dataPut).subscribe({
-        next: () => this.router.navigate(['/events']),
-        error: (err) => {
-          alert('Error al actualizar evento: ' + err.message);
-          console.error(err);
-        },
-      }); */
+    const baseEventData = {
+      ...baseData,
+      startDate: formatDate(baseData.startDate),
+      endDate: formatDate(baseData.endDate),
+    };
+
+    if (this.eventId) {
+      console.log('Updating event...');
+      this.updateEvent(this.eventId, baseEventData);
     } else {
-      if (isNewLocation) {
-        this.locationService.create(locationForm).subscribe({
-          next: (newLoc) => {
-            const dataPost: EventPost = {
-              ...baseData,
-              locationId: newLoc.idLocation,
-            };
-            this.createEvent(dataPost);
-          },
-          error: (err) => {
-            alert('Error al crear ubicación: ' + err.message);
-            console.error(err);
-          },
-        });
-      } else {
-        const dataPost: EventPost = {
-          ...baseData,
-        };
-        this.createEvent(dataPost);
-      }
+      console.log('Creating new event...');
+      this.createEvent(baseEventData);
     }
   }
 
-  private createEvent(data: EventPost): void {
-    console.log('dataPost', data);
-    /* this.eventService.create(data).subscribe({
-      next: () => this.router.navigate(['/events']),
+  createEvent(baseEventData: any): void {
+    const client = this.getClient();
+    const tasks: TaskEventPost[] = this.tasks;
+    const employeeIds: number[] = this.selectedEmployeeIds;
+    //const supplierIds: number[] = this.selectedSupplierIds;
+
+    const dataPost: EventPost = {
+      title: baseEventData.title,
+      description: baseEventData.description,
+      eventType: baseEventData.eventType,
+      startDate: baseEventData.startDate,
+      endDate: baseEventData.endDate,
+      status: baseEventData.status,
+      clientId: client?.idClient ?? 0,
+      client: this.showClientForm ? (client as ClientPost) : undefined,
+      locationId: baseEventData.locationId,
+      location: this.isNewLocation
+        ? (this.form.get('locationForm')?.value as LocationPost)
+        : undefined,
+      employeeIds: employeeIds.length > 0 ? employeeIds : undefined,
+      //supplierIds: supplierIds.length > 0 ? supplierIds : undefined,
+      tasks: tasks.length > 0 ? tasks : [],
+    };
+
+    console.log('Event data to post:', dataPost);
+
+    this.eventService.create(dataPost).subscribe({
+      next: () => {
+        this.alertService.showSuccessToast('Evento creado correctamente.');
+        this.router.navigate(['/events']);
+      },
       error: (err) => {
-        alert('Error al crear evento: ' + err.message);
+        this.alertService.showErrorToast(
+          `Error al crear evento: ${err.error?.message || err.message}`
+        );
         console.error(err);
       },
-    }); */
+    });
+  }
+
+  private getClient(): any {
+    if (this.foundClient && this.foundClient.idClient) {
+      return this.foundClient;
+    }
+    /* if (this.form.get('clientForm')?.invalid) {
+      this.alertService.showErrorToast('Complete correctamente los datos del cliente.');
+    } */
+    const clientData = this.form.get('clientForm')?.value;
+    return clientData;
+  }
+
+  updateEvent(eventId: number, baseEventData: any): void {
+    const dataPut: EventPut = {
+      idEvent: this.eventId!,
+      title: baseEventData.title,
+      description: baseEventData.description,
+      eventType: baseEventData.eventType,
+      startDate: baseEventData.startDate,
+      endDate: baseEventData.endDate,
+      status: baseEventData.status,
+      locationId: baseEventData.locationId,
+      employeeIds: this.selectedEmployeeIds,
+      //supplierIds: this.selectedSupplierIds,
+    };
+
+    console.log('Event data to put:', dataPut);
+    
+
+    this.eventService.update(eventId, dataPut).subscribe({
+      next: () => {
+        this.alertService.showSuccessToast('Evento actualizado correctamente.');
+        this.router.navigate(['/events']);
+      },
+      error: (err) => {
+        this.alertService.showErrorToast(
+          `Error al actualizar evento: ${err.error?.message || err.message}`
+        );
+        console.error(err);
+      },
+    });
   }
 
   goBack(): void {
@@ -299,12 +384,10 @@ export class EventFormComponent {
 
     const formValue = this.taskForm.value;
 
-    const task: Task = {
-      idTask: Date.now(), // ID temporal
+    const task: TaskEventPost = {
       title: formValue.title!,
       description: formValue.description!,
       status: formValue.status!,
-      idEvent: 0,
     };
 
     if (this.taskIndex !== undefined) {
@@ -375,7 +458,7 @@ export class EventFormComponent {
   //#endregion Location Methods
 
   //#region Employee Methods
- /*  toggleEmployeeSelection(id: number): void {
+  /*  toggleEmployeeSelection(id: number): void {
     const index = this.selectedEmployeeIds.indexOf(id);
     if (index >= 0) {
       this.selectedEmployeeIds.splice(index, 1);
@@ -398,15 +481,17 @@ export class EventFormComponent {
     }
   } */
 
-    toggleEmployeeSelection(id: number, checked: boolean): void {
-      if (checked) {
-        if (!this.selectedEmployeeIds.includes(id)) {
-          this.selectedEmployeeIds.push(id);
-          console.log('Empleados seleccionados:', this.selectedEmployeeIds);
-        }
-      } else {
-        this.selectedEmployeeIds = this.selectedEmployeeIds.filter(eid => eid !== id);
+  toggleEmployeeSelection(id: number, checked: boolean): void {
+    if (checked) {
+      if (!this.selectedEmployeeIds.includes(id)) {
+        this.selectedEmployeeIds.push(id);
+        console.log('Empleados seleccionados:', this.selectedEmployeeIds);
       }
+    } else {
+      this.selectedEmployeeIds = this.selectedEmployeeIds.filter(
+        (eid) => eid !== id
+      );
     }
+  }
   //endregion Employee Methods
 }

@@ -1,13 +1,64 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, Inject, inject } from '@angular/core';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { SidebarStateService } from './services/sidebar-state.service';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { LoginComponent } from './auth/components/login/login.component';
+import { AuthService } from './services/auth.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { log } from 'console';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [
+    CommonModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    RouterModule,
+    RouterOutlet,
+    LoginComponent,
+    AsyncPipe,
+    MatMenuModule
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'erp-events';
+
+  private authService = inject(AuthService);
+
+  isAuthenticated$ = this.authService.isAuthenticated$;
+
+  constructor(public sidebarService: SidebarStateService) {}
+
+  toggleSidebar(): void {
+    this.sidebarService.toggle();
+  }
+
+  expandSidebar(): void {
+    this.sidebarService.expand();
+  }
+
+  collapseSidebar(): void {
+    this.sidebarService.collapse();
+  }
+
+  logout(): void {
+    this.authService.logout()
+  }
+
+
+  get isSidebarExpanded(): boolean {
+    return this.sidebarService.isExpanded();
+  }
+
 }

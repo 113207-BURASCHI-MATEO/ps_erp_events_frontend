@@ -22,6 +22,18 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'conditions',
+    loadComponent: () =>
+      import('./landing/components/conditions/conditions.component').then(m => m.ConditionsComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'faq',
+    loadComponent: () =>
+      import('./landing/components/faq/faq.component').then(m => m.FaqComponent),
+    canActivate: [authGuard]
+  },
+  {
     path: 'employees',
     loadComponent: () =>
       import('./employee/components/employee-list/employee-list.component').then(m => m.EmployeeListComponent),
@@ -59,18 +71,39 @@ export const routes: Routes = [
   {
     path: 'events',
     loadComponent: () =>
-      import('./event/components/event-list/event-list.component').then(m => m.EventListComponent)
+      import('./event/components/event-list/event-list.component').then(m => m.EventListComponent),
+    canActivate: [authGuard]
   },
   {
     path: 'events/create',
     loadComponent: () =>
-      import('./event/components/event-form/event-form.component').then(m => m.EventFormComponent)
+      import('./event/components/event-form/event-form.component').then(m => m.EventFormComponent),
+    canActivate: [authGuard]
   },
   {
     path: 'events/edit/:id',
     loadComponent: () =>
-      import('./event/components/event-form/event-form.component').then(m => m.EventFormComponent)
-  }
+      import('./event/components/event-form/event-form.component').then(m => m.EventFormComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'tasks',
+    loadComponent: () =>
+      import('./task/components/task-list/task-list.component').then(m => m.TaskListComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'tasks/create',
+    loadComponent: () =>
+      import('./task/components/task-form/task-form.component').then(m => m.TaskFormComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'tasks/edit/:id',
+    loadComponent: () =>
+      import('./task/components/task-form/task-form.component').then(m => m.TaskFormComponent),
+    canActivate: [authGuard]
+  },
 ];
 
 
