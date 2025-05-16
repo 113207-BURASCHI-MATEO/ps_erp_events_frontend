@@ -2,13 +2,18 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Client, ClientPost, ClientPut } from '../models/client.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientService {
 
- private baseUrl = 'http://localhost:8080/clients';
+ //private baseUrl = 'http://localhost:8080/clients';
+
+ private baseUrl: string = `${environment.production 
+     ? `${environment.apis.clients}` 
+     : `${environment.apis.clients}`}`;
  
    constructor(private http: HttpClient) {}
  

@@ -111,6 +111,8 @@ export class EventListComponent {
   }
 
   goToCreate(): void {
+    console.log('Crear evento');
+    
     this.router.navigate(['/events/create']);
   }
 

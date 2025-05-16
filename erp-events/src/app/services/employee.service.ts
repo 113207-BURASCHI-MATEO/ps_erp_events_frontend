@@ -2,13 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Employee, EmployeePost, EmployeePut } from '../models/employee.model';
 import { map, Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import e from 'express';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
 
-  private baseUrl = 'http://localhost:8080/employees';
+  //private baseUrl = 'http://localhost:8080/employees';
+
+  private baseUrl: string = `${environment.production 
+      ? `${environment.apis.employees}` 
+      : `${environment.apis.employees}`}`;
 
   constructor(private http: HttpClient) {}
 

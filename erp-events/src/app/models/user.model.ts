@@ -1,5 +1,12 @@
 import { DocumentType } from './generic.model';
 
+export interface Role {
+  idRole: number;
+  roleCode: number;
+  name: string;
+  description: string;
+}
+
 export interface User {
   idUser: number;
   firstName: string;
@@ -8,7 +15,7 @@ export interface User {
   documentType: DocumentType | string;
   documentNumber: string;
   email: string;
-  exp?: number; // TOKEN
+  role: Role;
 }
 
 export interface UserRegister {
@@ -20,3 +27,13 @@ export interface UserRegister {
   email: string;
   password: string;
 }
+
+
+/* ##### ROLES ##### */
+
+export const URLTargetType = {
+  SUPERADMIN: 999,
+  ADMIN: 100,
+  USER: 200,
+  EMPLOYEE: 300,
+};

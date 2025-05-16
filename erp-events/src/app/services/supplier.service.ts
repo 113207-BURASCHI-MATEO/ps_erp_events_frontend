@@ -2,12 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Supplier, SupplierPost, SupplierPut } from '../models/supplier.model';
 import { map, Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SupplierService {
-  private baseUrl = 'http://localhost:8080/suppliers'; // adaptá al backend real
+  
+  // private baseUrl = 'http://localhost:8080/suppliers';
+
+  private baseUrl: string = `${environment.production 
+        ? `${environment.apis.suppliers}` 
+        : `${environment.apis.suppliers}`}`;
 
   constructor(private http: HttpClient) {}
 

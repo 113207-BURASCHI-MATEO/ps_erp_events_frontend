@@ -2,13 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Location, LocationPost, LocationPut } from '../models/location.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocationService {
 
-  private baseUrl = 'http://localhost:8080/locations';
+  // private baseUrl = 'http://localhost:8080/locations';
+
+  private baseUrl: string = `${environment.production 
+        ? `${environment.apis.locations}` 
+        : `${environment.apis.locations}`}`;
 
   constructor(private http: HttpClient) {}
 

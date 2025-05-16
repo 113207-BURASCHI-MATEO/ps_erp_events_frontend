@@ -2,7 +2,7 @@
   <mat-card class="form-card">
     <mat-card-title class="mb-3">
       <h1 class="title">
-        <mat-icon matListItemIcon>event</mat-icon>
+        <mat-icon matListItemIcon>article</mat-icon>
         {{ eventId ? 'Editar Evento' : 'Nuevo Evento' }}
       </h1>
     </mat-card-title>
@@ -50,11 +50,36 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline">
+              <mat-label>Hora de Inicio</mat-label>
+              <input 
+                matInput 
+                [ngxMatTimepicker]="startTimePicker" 
+                formControlName="startTime" 
+                placeholder="Selecciona la hora"
+              />
+              <ngx-mat-timepicker-toggle matSuffix [for]="startTimePicker"></ngx-mat-timepicker-toggle>
+              <ngx-mat-timepicker #startTimePicker></ngx-mat-timepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
               <mat-label>Fecha de Fin</mat-label>
               <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
               <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
               <mat-datepicker #endPicker></mat-datepicker>
             </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Hora de Fin</mat-label>
+              <input 
+                matInput 
+                [ngxMatTimepicker]="endTimePicker" 
+                formControlName="endTime" 
+                placeholder="Selecciona la hora"
+              />
+              <ngx-mat-timepicker-toggle matSuffix [for]="endTimePicker"></ngx-mat-timepicker-toggle>
+              <ngx-mat-timepicker #endTimePicker></ngx-mat-timepicker>
+            </mat-form-field>
+
           </div>
         </section>
 
@@ -99,6 +124,18 @@
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Alias o CBU</mat-label>
                   <input matInput formControlName="aliasCbu" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Tipo de documento</mat-label>
+                  <mat-select formControlName="documentType">
+                    <mat-option value="DNI">DNI</mat-option>
+                    <mat-option value="CUIT">CUIT</mat-option>
+                    <mat-option value="PASSPORT">Pasaporte</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Número de documento</mat-label>
+                  <input matInput formControlName="documentNumber" />
                 </mat-form-field>
               </div>
             } 

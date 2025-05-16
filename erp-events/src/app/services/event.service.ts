@@ -2,12 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Event, EventPost, EventPut } from '../models/event.model';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class EventService {
-  private readonly baseUrl = 'http://localhost:8080/events';
+  
+  // private readonly baseUrl = 'http://localhost:8080/events';
+
+  private baseUrl: string = `${environment.production 
+        ? `${environment.apis.events}` 
+        : `${environment.apis.events}`}`;
 
   constructor(private http: HttpClient) {}
 

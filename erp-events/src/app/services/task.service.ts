@@ -2,13 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Task, TaskPost, TaskPut } from '../models/task.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
 
-  private baseUrl = 'http://localhost:8080/tasks'; // adaptá al backend real
+  // private baseUrl = 'http://localhost:8080/tasks';
+
+  private baseUrl: string = `${environment.production 
+        ? `${environment.apis.tasks}` 
+        : `${environment.apis.tasks}`}`;
   
     constructor(private http: HttpClient) {}
   

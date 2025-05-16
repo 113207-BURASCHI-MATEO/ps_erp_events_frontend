@@ -12,21 +12,26 @@ import {
 import { User, UserRegister } from '../models/user.model';
 import { jwtDecode } from 'jwt-decode';
 import { isPlatformBrowser } from '@angular/common';
-import { log } from 'console';
-import e from 'express';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8080/auth';
+  //private baseUrl = 'http://localhost:8080/auth';
+
+  private baseUrl: string = `${environment.production 
+    ? `${environment.apis.auth}` 
+    : `${environment.apis.auth}`}`;
 
   private currentUserSubject = new BehaviorSubject<User | null>(
-    this.loadUserFromToken()
+    //this.loadUserFromToken()
+    null
   );
   currentUser$ = this.currentUserSubject.asObservable();
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(
-    this.isLoggedIn()
+    //this.isLoggedIn()
+    false
   );
   isAuthenticated$: Observable<boolean> =
     this.isAuthenticatedSubject.asObservable();
@@ -103,7 +108,6 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     if (!isPlatformBrowser(this.platformId)) {
-      console.log('No se puede acceder a las cookies.');
       return false;
     }
     const token = localStorage.getItem('token');
@@ -120,8 +124,6 @@ export class AuthService {
 
   private getTokenFromCookies(): string | null {
     if (!isPlatformBrowser(this.platformId)) {
-      console.log('No se puede acceder a las cookies.');
-
       return null;
     }
 
@@ -155,10 +157,25 @@ export class AuthService {
         documentType: decoded.documentType,
         documentNumber: decoded.documentNumber,
         email: decoded.email,
-        exp: decoded.exp,
-      };
+        role: decoded.role,
+      } as User;
+      
     } catch (e) {
       return null;
     }
+  }
+
+  hasRoleCodes(targetRoleCodes: number[] | undefined): boolean {
+    // Si no hay roles específicos requeridos, permitir acceso
+    if (!targetRoleCodes || targetRoleCodes.length === 0) return true;
+    
+    // Obtener el usuario actual
+    const user: User | null = this.currentUserSubject.getValue();
+    
+    // Si no hay usuario o no tiene rol definido, denegar acceso
+    if (!user || !user.role || user.role.roleCode === undefined) return false;
+    
+    // Verificar si el rol del usuario está en la lista de roles permitidos
+    return targetRoleCodes.includes(user.role.roleCode);
   }
 }

@@ -29,6 +29,8 @@ import { EmployeeService } from '../../../services/employee.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AlertService } from '../../../services/alert.service';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
+import { start } from 'repl';
 
 @Component({
   selector: 'app-event-form',
@@ -45,6 +47,7 @@ import { AlertService } from '../../../services/alert.service';
     MatCheckboxModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    NgxMatTimepickerModule,
   ],
   templateUrl: './event-form.component.html',
   styleUrl: './event-form.component.scss',
@@ -80,7 +83,9 @@ export class EventFormComponent {
       description: ['', Validators.required],
       eventType: ['', Validators.required],
       startDate: ['', Validators.required],
+      startTime: ['', Validators.required],
       endDate: ['', Validators.required],
+      endTime: ['', Validators.required],
       status: ['', Validators.required],
       clientDocumentNumber: new FormControl(
         '',
@@ -148,6 +153,14 @@ export class EventFormComponent {
         aliasCbu: new FormControl(
           { value: '', disabled: this.showClientForm },
           [Validators.required]
+        ),
+        documentType: new FormControl(
+          { value: '', disabled: this.showClientForm },
+          [Validators.required]
+        ),
+        documentNumber: new FormControl(
+          { value: '', disabled: this.showClientForm },
+          [Validators.required, Validators.pattern('^[0-9]*$')]
         ),
       }),
     });
@@ -236,9 +249,9 @@ export class EventFormComponent {
       },
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar evento: ${err.error?.message}`
+          `Error al cargar evento: ${err.error.message}`
         );
-        console.error('Error al cargar evento', err);
+        console.error('Error al cargar evento', err.error.message);
       },
     });
   }
@@ -247,21 +260,25 @@ export class EventFormComponent {
     this.form.patchValue({
       ...event,
       startDate: event.startDate,
+      startTime: event.startDate.split('T')[1]?.slice(0, 5),
       endDate: event.endDate,
+      endTime: event.endDate.split('T')[1]?.slice(0, 5),
       clientId: event.client?.idClient,
       locationId: event.location?.idLocation,
     });
     this.foundClient = event.client;
-    this.tasks = event.tasks.map((task) => ({
-      title: task.title,
-      description: task.description,
-      status: task.status,
-    } as TaskEventPost));
+    this.tasks = event.tasks.map(
+      (task) =>
+        ({
+          title: task.title,
+          description: task.description,
+          status: task.status,
+        } as TaskEventPost)
+    );
     this.selectedEmployeeIds = event.employeesIds;
   }
 
   onSubmit(): void {
-    console.log('Form value:', this.form.value);
 
     /* if (this.form.invalid) {
       this.alertService.showErrorToast('Por favor, completa todos los campos requeridos.');
@@ -271,19 +288,18 @@ export class EventFormComponent {
     const { isNewLocation, locationForm, clientForm, taskForm, ...baseData } =
       this.form.value;
 
-    const formatDate = (date: string) => new Date(date).toISOString();
+    const startDate = this.setDateTime(baseData.startDate, baseData.startTime);
+    const endDate = this.setDateTime(baseData.endDate, baseData.endTime);
 
     const baseEventData = {
       ...baseData,
-      startDate: formatDate(baseData.startDate),
-      endDate: formatDate(baseData.endDate),
+      startDate: startDate,
+      endDate: endDate,
     };
 
     if (this.eventId) {
-      console.log('Updating event...');
       this.updateEvent(this.eventId, baseEventData);
     } else {
-      console.log('Creating new event...');
       this.createEvent(baseEventData);
     }
   }
@@ -354,7 +370,6 @@ export class EventFormComponent {
     };
 
     console.log('Event data to put:', dataPut);
-    
 
     this.eventService.update(eventId, dataPut).subscribe({
       next: () => {
@@ -458,34 +473,10 @@ export class EventFormComponent {
   //#endregion Location Methods
 
   //#region Employee Methods
-  /*  toggleEmployeeSelection(id: number): void {
-    const index = this.selectedEmployeeIds.indexOf(id);
-    if (index >= 0) {
-      this.selectedEmployeeIds.splice(index, 1);
-    } else {
-      this.selectedEmployeeIds.push(id);
-    }
-  } */
-
-  /* isEmployeeSelected(id: number): boolean {
-    return this.selectedEmployeeIds.includes(id);
-  }
-  
-  onEmployeeCheckboxChange(checked: boolean, id: number): void {
-    if (checked) {
-      this.selectedEmployeeIds.push(id);
-      console.log('Empleados seleccionados:', this.selectedEmployeeIds);
-      
-    } else {
-      this.selectedEmployeeIds = this.selectedEmployeeIds.filter(eid => eid !== id);
-    }
-  } */
-
   toggleEmployeeSelection(id: number, checked: boolean): void {
     if (checked) {
       if (!this.selectedEmployeeIds.includes(id)) {
         this.selectedEmployeeIds.push(id);
-        console.log('Empleados seleccionados:', this.selectedEmployeeIds);
       }
     } else {
       this.selectedEmployeeIds = this.selectedEmployeeIds.filter(
@@ -494,4 +485,11 @@ export class EventFormComponent {
     }
   }
   //endregion Employee Methods
+
+  setDateTime(date: any, time: any) {
+    const [hours, minutes] = time.split('AM')[0].split(':').map(Number); // 6:00 AM
+    const updatedDate = new Date(date);
+    updatedDate.setHours(hours, minutes);
+    return updatedDate.toISOString();
+  }
 }
