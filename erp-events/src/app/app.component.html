@@ -1,105 +1,176 @@
+@if (isAuthenticated$ | async ) {
+<!-- Navbar -->
 
-  
-  @if (isAuthenticated$ | async ) {
-    <!-- Navbar -->
-  
-    <mat-sidenav-container class="app-container">
-        <mat-sidenav 
-          mode="side" 
-          [opened]="true" 
-          [ngClass]="{'sidebar-expanded': isSidebarExpanded, 'sidebar-collapsed': !isSidebarExpanded}"
-          class="app-sidenav"
+<mat-sidenav-container class="app-container">
+  <mat-sidenav
+    mode="side"
+    [opened]="true"
+    [ngClass]="{
+      'sidebar-expanded': isSidebarExpanded,
+      'sidebar-collapsed': !isSidebarExpanded
+    }"
+    class="app-sidenav"
+  >
+    <!-- Sidebar Content -->
+    <div class="d-flex flex-column h-100">
+      <!-- Header/Title -->
+      <div class="p-3 d-flex align-items-center">
+        <mat-icon>event</mat-icon>
+        <span class="mat-subtitle-1 fw-bold ms-2 mb-0" *ngIf="isSidebarExpanded"
+          >ERP Eventos</span
         >
-          <!-- Sidebar Content -->
-          <div class="d-flex flex-column h-100">
-            <!-- Header/Title -->
-            <div class="p-3 d-flex align-items-center">
-              <mat-icon>event</mat-icon>
-              <span class="mat-subtitle-1 fw-bold ms-2 mb-0" *ngIf="isSidebarExpanded">ERP Eventos</span>
-            </div>
-      
-            <!-- Navigation Menu -->
-            <div class="flex-grow-1">
-              <mat-nav-list>
-                <a mat-list-item routerLink="/landing" routerLinkActive="active-link">
-                  <mat-icon matListItemIcon>home</mat-icon>
-                  <span matListItemTitle *ngIf="isSidebarExpanded">Inicio</span>
-                </a>
+      </div>
 
-                @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
-                  <a mat-list-item routerLink="/events" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>event_available</mat-icon>
-                    <span matListItemTitle *ngIf="isSidebarExpanded">Eventos</span>
-                  </a>
-                }
-                
-                @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
-                  <a mat-list-item routerLink="/employees" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>group</mat-icon>
-                    <span matListItemTitle *ngIf="isSidebarExpanded">Empleados</span>
-                  </a>
-                }
-                
-                @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
-                  <a mat-list-item routerLink="/suppliers" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>local_shipping</mat-icon>
-                    <span matListItemTitle *ngIf="isSidebarExpanded">Proveedores</span>
-                  </a>
-                }
+      <!-- Navigation Menu -->
+      <div class="flex-grow-1">
+        <mat-nav-list>
+          <a mat-list-item routerLink="/landing" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>home</mat-icon>
+            <span matListItemTitle *ngIf="isSidebarExpanded">Inicio</span>
+          </a>
 
-                @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.EMPLOYEE])) {
-                  <a mat-list-item routerLink="/tasks" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>task_alt</mat-icon>
-                    <span matListItemTitle *ngIf="isSidebarExpanded">Tareas</span>
-                  </a>
-                }
+          @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+            <a mat-list-item routerLink="/dashboards" routerLinkActive="active-link">
+              <mat-icon matListItemIcon>speed</mat-icon>
+              <span matListItemTitle *ngIf="isSidebarExpanded">Estadisticas</span>
+            </a>
+            }
 
-              </mat-nav-list>
-            </div>
-      
-            <!-- Toggle Button at Bottom -->
-            <div class="mt-auto border-top pt-2 pb-2">
-              <button mat-button class="toggle-button w-100 d-flex" (click)="toggleSidebar()">
-                <div class="d-flex justify-content-between align-items-center w-100">
-                  <span *ngIf="isSidebarExpanded" class="ms-3">Ocultar menú</span>
-                  <mat-icon *ngIf="isSidebarExpanded">keyboard_arrow_left</mat-icon>
-                  <mat-icon *ngIf="!isSidebarExpanded">keyboard_arrow_right</mat-icon>
-                </div>
-              </button>
-            </div>
+          @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          <a mat-list-item routerLink="/events" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>event_available</mat-icon>
+            <span matListItemTitle *ngIf="isSidebarExpanded">Eventos</span>
+          </a>
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          <a
+            mat-list-item
+            routerLink="/employees"
+            routerLinkActive="active-link"
+          >
+            <mat-icon matListItemIcon>engineering</mat-icon>
+            <span matListItemTitle *ngIf="isSidebarExpanded">Empleados</span>
+          </a>
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          <a
+            mat-list-item
+            routerLink="/suppliers"
+            routerLinkActive="active-link"
+          >
+            <mat-icon matListItemIcon>local_shipping</mat-icon>
+            <span matListItemTitle *ngIf="isSidebarExpanded">Proveedores</span>
+          </a>
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.EMPLOYEE])) {
+          <a mat-list-item routerLink="/tasks" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>task_alt</mat-icon>
+            <span matListItemTitle *ngIf="isSidebarExpanded">Tareas</span>
+          </a>
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+            <a mat-list-item routerLink="/users" routerLinkActive="active-link">
+              <mat-icon matListItemIcon>group</mat-icon>
+              <span matListItemTitle *ngIf="isSidebarExpanded">Usuarios</span>
+            </a>
+            }
+
+        </mat-nav-list>
+      </div>
+
+      <!-- Toggle Button at Bottom -->
+      <div class="mt-auto border-top pt-2 pb-2">
+        <button
+          mat-button
+          class="toggle-button w-100 d-flex"
+          (click)="toggleSidebar()"
+        >
+          <div class="d-flex justify-content-between align-items-center w-100">
+            <span *ngIf="isSidebarExpanded" class="ms-3">Ocultar menú</span>
+            <mat-icon *ngIf="isSidebarExpanded">keyboard_arrow_left</mat-icon>
+            <mat-icon *ngIf="!isSidebarExpanded">keyboard_arrow_right</mat-icon>
           </div>
-        </mat-sidenav>
-      
-        <!-- Main Content -->
-        <mat-sidenav-content [ngClass]="{'content-expanded': !isSidebarExpanded, 'content-normal': isSidebarExpanded}">
-          <mat-toolbar color="primary">
-            <span>ERP - Eventos</span>
-            <span class="flex-grow-1"></span>
-            <button mat-icon-button class="me-2">
+        </button>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content
+    [ngClass]="{
+      'content-expanded': !isSidebarExpanded,
+      'content-normal': isSidebarExpanded
+    }"
+  >
+    <mat-toolbar color="primary">
+      <span>ERP - Eventos</span>
+      <span class="flex-grow-1"></span>
+
+      <!-- <button mat-icon-button class="me-2">
               <mat-icon>notifications</mat-icon>
-            </button>
-            <button mat-icon-button [matMenuTriggerFor]="userMenu">
-              <mat-icon>account_circle</mat-icon>
-            </button>
-            <mat-menu #userMenu="matMenu">
-              <button mat-menu-item>
-                <mat-icon>person</mat-icon>
-                <span>Perfil</span>
-              </button>
-              <button mat-menu-item (click)="logout()">
-                <mat-icon>exit_to_app</mat-icon>
-                <span>Cerrar sesión</span>
-              </button>
-            </mat-menu>
-          </mat-toolbar>
+            </button> -->
+      <!-- Botón de Notificaciones -->
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="notificationMenu"
+        class="me-2"
+      >
+        @if(notifications.length > 0) {
+          <mat-icon>notifications</mat-icon>
+        } @else {
+          <mat-icon>notifications_off</mat-icon>
+        }
+      </button>
+
+      <!-- Menú de Notificaciones -->
+      <mat-menu #notificationMenu="matMenu">
+        @if (notifications.length > 0) {
+          @for (notification of notifications; track notification.idNotification) {
+            <div class="notification-item">
+              <div class="notification-content">
+                <strong>{{ notification.subject }}</strong>
+                <small>{{ notification.dateSend | date }}</small>
+              </div>
+              <div class="notification-actions">
+                <mat-checkbox
+                  [checked]="notification.statusSend === 'VISUALIZED'"
+                  [disabled]="notification.statusSend === 'VISUALIZED'"
+                  (change)="markAsRead(notification)">
+                  Leído
+                </mat-checkbox>
+                <button mat-stroked-button color="primary" (click)="viewNotification(notification)">
+                  Ver
+                </button>
+              </div>
+            </div>
+            
+          }
+        } @else {
+          <button mat-menu-item disabled>
+            <span>No hay notificaciones</span>
+          </button>
+        }
+      </mat-menu>
       
-          <div class="content-container p-3">
-            <router-outlet></router-outlet>
-          </div>
-        </mat-sidenav-content>
-      </mat-sidenav-container>
-  
-  } @else {
-    <!-- Template para la pantalla de login -->
-    <app-login></app-login>
-  }
+
+      <button mat-icon-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>person</mat-icon>
+          <span>Perfil</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Cerrar sesión</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+
+    <div class="content-container p-3">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+} @else {
+<!-- Template para la pantalla de login -->
+<app-login></app-login>
+}

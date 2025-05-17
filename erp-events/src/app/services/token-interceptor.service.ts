@@ -11,10 +11,15 @@ export class TokenInterceptorService implements HttpInterceptor {
   constructor(private router: Router) {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+      const token = localStorage.getItem('token');
+      
       const cloned = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        },
         withCredentials: true
       });
-  
+      
       return next.handle(cloned).pipe(
         catchError((error: HttpErrorResponse) => {
           if (error.status === 401 || error.status === 403) {

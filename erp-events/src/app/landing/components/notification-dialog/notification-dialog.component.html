@@ -1,0 +1,36 @@
+<mat-card class="details-card mat-elevation-z4">
+    <mat-card-header class="details-header">
+      <mat-icon color="primary" class="me-2">mark_email_read</mat-icon>
+      <mat-card-title class="mat-title">
+        {{ notification.subject }}
+      </mat-card-title>
+    </mat-card-header>
+  
+    <mat-card-content class="mat-body-1">
+      <div class="details-grid">
+        <div class="details-item">
+          <strong>Enviado:</strong>
+          <span>{{ notification.dateSend | date: 'short' }}</span>
+        </div>
+      </div>
+  
+      <mat-divider class="my-3"></mat-divider>
+      
+      <section>
+        <h3 class="section-title">
+          <mat-icon class="me-2">description</mat-icon> Mensaje
+        </h3>
+        <div [innerHTML]="extractBodyContent(notification.body)" class="notification-body"></div>
+      </section>
+  
+      <mat-divider class="my-3"></mat-divider>
+  
+    </mat-card-content>
+  
+    <mat-card-actions align="end" class="actions">
+      <button mat-stroked-button color="primary" mat-dialog-close>
+        <mat-icon class="me-1">close</mat-icon> Cerrar
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  

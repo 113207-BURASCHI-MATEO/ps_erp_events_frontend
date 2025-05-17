@@ -10,8 +10,6 @@ import e from 'express';
 })
 export class EmployeeService {
 
-  //private baseUrl = 'http://localhost:8080/employees';
-
   private baseUrl: string = `${environment.production 
       ? `${environment.apis.employees}` 
       : `${environment.apis.employees}`}`;

@@ -10,5 +10,6 @@ export const environment = {
     auth: `${API}auth`,
     clients: `${API}clients`,
     locations: `${API}locations`,
+    notifications: `${API}notifications`,
   },
 };

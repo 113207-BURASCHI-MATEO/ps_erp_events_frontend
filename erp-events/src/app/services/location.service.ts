@@ -18,24 +18,24 @@ export class LocationService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Location[]> {
-    return this.http.get<any>(this.baseUrl).pipe(
+    return this.http.get<any>(this.baseUrl, { withCredentials: true }).pipe(
               map(response => response.content as Location[])
             );
   }
 
   getById(id: number): Observable<Location> {
-    return this.http.get<Location>(`${this.baseUrl}/${id}`);
+    return this.http.get<Location>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   create(location: LocationPost): Observable<Location> {
-    return this.http.post<Location>(this.baseUrl, location);
+    return this.http.post<Location>(this.baseUrl, location, { withCredentials: true });
   }
   
   update(id: number, location: LocationPut): Observable<Location> {
-    return this.http.put<Location>(`${this.baseUrl}/${id}`, location);
+    return this.http.put<Location>(`${this.baseUrl}/${id}`, location, { withCredentials: true });
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 }

@@ -9,8 +9,6 @@ import { environment } from '../../environments/environment';
 })
 export class TaskService {
 
-  // private baseUrl = 'http://localhost:8080/tasks';
-
   private baseUrl: string = `${environment.production 
         ? `${environment.apis.tasks}` 
         : `${environment.apis.tasks}`}`;

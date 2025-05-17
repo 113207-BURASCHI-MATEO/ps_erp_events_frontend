@@ -7,8 +7,6 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class EventService {
-  
-  // private readonly baseUrl = 'http://localhost:8080/events';
 
   private baseUrl: string = `${environment.production 
         ? `${environment.apis.events}` 

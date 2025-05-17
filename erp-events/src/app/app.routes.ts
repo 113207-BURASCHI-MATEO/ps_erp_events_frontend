@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './auth/guards/auth.guard';
 import { roleGuard } from './auth/guards/role.guard';
-import { URLTargetType } from './models/user.model';
+import { URLTargetType, User } from './models/user.model';
 
 export const routes: Routes = [
   {
@@ -135,6 +135,22 @@ export const routes: Routes = [
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN, URLTargetType.EMPLOYEE] }
+  },
+  {
+    path: 'users',
+    loadComponent: () =>
+      import('./users/components/user-list/user-list.component').then(m => m.UserListComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'dashboards',
+    loadComponent: () =>
+      import('./dashboard/components/general/general.component').then(m => m.GeneralComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
   },
 ];
 

@@ -28,12 +28,20 @@ export interface UserRegister {
   password: string;
 }
 
+export interface UserUpdate {
+  firstName: string;
+  lastName: string;
+  birthDate: string; // ISO date string, e.g., '2025-05-10'
+  documentNumber: string;
+  password: string;
+  role: Role;
+}
 
 /* ##### ROLES ##### */
 
 export const URLTargetType = {
   SUPERADMIN: 999,
   ADMIN: 100,
-  USER: 200,
+  SUPERVISOR: 200,
   EMPLOYEE: 300,
 };

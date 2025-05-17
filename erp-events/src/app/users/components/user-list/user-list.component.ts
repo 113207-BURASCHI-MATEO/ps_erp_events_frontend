@@ -10,9 +10,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ExportService } from '../../../services/export.service';
-import { Task } from '../../../models/task.model';
+import { User } from '../../../models/user.model';
 import { OptionsComponent } from '../../../shared/components/options/options.component';
-import { TaskService } from '../../../services/task.service';
+import { UserService } from '../../../services/user.service';
 
 import type { ColDef, GridApi, GridReadyEvent } from '@ag-grid-community/core';
 import { AgGridAngular } from '@ag-grid-community/angular';
@@ -23,7 +23,7 @@ import { ViewDialogComponent } from '../../../shared/components/view-dialog/view
 import { AlertService } from '../../../services/alert.service';
 
 @Component({
-  selector: 'app-task-list',
+  selector: 'app-user-list',
   standalone: true,
   imports: [
     CommonModule,
@@ -36,53 +36,59 @@ import { AlertService } from '../../../services/alert.service';
     MatButtonModule,
     ViewDialogComponent,
     OptionsComponent,
-    AgGridAngular
+    AgGridAngular,
   ],
-  templateUrl: './task-list.component.html',
-  styleUrl: './task-list.component.scss'
+  templateUrl: './user-list.component.html',
+  styleUrl: './user-list.component.scss',
 })
-export class TaskListComponent implements OnInit {
-
+export class UserListComponent {
   isBrowser: boolean;
 
-  tasks: Task[] = [];
-  allTasks: Task[] = [];
-  displayedColumns = ['idTask', 'title', 'description', 'status', 'idEvent', 'actions'];
-  gridApi!: GridApi<Task>;
+  users: User[] = [];
+  allUsers: User[] = [];
+  displayedColumns = [
+    'idUser',
+    'firstName',
+    'lastName',
+    'email',
+    'role',
+    'actions',
+  ];
+  gridApi!: GridApi<User>;
   searchValue: string = '';
 
-  columnDefs: ColDef<Task>[] = [
-    { headerName: 'ID', field: 'idTask', sortable: true, filter: true },
-    { headerName: 'Título', field: 'title', sortable: true, filter: true },
-    { headerName: 'Descripción', field: 'description', sortable: true, filter: true },
-    { headerName: 'Estado', field: 'status', sortable: true, filter: true },
-    { headerName: 'ID Evento', field: 'idEvent', sortable: true, filter: true },
+  columnDefs: ColDef<User>[] = [
+    { headerName: 'ID', field: 'idUser', sortable: true, filter: true },
+    { headerName: 'Nombre', field: 'firstName', sortable: true, filter: true },
+    { headerName: 'Apellido', field: 'lastName', sortable: true, filter: true },
+    { headerName: 'Email', field: 'email', sortable: true, filter: true },
+    { headerName: 'Rol', field: 'role.name', sortable: true, filter: true },
     {
       headerName: 'Acciones',
       cellRenderer: OptionsComponent,
       cellRendererParams: {
-        onClick: (action: 'VIEW' | 'EDIT' | 'DELETE', task: Task) => {
-          this.handleAction(action, task);
-        }
-      }
+        onClick: (action: 'VIEW' | 'EDIT' | 'DELETE', user: User) => {
+          this.handleAction(action, user);
+        },
+      },
     },
   ];
 
   defaultColDef = {
     flex: 1,
     minWidth: 100,
-    resizable: true
+    resizable: true,
   };
 
-  getRowId = (params: any) => params.data.idTask;
+  getRowId = (params: any) => params.data.idUser;
 
-  onGridReady(params: GridReadyEvent<Task>): void {
+  onGridReady(params: GridReadyEvent<User>): void {
     params.api.sizeColumnsToFit();
     this.gridApi = params.api;
   }
 
   constructor(
-    private taskService: TaskService,
+    private userService: UserService,
     private router: Router,
     private dialog: MatDialog,
     private exportService: ExportService,
@@ -94,14 +100,14 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
     ModuleRegistry.registerModules([ClientSideRowModelModule]);
-    this.taskService.getAll().subscribe({
+    this.userService.getAll().subscribe({
       next: (data) => {
-        this.tasks = data;
-        this.allTasks = data;
+        this.users = data;
+        this.allUsers = data;
       },
       error: (err) => {
-        console.error('Error fetching tasks:', err.error.message);
-        this.alertService.showErrorToast(`Error al cargar tareas: ${err.error.message}`);
+        console.error('Error fetching users:', err.error.message);
+        this.alertService.showErrorToast(`Error al cargar usuarios: ${err.error.message}`);
       }
     });
   }
@@ -113,35 +119,35 @@ export class TaskListComponent implements OnInit {
   }
 
   goToCreate(): void {
-    this.router.navigate(['/tasks/create']);
+    this.router.navigate(['/users/create']);
   }
 
-  viewTask(id: number): void {
-    const task = this.tasks.find(t => t.idTask === id);
-    if (!task) return;
+  viewUser(id: number): void {
+    const user = this.users.find(u => u.idUser === id);
+    if (!user) return;
 
     this.dialog.open(ViewDialogComponent, {
-      data: task,
+      data: user,
       width: '600px',
       maxWidth: '95vw',
       maxHeight: '95vh',
     });
   }
 
-  editTask(id: number): void {
-    this.router.navigate(['/tasks/edit', id]);
+  editUser(id: number): void {
+    this.router.navigate(['/users/edit', id]);
   }
 
-  deleteTask(id: number): void {
-    this.alertService.delete('esta tarea').then(confirmed => {
+  deleteUser(id: number): void {
+    this.alertService.delete('este usuario').then(confirmed => {
       if (confirmed) {
-        this.taskService.delete(id).subscribe({
+        this.userService.delete(id).subscribe({
           next: () => {
-            this.tasks = this.tasks.filter(t => t.idTask !== id);
-            this.alertService.showSuccessToast('Tarea eliminada correctamente.');
+            this.users = this.users.filter(u => u.idUser !== id);
+            this.alertService.showSuccessToast('Usuario eliminado correctamente.');
           },
           error: () => {
-            this.alertService.showErrorToast('Error al eliminar la tarea.');
+            this.alertService.showErrorToast('Error al eliminar el usuario.');
           }
         });
       }
@@ -154,39 +160,39 @@ export class TaskListComponent implements OnInit {
 
   exportToPdf(): void {
     this.exportService.exportToPdf(
-      this.tasks,
-      'Tareas',
-      [['Título', 'Descripción', 'Estado', 'ID Evento']],
-      task => [
-        task.title,
-        task.description,
-        task.status,
-        task.idEvent
+      this.users,
+      'Usuarios',
+      [['Nombre', 'Apellido', 'Email', 'Rol']],
+      user => [
+        user.firstName,
+        user.lastName,
+        user.email,
+        user.role.name
       ]
     );
   }
 
   exportToExcel(): void {
     this.exportService.exportToExcel(
-      this.tasks,
-      'Tareas',
-      (task) => ({
-        'ID': task.idTask,
-        'Título': task.title,
-        'Descripción': task.description,
-        'Estado': task.status,
-        'ID Evento': task.idEvent
+      this.users,
+      'Usuarios',
+      (user) => ({
+        'ID': user.idUser,
+        'Nombre': user.firstName,
+        'Apellido': user.lastName,
+        'Email': user.email,
+        'Rol': user.role.name
       })
     );
   }
 
-  handleAction(actionType: 'VIEW' | 'EDIT' | 'DELETE', task: Task): void {
+  handleAction(actionType: 'VIEW' | 'EDIT' | 'DELETE', user: User): void {
     if (actionType === 'VIEW') {
-      this.viewTask(task.idTask);
+      this.viewUser(user.idUser);
     } else if (actionType === 'EDIT') {
-      this.editTask(task.idTask);
+      this.editUser(user.idUser);
     } else if (actionType === 'DELETE') {
-      this.deleteTask(task.idTask);
+      this.deleteUser(user.idUser);
     }
   }
 }

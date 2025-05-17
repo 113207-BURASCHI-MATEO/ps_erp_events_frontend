@@ -44,7 +44,7 @@ export class ClientService {
       .set('documentType', documentType)
       .set('documentNumber', documentNumber);
   
-    return this.http.get<Client>(`${this.baseUrl}/exists`, { params });
+    return this.http.get<Client>(`${this.baseUrl}/exists`, { params, withCredentials: true });
   }
   
 }
