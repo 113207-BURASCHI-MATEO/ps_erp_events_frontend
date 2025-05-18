@@ -1,0 +1,89 @@
+<mat-card class="dashboard-card mat-elevation-z4">
+    <mat-card-title>
+      <h1 class="title"><mat-icon>insights</mat-icon> KPIs y Reportes de Tareas</h1>
+    </mat-card-title>
+  
+    <mat-card-content>
+      <!-- Filtros -->
+      <form [formGroup]="filterForm" class="filter-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Desde</mat-label>
+          <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Hasta</mat-label>
+          <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+  
+        <button mat-raised-button color="primary" (click)="applyFilters()">Aplicar</button>
+      </form>
+  
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <mat-card class="kpi-card primary">
+          <mat-icon>assignment</mat-icon>
+          <div>
+            <h3>{{ kpiData.totalTasks }}</h3>
+            <p>Total de Tareas</p>
+          </div>
+        </mat-card>
+  
+        <mat-card class="kpi-card accent">
+          <mat-icon>check_circle</mat-icon>
+          <div>
+            <h3>{{ kpiData.completedTasks }}</h3>
+            <p>Completadas</p>
+          </div>
+        </mat-card>
+  
+        <mat-card class="kpi-card warn">
+          <mat-icon>pending</mat-icon>
+          <div>
+            <h3>{{ kpiData.pendingTasks }}</h3>
+            <p>Pendientes</p>
+          </div>
+        </mat-card>
+  
+        <mat-card class="kpi-card error">
+          <mat-icon>cancel</mat-icon>
+          <div>
+            <h3>{{ kpiData.cancelledTasks }}</h3>
+            <p>Canceladas</p>
+          </div>
+        </mat-card>
+      </div>
+  
+      <!-- Gráficos -->
+      <div class="charts-container mt-5">
+        <div class="chart-container">
+          <canvas
+            baseChart
+            height="220px"
+            [type]="'pie'"
+            [datasets]="pieChartTaskStatusDatasets"
+            [labels]="pieChartTaskStatusLabels"
+            [options]="pieChartOptions"
+            [plugins]="pieChartPlugins"
+          ></canvas>
+        </div>
+  
+        <div class="chart-container">
+          <canvas
+            baseChart
+            height="220px"
+            [type]="'bar'"
+            [datasets]="barChartTaskEventDatasets"
+            [labels]="barChartTaskEventLabels"
+            [options]="barChartOptions"
+            [plugins]="pieChartPlugins"
+          ></canvas>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  

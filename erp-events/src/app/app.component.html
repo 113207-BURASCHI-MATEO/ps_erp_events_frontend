@@ -14,7 +14,7 @@
     <!-- Sidebar Content -->
     <div class="d-flex flex-column h-100">
       <!-- Header/Title -->
-      <div class="p-3 d-flex align-items-center">
+      <div class="p-3 d-flex align-items-center" routerLink="/landing">
         <mat-icon>event</mat-icon>
         <span class="mat-subtitle-1 fw-bold ms-2 mb-0" *ngIf="isSidebarExpanded"
           >ERP Eventos</span
@@ -30,10 +30,41 @@
           </a>
 
           @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
-            <a mat-list-item routerLink="/dashboards" routerLinkActive="active-link">
+            <!-- <a mat-list-item routerLink="/dashboards" routerLinkActive="active-link">
+              <mat-icon matListItemIcon>speed</mat-icon>
+              <span matListItemTitle *ngIf="isSidebarExpanded">Estadisticas</span>
+            </a> -->
+            <a mat-list-item [matMenuTriggerFor]="dashboardMenu">
               <mat-icon matListItemIcon>speed</mat-icon>
               <span matListItemTitle *ngIf="isSidebarExpanded">Estadisticas</span>
             </a>
+
+            <mat-menu 
+            #dashboardMenu="matMenu" 
+            xPosition="after"
+            >
+              <a mat-list-item routerLink="/dashboards/events" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>analytics</mat-icon>
+                <span matListItemTitle *ngIf="isSidebarExpanded">Eventos</span>
+              </a>
+              <a mat-list-item routerLink="/dashboards/employees" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>bar_chart</mat-icon>
+                <span matListItemTitle *ngIf="isSidebarExpanded">Empleados</span>
+              </a>
+              <a mat-list-item routerLink="/dashboards/tasks" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>stacked_bar_chart</mat-icon>
+                <span matListItemTitle *ngIf="isSidebarExpanded">Tareas</span>
+              </a>
+              <a mat-list-item routerLink="/dashboards/suppliers" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>data_thresholding</mat-icon>
+                <span matListItemTitle *ngIf="isSidebarExpanded">Proveedores</span>
+              </a>
+              <a mat-list-item routerLink="/dashboards/users" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>query_stats</mat-icon>
+                <span matListItemTitle *ngIf="isSidebarExpanded">Usuarios</span>
+              </a>
+            </mat-menu>
+
             }
 
           @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {

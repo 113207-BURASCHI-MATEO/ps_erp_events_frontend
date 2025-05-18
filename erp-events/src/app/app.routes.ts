@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './auth/guards/auth.guard';
 import { roleGuard } from './auth/guards/role.guard';
 import { URLTargetType, User } from './models/user.model';
+import { TaskDashboardComponent } from './dashboard/components/task-dashboard/task-dashboard.component';
 
 export const routes: Routes = [
   {
@@ -148,6 +149,54 @@ export const routes: Routes = [
     path: 'dashboards',
     loadComponent: () =>
       import('./dashboard/components/general/general.component').then(m => m.GeneralComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'dashboards',
+    loadComponent: () =>
+      import('./dashboard/components/general/general.component').then(m => m.GeneralComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'dashboards/events',
+    loadComponent: () =>
+      import('./dashboard/components/event-dashboard/event-dashboard.component').then(m => m.EventDashboardComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'dashboards/employees',
+    loadComponent: () =>
+      import('./dashboard/components/employee-dashboard/employee-dashboard.component').then(m => m.EmployeeDashboardComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'dashboards/tasks',
+    loadComponent: () =>
+      import('./dashboard/components/task-dashboard/task-dashboard.component').then(m => m.TaskDashboardComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'dashboards/suppliers',
+    loadComponent: () =>
+      import('./dashboard/components/supplier-dashboard/supplier-dashboard.component').then(m => m.SupplierDashboardComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'dashboards/users',
+    loadComponent: () =>
+      import('./dashboard/components/user-dashboard/user-dashboard.component').then(m => m.UserDashboardComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
