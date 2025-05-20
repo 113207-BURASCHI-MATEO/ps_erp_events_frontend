@@ -1,0 +1,76 @@
+<div class="form-container">
+  <mat-card class="form-card">
+    <mat-card-title class="mb-3">
+      <h1 class="title">
+        <mat-icon matListItemIcon>article</mat-icon>
+        {{ guestId ? "Editar Invitado" : "Nuevo Invitado" }}
+      </h1>
+    </mat-card-title>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <!-- Primera fila -->
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="firstName" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Apellido</mat-label>
+            <input matInput formControlName="lastName" />
+          </mat-form-field>
+
+          <!-- Segunda fila -->
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de Invitado</mat-label>
+            <mat-select formControlName="type">
+              @for (type of guestTypeOptions; track type) {
+                <mat-option [value]="type">
+                  {{ type }}
+                </mat-option>
+                }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" />
+          </mat-form-field>
+
+          <!-- Tercera fila -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nota</mat-label>
+            <textarea matInput formControlName="note" rows="3"></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Evento Asociado</mat-label>
+            <mat-select formControlName="idEvent">
+              @for (event of events; track event.idEvent) {
+              <mat-option [value]="event.idEvent">
+                {{ event.title }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="action-buttons">
+          <button mat-stroked-button type="button" (click)="goBack()">
+            Volver
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid"
+          >
+            {{ guestId ? "Guardar cambios" : "Crear invitado" }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

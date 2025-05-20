@@ -31,6 +31,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { AlertService } from '../../../services/alert.service';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { MatStepperModule } from '@angular/material/stepper';
+import { Supplier } from '../../../models/supplier.model';
+import { SupplierService } from '../../../services/supplier.service';
 
 @Component({
   selector: 'app-event-form',
@@ -60,7 +62,9 @@ export class EventFormComponent {
   taskIndex: number | undefined;
   locations: Location[] = [];
   employees: Employee[] = [];
+  suppliers: Supplier[] = [];
   selectedEmployeeIds: number[] = [];
+  selectedSupplierIds: number[] = [];
   locationIndex?: number;
   isNewLocation = false;
   foundClient: Client | null = null;
@@ -77,7 +81,8 @@ export class EventFormComponent {
     private locationService: LocationService,
     private clientService: ClientService,
     private employeeService: EmployeeService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private supplierService: SupplierService
   ) {
     this.form = this.fb.group({
       eventData: this.fb.group({
@@ -118,15 +123,6 @@ export class EventFormComponent {
             { value: '', disabled: this.showClientForm },
             [Validators.required]
           ),
-          /* Si decides reactivar estos campos, recuerda moverlos aquí */
-          // documentType: new FormControl(
-          //   { value: '', disabled: this.showClientForm },
-          //   [Validators.required]
-          // ),
-          // documentNumber: new FormControl(
-          //   { value: '', disabled: this.showClientForm },
-          //   [Validators.required, Validators.pattern('^[0-9]*$')]
-          // ),
         }),
       }),
       locationData: this.fb.group({
@@ -221,6 +217,7 @@ export class EventFormComponent {
 
     this.loadLocations();
     this.loadEmployees();
+    this.loadSuppliers();
 
     this.form
       .get('clientData.clientDocumentNumber')
@@ -270,6 +267,18 @@ export class EventFormComponent {
           `Error al cargar empleados: ${err.error.message}`
         );
         console.error('Error al cargar empleados', err.err);
+      },
+    });
+  }
+
+  loadSuppliers(): void {
+    this.supplierService.getAll().subscribe({
+      next: (res) => (this.suppliers = res),
+      error: (err) => {
+        this.alertService.showErrorToast(
+          `Error al cargar proveedores: ${err.error.message}`
+        );
+        console.error('Error al cargar proveedores', err.err);
       },
     });
   }
@@ -347,6 +356,8 @@ export class EventFormComponent {
 
     // Set selected employees
     this.selectedEmployeeIds = event.employeesIds;
+    // Set selected suppliers
+    this.selectedSupplierIds = event.suppliersIds;
   }
 
   /* onSubmit(): void {
@@ -447,6 +458,7 @@ export class EventFormComponent {
     const client = this.getClient();
     const tasks: TaskEventPost[] = this.tasks;
     const employeeIds: number[] = this.selectedEmployeeIds;
+    const supplierIds: number[] = this.selectedSupplierIds;
 
     const dataPost: EventPost = {
       title: baseEventData.title,
@@ -462,6 +474,7 @@ export class EventFormComponent {
         ? (this.form.get('locationData.locationForm')?.value as LocationPost)
         : undefined,
       employeeIds: employeeIds.length > 0 ? employeeIds : undefined,
+      supplierIds: supplierIds.length > 0 ? supplierIds : undefined,
       tasks: tasks.length > 0 ? tasks : [],
     };
 
@@ -555,6 +568,7 @@ export class EventFormComponent {
       status: baseEventData.status,
       locationId: baseEventData.locationId,
       employeeIds: this.selectedEmployeeIds,
+      supplierIds: this.selectedSupplierIds,
     };
 
     console.log('Event data to put:', dataPut);
@@ -672,12 +686,28 @@ export class EventFormComponent {
       );
     }
   }
+  toggleSupplierSelection(id: number, checked: boolean): void {
+    if (checked) {
+      if (!this.selectedSupplierIds.includes(id)) {
+        this.selectedSupplierIds.push(id);
+      }
+    } else {
+      this.selectedSupplierIds = this.selectedSupplierIds.filter(
+        (sid) => sid !== id
+      );
+    }
+  }
   //endregion Employee Methods
 
-  setDateTime(date: any, time: any) {
-    const [hours, minutes] = time.split('AM')[0].split(':').map(Number); // 6:00 AM
-    const updatedDate = new Date(date);
-    updatedDate.setHours(hours, minutes);
-    return updatedDate.toISOString();
+  setDateTime(date: any, time: any): any {
+    try {
+      const [hours, minutes] = time.split('AM')[0].split(':').map(Number); // 6:00 AM
+      const updatedDate = new Date(date);
+      updatedDate.setHours(hours, minutes);
+      return updatedDate.toISOString();
+    } catch (error: any) {
+      this.alertService.showErrorToast(`Error al cargar los horarios`);
+      console.error("Error", error)
+    }
   }
 }

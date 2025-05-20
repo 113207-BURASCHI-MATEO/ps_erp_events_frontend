@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -44,10 +44,10 @@ export class TaskFormComponent {
     private eventService: EventService
   ) {
     this.form = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      status: ['', Validators.required],
-      idEvent: [null, Validators.required]
+      title: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+      status: new FormControl('', [Validators.required]),
+      idEvent: new FormControl(null, [Validators.required]),
     });
   }
 

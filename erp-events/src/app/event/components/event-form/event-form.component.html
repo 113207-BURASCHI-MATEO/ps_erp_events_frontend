@@ -237,7 +237,31 @@
           </div>
         </mat-step>
 
-        <!-- PASO 5: TAREAS -->
+         <!-- PASO 5: PROVEEDORES -->
+         <mat-step label="Proveedores">
+          <div class="form-grid">
+            <div class="mat-elevation-z2 p-3">
+              <h4>Seleccionar proveedores</h4>
+              <div class="mat-grid-list" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                @for (emp of suppliers; track emp.idSupplier) {
+                  <mat-checkbox
+                    [checked]="selectedEmployeeIds.includes(emp.idSupplier)"
+                    (change)="toggleEmployeeSelection(emp.idSupplier, $event.checked)"
+                    >
+                    {{ emp.name }} ({{ emp.supplierType }})
+                  </mat-checkbox>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 mt-3">
+            <button mat-stroked-button color="accent" matStepperPrevious>Anterior</button>
+            <button mat-stroked-button color="primary" matStepperNext>Siguiente</button>
+          </div>
+        </mat-step>
+
+        <!-- PASO 6: TAREAS -->
         <mat-step label="Tareas">
           <div [formGroup]="taskForm">
             <div class="d-flex flex-direction-column gap-3 align-items-baseline" >
@@ -274,12 +298,13 @@
 
             <!-- Lista de tareas -->
             <div class="task-list mt-3" *ngIf="tasks.length > 0">
-              <h5 class="mb-3">Lista de Tareas</h5>
+              <h4 class="mb-3">Lista de Tareas</h4>
               <div *ngFor="let task of tasks; let i = index" class="d-flex justify-content-between align-items-center mb-2">
-                <button type="button" class="btn btn-primary btn-sm me-2" (click)="setTaskValue(i)">
+                <button mat-stroked-button color="primary" (click)="setTaskValue(i)">
+                  <mat-icon>check</mat-icon>
                   {{ task.title }} - {{ task.status }}
                 </button>
-                <button type="button" class="btn btn-danger btn-sm" (click)="removeTask(i)">
+                <button mat-icon-button color="accent" (click)="removeTask(i)">
                   <mat-icon>delete</mat-icon>
                 </button>
               </div>

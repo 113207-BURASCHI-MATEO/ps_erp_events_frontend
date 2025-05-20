@@ -201,6 +201,48 @@ export const routes: Routes = [
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
   },
+  {
+    path: 'dashboards/guests',
+    loadComponent: () =>
+      import('./dashboard/components/guest-dashboard/guest-dashboard.component').then(m => m.
+        GuestDashboardComponent
+      ),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'guests',
+    loadComponent: () =>
+      import('./guest/components/guest-list/guest-list.component').then(m => m.GuestListComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'guests/create',
+    loadComponent: () =>
+      import('./guest/components/guest-form/guest-form.component').then(m => m.GuestFormComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'guests/create/file',
+    loadComponent: () =>
+      import('./guest/components/guest-file/guest-file.component').then(m => m.GuestFileComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'guests/edit/:idGuest/:idEvent',
+    loadComponent: () =>
+      import('./guest/components/guest-form/guest-form.component').then(m => m.GuestFormComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
 ];
 
 

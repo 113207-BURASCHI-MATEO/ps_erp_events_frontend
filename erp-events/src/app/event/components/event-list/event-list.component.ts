@@ -100,7 +100,10 @@ export class EventListComponent {
         this.events = data;
         this.allEvents = data;
       },
-      error: (err) => console.error('Error al cargar eventos', err)
+      error: (err) => {
+        console.error('Error al cargar eventos', err);
+        this.alertService.showErrorToast('Error al cargar eventos.');
+      }
     });
   }
 

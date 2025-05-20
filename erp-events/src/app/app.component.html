@@ -30,44 +30,69 @@
           </a>
 
           @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
-            <!-- <a mat-list-item routerLink="/dashboards" routerLinkActive="active-link">
+          <!-- <a mat-list-item routerLink="/dashboards" routerLinkActive="active-link">
               <mat-icon matListItemIcon>speed</mat-icon>
               <span matListItemTitle *ngIf="isSidebarExpanded">Estadisticas</span>
             </a> -->
-            <a mat-list-item [matMenuTriggerFor]="dashboardMenu">
-              <mat-icon matListItemIcon>speed</mat-icon>
-              <span matListItemTitle *ngIf="isSidebarExpanded">Estadisticas</span>
-            </a>
+          <a mat-list-item [matMenuTriggerFor]="dashboardMenu">
+            <mat-icon matListItemIcon>speed</mat-icon>
+            <span matListItemTitle *ngIf="isSidebarExpanded">Estadisticas</span>
+          </a>
 
-            <mat-menu 
-            #dashboardMenu="matMenu" 
-            xPosition="after"
+          <mat-menu #dashboardMenu="matMenu" xPosition="after">
+            <a
+              mat-list-item
+              routerLink="/dashboards/events"
+              routerLinkActive="active-link"
             >
-              <a mat-list-item routerLink="/dashboards/events" routerLinkActive="active-link">
-                <mat-icon matListItemIcon>analytics</mat-icon>
-                <span matListItemTitle *ngIf="isSidebarExpanded">Eventos</span>
-              </a>
-              <a mat-list-item routerLink="/dashboards/employees" routerLinkActive="active-link">
-                <mat-icon matListItemIcon>bar_chart</mat-icon>
-                <span matListItemTitle *ngIf="isSidebarExpanded">Empleados</span>
-              </a>
-              <a mat-list-item routerLink="/dashboards/tasks" routerLinkActive="active-link">
-                <mat-icon matListItemIcon>stacked_bar_chart</mat-icon>
-                <span matListItemTitle *ngIf="isSidebarExpanded">Tareas</span>
-              </a>
-              <a mat-list-item routerLink="/dashboards/suppliers" routerLinkActive="active-link">
-                <mat-icon matListItemIcon>data_thresholding</mat-icon>
-                <span matListItemTitle *ngIf="isSidebarExpanded">Proveedores</span>
-              </a>
-              <a mat-list-item routerLink="/dashboards/users" routerLinkActive="active-link">
-                <mat-icon matListItemIcon>query_stats</mat-icon>
-                <span matListItemTitle *ngIf="isSidebarExpanded">Usuarios</span>
-              </a>
-            </mat-menu>
+              <mat-icon matListItemIcon>analytics</mat-icon>
+              <span matListItemTitle *ngIf="isSidebarExpanded">Eventos</span>
+            </a>
+            <a
+              mat-list-item
+              routerLink="/dashboards/employees"
+              routerLinkActive="active-link"
+            >
+              <mat-icon matListItemIcon>bar_chart</mat-icon>
+              <span matListItemTitle *ngIf="isSidebarExpanded">Empleados</span>
+            </a>
+            <a
+              mat-list-item
+              routerLink="/dashboards/tasks"
+              routerLinkActive="active-link"
+            >
+              <mat-icon matListItemIcon>stacked_bar_chart</mat-icon>
+              <span matListItemTitle *ngIf="isSidebarExpanded">Tareas</span>
+            </a>
+            <a
+              mat-list-item
+              routerLink="/dashboards/suppliers"
+              routerLinkActive="active-link"
+            >
+              <mat-icon matListItemIcon>data_thresholding</mat-icon>
+              <span matListItemTitle *ngIf="isSidebarExpanded"
+                >Proveedores</span
+              >
+            </a>
+            <a
+              mat-list-item
+              routerLink="/dashboards/users"
+              routerLinkActive="active-link"
+            >
+              <mat-icon matListItemIcon>query_stats</mat-icon>
+              <span matListItemTitle *ngIf="isSidebarExpanded">Usuarios</span>
+            </a>
+            <a
+              mat-list-item
+              routerLink="/dashboards/guests"
+              routerLinkActive="active-link"
+            >
+              <mat-icon matListItemIcon>insert_chart</mat-icon>
+              <span matListItemTitle *ngIf="isSidebarExpanded">Invitados</span>
+            </a>
+          </mat-menu>
 
-            }
-
-          @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
           <a mat-list-item routerLink="/events" routerLinkActive="active-link">
             <mat-icon matListItemIcon>event_available</mat-icon>
             <span matListItemTitle *ngIf="isSidebarExpanded">Eventos</span>
@@ -96,12 +121,16 @@
             <span matListItemTitle *ngIf="isSidebarExpanded">Tareas</span>
           </a>
           } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
-            <a mat-list-item routerLink="/users" routerLinkActive="active-link">
-              <mat-icon matListItemIcon>group</mat-icon>
-              <span matListItemTitle *ngIf="isSidebarExpanded">Usuarios</span>
-            </a>
-            }
-
+          <a mat-list-item routerLink="/users" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>group</mat-icon>
+            <span matListItemTitle *ngIf="isSidebarExpanded">Usuarios</span>
+          </a>
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          <a mat-list-item routerLink="/guests" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>person_add</mat-icon>
+            <span matListItemTitle *ngIf="isSidebarExpanded">Invitados</span>
+          </a>
+          }
         </mat-nav-list>
       </div>
 
@@ -143,42 +172,45 @@
         class="me-2"
       >
         @if(notifications.length > 0) {
-          <mat-icon>notifications</mat-icon>
+        <mat-icon>notifications</mat-icon>
         } @else {
-          <mat-icon>notifications_off</mat-icon>
+        <mat-icon>notifications_off</mat-icon>
         }
       </button>
 
       <!-- Menú de Notificaciones -->
       <mat-menu #notificationMenu="matMenu">
-        @if (notifications.length > 0) {
-          @for (notification of notifications; track notification.idNotification) {
-            <div class="notification-item">
-              <div class="notification-content">
-                <strong>{{ notification.subject }}</strong>
-                <small>{{ notification.dateSend | date }}</small>
-              </div>
-              <div class="notification-actions">
-                <mat-checkbox
-                  [checked]="notification.statusSend === 'VISUALIZED'"
-                  [disabled]="notification.statusSend === 'VISUALIZED'"
-                  (change)="markAsRead(notification)">
-                  Leído
-                </mat-checkbox>
-                <button mat-stroked-button color="primary" (click)="viewNotification(notification)">
-                  Ver
-                </button>
-              </div>
-            </div>
-            
-          }
-        } @else {
-          <button mat-menu-item disabled>
-            <span>No hay notificaciones</span>
-          </button>
+        @if (notifications.length > 0) { @for (notification of notifications;
+        track notification.idNotification) {
+        <div class="notification-item">
+          <div class="notification-content">
+            <strong>{{ notification.subject }}</strong>
+            <small>{{ notification.dateSend | date }}</small>
+          </div>
+          <div class="notification-actions">
+            <mat-checkbox
+              [checked]="notification.statusSend === 'VISUALIZED'"
+              [disabled]="notification.statusSend === 'VISUALIZED'"
+              (change)="markAsRead(notification)"
+            >
+              Leído
+            </mat-checkbox>
+            <button
+              mat-stroked-button
+              color="primary"
+              (click)="viewNotification(notification)"
+            >
+              Ver
+            </button>
+          </div>
+        </div>
+
+        } } @else {
+        <button mat-menu-item disabled>
+          <span>No hay notificaciones</span>
+        </button>
         }
       </mat-menu>
-      
 
       <button mat-icon-button [matMenuTriggerFor]="userMenu">
         <mat-icon>account_circle</mat-icon>

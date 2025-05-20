@@ -11,5 +11,6 @@ export const environment = {
     clients: `${API}clients`,
     locations: `${API}locations`,
     notifications: `${API}notifications`,
+    guests: `${API}guests`,
   },
 };

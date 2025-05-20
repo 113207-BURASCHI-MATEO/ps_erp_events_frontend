@@ -3,14 +3,16 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Event, EventPost, EventPut } from '../models/event.model';
 import { environment } from '../../environments/environment';
+import { GuestPost } from '../models/guest.model';
 @Injectable({
   providedIn: 'root',
 })
 export class EventService {
-
-  private baseUrl: string = `${environment.production 
-        ? `${environment.apis.events}` 
-        : `${environment.apis.events}`}`;
+  private baseUrl: string = `${
+    environment.production
+      ? `${environment.apis.events}`
+      : `${environment.apis.events}`
+  }`;
 
   constructor(private http: HttpClient) {}
 
@@ -43,4 +45,5 @@ export class EventService {
       withCredentials: true,
     });
   }
+
 }
