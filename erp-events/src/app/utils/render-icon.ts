@@ -1,0 +1,129 @@
+export function renderIconField(tipo: string): (params: any) => string {
+  return (params: any): string => {
+    const valor = params.value;
+    let icono = '';
+    let color = '';
+    let texto = '';
+
+    switch (tipo) {
+      case 'eventType':
+        ({ icono, color, texto } = getEventTypeIcon(valor));
+        break;
+      case 'eventStatus':
+        ({ icono, color, texto } = getEventStatusIcon(valor));
+        break;
+      case 'taskStatus':
+        ({ icono, color, texto } = getTaskStatusIcon(valor));
+        break;
+      case 'guestType':
+        ({ icono, color, texto } = getGuestTypeIcon(valor));
+        break;
+      case 'supplierType':
+        ({ icono, color, texto } = getSupplierTypeIcon(valor));
+        break;
+      default:
+        icono = 'help_outline';
+        color = '#6c757d';
+        texto = valor;
+    }
+
+    return `
+        <span style="display: flex; align-items: center; gap: 6px; color: ${color}">
+          <span class="material-icons">${icono}</span>
+          <span>${texto}</span>
+        </span>
+      `;
+  };
+}
+
+function getEventTypeIcon(type: string) {
+  switch (type) {
+    case 'CORPORATE':
+      return { icono: 'business', color: '#13505B', texto: 'Corporativo' };
+    case 'SOCIAL':
+      return { icono: 'group', color: '#9FC2CC', texto: 'Social' };
+    case 'CULTURAL':
+      return { icono: 'museum', color: '#D7D9CE', texto: 'Cultural' };
+    case 'ENTERTAINMENT':
+      return { icono: 'celebration', color: '#FF7F11', texto: 'Entretenimiento' };
+    default:
+      return { icono: 'help_outline', color: '#040404', texto: type };
+  }
+}
+
+
+function getEventStatusIcon(status: string) {
+  switch (status) {
+    case 'PENDING':
+      return { icono: 'schedule', color: '#9FC2CC', texto: 'Pendiente' };
+    case 'CONFIRMED':
+      return { icono: 'check_circle', color: '#13505B', texto: 'Confirmado' };
+    case 'IN_PROGRESS':
+      return { icono: 'autorenew', color: '#FF7F11', texto: 'En progreso' };
+    case 'CANCELLED':
+      return { icono: 'cancel', color: '#D7D9CE', texto: 'Cancelado' };
+    case 'COMPLETED':
+      return { icono: 'done_all', color: '#040404', texto: 'Completado' };
+    default:
+      return { icono: 'help_outline', color: '#040404', texto: status };
+  }
+}
+
+
+function getTaskStatusIcon(status: string) {
+  switch (status) {
+    case 'PENDING':
+      return { icono: 'hourglass_empty', color: '#9FC2CC', texto: 'Pendiente' };
+    case 'IN_PROGRESS':
+      return { icono: 'loop', color: '#FF7F11', texto: 'En progreso' };
+    case 'COMPLETED':
+      return { icono: 'check_circle', color: '#13505B', texto: 'Completada' };
+    case 'CANCELLED':
+      return { icono: 'cancel', color: '#D7D9CE', texto: 'Cancelada' };
+    default:
+      return { icono: 'help_outline', color: '#040404', texto: status };
+  }
+}
+
+
+function getGuestTypeIcon(type: string) {
+  switch (type) {
+    case 'VIP':
+      return { icono: 'star', color: '#FF7F11', texto: 'VIP' };
+    case 'REGULAR':
+      return { icono: 'person', color: '#9FC2CC', texto: 'Regular' };
+    case 'STAFF':
+      return { icono: 'badge', color: '#13505B', texto: 'Staff' };
+    case 'FAMILY':
+      return { icono: 'family_restroom', color: '#D7D9CE', texto: 'Familia' };
+    case 'FRIEND':
+      return { icono: 'people', color: '#13505B', texto: 'Amigo' };
+    case 'GENERAL':
+      return { icono: 'group', color: '#9FC2CC', texto: 'General' };
+    case 'OTHER':
+      return { icono: 'person_outline', color: '#D7D9CE', texto: 'Otro' };
+    default:
+      return { icono: 'help_outline', color: '#040404', texto: type };
+  }
+}
+
+
+function getSupplierTypeIcon(type: string) {
+  switch (type) {
+    case 'CATERING':
+      return { icono: 'restaurant', color: '#FF7F11', texto: 'Catering' };
+    case 'DECORACION':
+      return { icono: 'brush', color: '#D7D9CE', texto: 'Decoración' };
+    case 'SOUND':
+      return { icono: 'graphic_eq', color: '#9FC2CC', texto: 'Sonido' };
+    case 'GASTRONOMIC':
+      return { icono: 'local_dining', color: '#13505B', texto: 'Gastronómico' };
+    case 'FURNITURE':
+      return { icono: 'weekend', color: '#D7D9CE', texto: 'Mobiliario' };
+    case 'ENTERTAINMENT':
+      return { icono: 'celebration', color: '#FF7F11', texto: 'Entretenimiento' };
+    default:
+      return { icono: 'help_outline', color: '#040404', texto: type };
+  }
+}
+

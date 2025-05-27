@@ -12,5 +12,6 @@ export const environment = {
     locations: `${API}locations`,
     notifications: `${API}notifications`,
     guests: `${API}guests`,
+    files: `${API}files`,
   },
 };

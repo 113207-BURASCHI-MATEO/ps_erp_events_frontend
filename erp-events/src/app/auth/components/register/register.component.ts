@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { MatInputModule } from '@angular/material/input';
@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { AlertService } from '../../../services/alert.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,8 @@ import { AlertService } from '../../../services/alert.service';
     MatSelectModule,  
     MatOptionModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatIconModule
     
   ],
   templateUrl: './register.component.html',
@@ -31,11 +33,12 @@ import { AlertService } from '../../../services/alert.service';
 export class RegisterComponent {
   form: FormGroup;
 
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private alertService = inject(AlertService);
+
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private alertService: AlertService
   ) {
     this.form = this.fb.group({
       firstName: ['', Validators.required],
@@ -67,5 +70,9 @@ export class RegisterComponent {
     } else {
       this.alertService.showErrorToast('Por favor, complete todos los campos correctamente.');
     }
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
   }
 }

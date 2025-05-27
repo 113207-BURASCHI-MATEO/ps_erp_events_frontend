@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, inject, Inject, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -10,7 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { GuestService } from '../../../services/guest.service';
 import { ExportService } from '../../../services/export.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Guest } from '../../../models/guest.model';
 import { MatDialog } from '@angular/material/dialog';
 import { OptionsComponent } from '../../../shared/components/options/options.component';
@@ -27,6 +27,8 @@ import { AlertService } from '../../../services/alert.service';
 import { Event } from '../../../models/event.model';
 import { EventService } from '../../../services/event.service';
 import { MatSelectModule } from '@angular/material/select';
+import e from 'express';
+import { renderIconField } from '../../../utils/render-icon';
 
 @Component({
   selector: 'app-guest-list',
@@ -72,7 +74,13 @@ export class GuestListComponent {
     { headerName: 'ID', field: 'idGuest', sortable: true, filter: true },
     { headerName: 'Nombre', field: 'firstName', sortable: true, filter: true },
     { headerName: 'Apellido', field: 'lastName', sortable: true, filter: true },
-    { headerName: 'Tipo', field: 'type', sortable: true, filter: true },
+    {
+      headerName: 'Tipo',
+      field: 'type',
+      sortable: true,
+      filter: true,
+      cellRenderer: renderIconField('guestType'),
+    },
     { headerName: 'Email', field: 'email', sortable: true, filter: true },
     { headerName: 'Nota', field: 'note', sortable: true, filter: true },
     {
@@ -99,20 +107,26 @@ export class GuestListComponent {
     this.gridApi = params.api;
   }
 
-  constructor(
-    private guestService: GuestService,
-    private exportService: ExportService,
-    private router: Router,
-    private dialog: MatDialog,
-    private alertService: AlertService,
-    private eventService: EventService,
-    @Inject(PLATFORM_ID) platformId: Object
-  ) {
+  private guestService = inject(GuestService);
+  private exportService = inject(ExportService);
+  private router = inject(Router);
+  private dialog = inject(MatDialog);
+  private alertService = inject(AlertService);
+  private eventService = inject(EventService);
+  private route = inject(ActivatedRoute);
+
+  constructor(@Inject(PLATFORM_ID) platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
   ngOnInit(): void {
     ModuleRegistry.registerModules([ClientSideRowModelModule]);
+    this.route.queryParams.subscribe((params) => {
+      const eventId = params['eventId'];
+      if (eventId) {
+        this.eventId = +eventId;
+      }
+    });
     this.loadEvents();
   }
 
@@ -120,7 +134,6 @@ export class GuestListComponent {
     this.eventService.getAll().subscribe({
       next: (data) => {
         this.events = data;
-        this.eventId = this.events.length > 0 ? this.events[0].idEvent : null;
         if (this.eventId) {
           this.guestService.getGuestsFromEvent(this.eventId).subscribe({
             next: (data) => {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User, UserRegister, UserUpdate } from '../models/user.model';
 import { map, Observable } from 'rxjs';
 
@@ -42,6 +42,16 @@ export class UserService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`, {
+      withCredentials: true,
+    });
+  }
+
+  upgrade(id: number, roleCode: number): Observable<User> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.put<User>(`${this.baseUrl}/${id}/role`, roleCode, {
+      headers,
       withCredentials: true,
     });
   }

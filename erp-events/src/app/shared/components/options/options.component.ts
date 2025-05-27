@@ -5,10 +5,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 
-type GenericAction = 'VIEW' | 'EDIT' | 'DELETE';
+type GenericAction = 'VIEW' | 'EDIT' | 'DELETE' | string;
+
+interface ActionOption {
+  label: string;
+  icon: string;
+  action: GenericAction;
+}
 
 interface GenericRenderParams<T> extends ICellRendererParams {
-  onClick: (action: GenericAction, data: T) => void;
+  onClick: (action: GenericAction, data: T) => void,
+  actions?: ActionOption[];
 }
 
 @Component({
@@ -25,6 +32,12 @@ interface GenericRenderParams<T> extends ICellRendererParams {
 export class OptionsComponent<T = any> implements ICellRendererAngularComp {
 
   params!: GenericRenderParams<T>;
+
+  defaultActions: ActionOption[] = [
+    { label: 'Ver', icon: 'visibility', action: 'VIEW' },
+    { label: 'Editar', icon: 'edit', action: 'EDIT' },
+    { label: 'Eliminar', icon: 'delete', action: 'DELETE' },
+  ];
 
   agInit(params: GenericRenderParams<T>): void {
     this.params = params;

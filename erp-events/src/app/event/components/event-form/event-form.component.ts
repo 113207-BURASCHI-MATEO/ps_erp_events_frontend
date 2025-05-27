@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -73,16 +73,17 @@ export class EventFormComponent {
   ProvinceOptions = Object.values(Province);
   CountryOptions = Object.values(Country);
 
+  private fb = inject(FormBuilder);
+  private eventService = inject(EventService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private locationService = inject(LocationService);
+  private clientService = inject(ClientService);
+  private employeeService = inject(EmployeeService);
+  private alertService = inject(AlertService);
+  private supplierService = inject(SupplierService);
+
   constructor(
-    private fb: FormBuilder,
-    private eventService: EventService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private locationService: LocationService,
-    private clientService: ClientService,
-    private employeeService: EmployeeService,
-    private alertService: AlertService,
-    private supplierService: SupplierService
   ) {
     this.form = this.fb.group({
       eventData: this.fb.group({

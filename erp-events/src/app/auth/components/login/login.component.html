@@ -1,30 +1,62 @@
-<div class="mat-typography" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 16px;">
-  <mat-card style="width: 100%; max-width: 400px;">
+<div
+  class="mat-typography d-flex flex-column justify-content-center align-items-center p-5"
+  style="min-height: 100vh"
+>
+  <div class="d-flex align-items-center gap-2 mb-4">
+    <mat-icon color="primary" fontIcon="event" class="fs-2"></mat-icon>
+    <h1 class="mb-0 fs-4 fw-bold title">ERP Eventos</h1>
+  </div>
+  <mat-card style="width: 100%; max-width: 400px">
     <mat-card-header class="mb-3">
       <mat-card-title>Iniciar sesión</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+        <mat-form-field
+          appearance="outline"
+          style="width: 100%; margin-bottom: 16px"
+        >
           <mat-label>Email</mat-label>
           <input matInput type="email" formControlName="email" required />
         </mat-form-field>
 
-        <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 24px;">
+        <mat-form-field
+          appearance="outline"
+          style="width: 100%; margin-bottom: 24px"
+        >
           <mat-label>Contraseña</mat-label>
           <input matInput type="password" formControlName="password" required />
         </mat-form-field>
 
-        <button mat-raised-button color="primary" style="width: 100%;" type="submit" [disabled]="form.invalid">
+        <button
+          mat-raised-button
+          color="primary"
+          style="width: 100%"
+          type="submit"
+          [disabled]="form.invalid"
+        >
           Ingresar
         </button>
       </form>
-      <button mat-stroked-button color="accent" style="width: 100%; margin-top: 16px;" type="button" (click)="goToRegister()">
+      <button
+        mat-stroked-button
+        color="accent"
+        style="width: 100%; margin-top: 16px"
+        type="button"
+        (click)="goToRegister()"
+      >
         Crear cuenta
+      </button>
+      <button
+        mat-button
+        color="warn"
+        style="width: 100%; margin-top: 8px"
+        type="button"
+        (click)="goToRecover()"
+      >
+        ¿Olvidaste tu contraseña?
       </button>
     </mat-card-content>
   </mat-card>
 </div>
-
-  

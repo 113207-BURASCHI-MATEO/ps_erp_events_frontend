@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -62,10 +62,11 @@ export class GuestDashboardComponent {
     '#777777', '#08703B', '#FFAB91'
   ];
 
+  private fb = inject(FormBuilder);
+    private guestService = inject(GuestService);
+    private alertService = inject(AlertService);
+
   constructor(
-    private fb: FormBuilder,
-    private guestService: GuestService,
-    private alertService: AlertService
   ) {
     this.filterForm = this.fb.group({
       startDate: [null],

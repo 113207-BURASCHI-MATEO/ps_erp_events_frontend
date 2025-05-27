@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -44,25 +45,26 @@ export class EmployeeFormComponent {
   employeeId: number | null = null;
   hidePassword = true;
 
+  private fb = inject(FormBuilder);
+  private service = inject(EmployeeService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private alertService = inject(AlertService);
+
   constructor(
-    private fb: FormBuilder,
-    private service: EmployeeService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private alertService: AlertService
   ) {
     this.form = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      documentType: ['', Validators.required],
-      documentNumber: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      cuit: ['', Validators.required],
-      birthDate: ['', Validators.required],
-      aliasOrCbu: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      hireDate: ['', Validators.required],
-      position: ['', Validators.required],
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      documentType: new FormControl('', [Validators.required]),
+      documentNumber: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      cuit: new FormControl('', [Validators.required]),
+      birthDate: new FormControl('', [Validators.required]),
+      aliasOrCbu: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required, Validators.pattern('^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*\\d).{8,}$')]),
+      hireDate: new FormControl('', [Validators.required]),
+      position: new FormControl('', [Validators.required]),
     });
   }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -77,10 +77,11 @@ export class EventDashboardComponent {
     '#FFAB91'   // Extra Accent - Soft Coral
   ];
 
+  private fb = inject(FormBuilder);
+  private eventService = inject(EventService);
+  private alertService = inject(AlertService);
+
   constructor(
-    private fb: FormBuilder,
-    private eventService: EventService,
-    private alertService: AlertService
   ) {
     this.filterForm = this.fb.group({
       startDate: [null],

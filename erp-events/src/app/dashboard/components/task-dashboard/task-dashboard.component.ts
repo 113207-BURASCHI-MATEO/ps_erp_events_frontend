@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -61,10 +61,12 @@ export class TaskDashboardComponent {
     '#777777', '#08703B', '#FFAB91'
   ];
 
+      private fb = inject(FormBuilder);
+        private taskService = inject(TaskService);
+        private alertService = inject(AlertService);
+  
+
   constructor(
-    private fb: FormBuilder,
-    private taskService: TaskService,
-    private alertService: AlertService
   ) {
     this.filterForm = this.fb.group({
       startDate: [null],

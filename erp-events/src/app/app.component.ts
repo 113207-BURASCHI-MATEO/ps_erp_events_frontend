@@ -1,5 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import {
+  NavigationEnd,
+  Router,
+  RouterModule,
+  RouterOutlet,
+} from '@angular/router';
 import { SidebarStateService } from './services/sidebar-state.service';
 import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,6 +22,11 @@ import { AlertService } from './services/alert.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NotificationDialogComponent } from './landing/components/notification-dialog/notification-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { filter, map } from 'rxjs';
+import { RegisterComponent } from './auth/components/register/register.component';
+import e from 'express';
+import { RecoveryPasswordComponent } from "./auth/components/recovery-password/recovery-password.component";
+import { ResetPasswordComponent } from './auth/components/reset-password/reset-password.component';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +46,11 @@ import { MatDialog } from '@angular/material/dialog';
     MatCheckboxModule,
     DatePipe,
     NotificationDialogComponent,
-  ],
+    LoginComponent,
+    RegisterComponent,
+    RecoveryPasswordComponent,
+    ResetPasswordComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -47,13 +61,18 @@ export class AppComponent {
   codes = URLTargetType;
   notifications: Notification[] = [];
   user: User | null = null;
+  isDarkMode = false;
 
-  constructor(
-    public sidebarService: SidebarStateService,
-    private notificationService: NotificationService,
-    private alertService: AlertService,
-    private dialog: MatDialog
-  ) {}
+  private router = inject(Router);
+  private sidebarService = inject(SidebarStateService);
+  private notificationService = inject(NotificationService);
+  private alertService = inject(AlertService);
+  private dialog = inject(MatDialog);
+
+  currentUrl$ = this.router.events.pipe(
+    filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+    map((event: NavigationEnd) => event.urlAfterRedirects.split('?')[0])
+  );
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe({
@@ -100,6 +119,10 @@ export class AppComponent {
     this.authService.logout();
   }
 
+  profile(): void {
+    this.router.navigate(['/users/profile']);
+  }
+
   get isSidebarExpanded(): boolean {
     return this.sidebarService.isExpanded();
   }
@@ -136,5 +159,18 @@ export class AppComponent {
       maxWidth: '95vw',
       maxHeight: '95vh',
     });
+  }
+
+  toggleDarkMode(): void {
+    const body = document.body;
+    if (this.isDarkMode) {
+      body.classList.remove('dark-theme');
+      body.classList.add('light-theme');
+
+    } else {
+      body.classList.remove('light-theme');
+      body.classList.add('dark-theme');
+    }
+    this.isDarkMode = !this.isDarkMode;
   }
 }

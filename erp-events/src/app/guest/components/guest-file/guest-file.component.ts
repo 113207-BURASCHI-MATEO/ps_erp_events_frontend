@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -36,12 +36,13 @@ export class GuestFileComponent {
   guestTypeOptions: GuestType[] = ['VIP', 'REGULAR', 'STAFF', 'FAMILY', 'FRIEND', 'OTHER', 'GENERAL'];
   uploadedGuests: GuestPost[] = [];
 
+
+  private fb = inject(FormBuilder);
+  private eventService = inject(EventService);
+  private alertService = inject(AlertService);
+  private guestService = inject(GuestService);
+  private router = inject(Router);
   constructor(
-    private fb: FormBuilder,
-    private eventService: EventService,
-    private alertService: AlertService,
-    private guestService: GuestService,
-    private router: Router
   ) {
     this.form = this.fb.group({
       idEvent: new FormControl(null, Validators.required),

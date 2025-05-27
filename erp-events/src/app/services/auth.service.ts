@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import {
   BehaviorSubject,
@@ -16,7 +16,6 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-
   private baseUrl: string = `${
     environment.production
       ? `${environment.apis.auth}`
@@ -85,6 +84,21 @@ export class AuthService {
           this.currentUserSubject.next(user);
         })
       );
+  }
+
+  recoverPassword(email: string): Observable<any> {
+    const params = new HttpParams().set('email', email);
+    return this.http.post<void>(`${this.baseUrl}/recover-password`, null, { params });
+  }
+
+  resetPassword(data: { token: string; newPassword: string }): Observable<any> {
+    return this.http.post<void>(`${this.baseUrl}/reset-password`, data);
+  }
+
+  changePassword(data: { newPassword: string }): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/change-password`, data, {
+      withCredentials: true
+    });
   }
 
   logout(): void {

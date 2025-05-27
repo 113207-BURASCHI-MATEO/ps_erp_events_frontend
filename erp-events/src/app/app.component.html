@@ -130,7 +130,12 @@
             <mat-icon matListItemIcon>person_add</mat-icon>
             <span matListItemTitle *ngIf="isSidebarExpanded">Invitados</span>
           </a>
-          }
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+            <a mat-list-item routerLink="/files" routerLinkActive="active-link">
+              <mat-icon matListItemIcon>inventory_2</mat-icon>
+              <span matListItemTitle *ngIf="isSidebarExpanded">Archivos</span>
+            </a>
+            }
         </mat-nav-list>
       </div>
 
@@ -162,10 +167,15 @@
       <span>ERP - Eventos</span>
       <span class="flex-grow-1"></span>
 
-      <!-- <button mat-icon-button class="me-2">
-              <mat-icon>notifications</mat-icon>
-            </button> -->
-      <!-- Botón de Notificaciones -->
+      <button
+        mat-icon-button
+        (click)="toggleDarkMode()"
+        class="me-2"
+        matTooltip="Modo oscuro"
+      >
+        <mat-icon>{{ isDarkMode ? "dark_mode" : "light_mode" }}</mat-icon>
+      </button>
+
       <button
         mat-icon-button
         [matMenuTriggerFor]="notificationMenu"
@@ -216,7 +226,7 @@
         <mat-icon>account_circle</mat-icon>
       </button>
       <mat-menu #userMenu="matMenu">
-        <button mat-menu-item>
+        <button mat-menu-item (click)="profile()">
           <mat-icon>person</mat-icon>
           <span>Perfil</span>
         </button>
@@ -233,7 +243,18 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 
-} @else {
-<!-- Template para la pantalla de login -->
-<app-login></app-login>
+} @else { 
+    @if ((currentUrl$ | async) === '/register') {
+      <app-register></app-register>
+  } @else {
+      @if ((currentUrl$ | async) === '/recover-password') {
+        <app-recovery-password></app-recovery-password>
+    } @else {
+        @if ((currentUrl$ | async) === '/reset-password') {
+          <app-reset-password></app-reset-password>
+      } @else {
+          <app-login></app-login>
+      }
+    }
+  } 
 }

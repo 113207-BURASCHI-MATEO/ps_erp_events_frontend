@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 :root {
@@ -49,22 +49,6 @@ body {
   font-weight: 600;
 }
 
-// Paleta aplicada
-/* .mat-primary .mat-mdc-button-persistent-ripple,
-.mat-mdc-raised-button.mat-primary {
-  background-color: var(--primary);
-} */
-
-/* .mat-accent .mat-mdc-button-persistent-ripple,
-.mat-mdc-raised-button.mat-accent {
-  background-color: var(--accent);
-} */
-
-/* .mat-warn .mat-mdc-button-persistent-ripple,
-.mat-mdc-raised-button.mat-warn {
-  background-color: var(--warn);
-} */
-
 // Estilo general
 .mat-typography,
 .mat-mdc-card,
@@ -86,3 +70,584 @@ h4.mat-typography, .mat-typography h4 {
   font-weight: 500;
 }
 
+.dark-mode {
+  background-color: #121212;
+  color: var(--light-text);
+
+  mat-toolbar {
+    background-color: #1e1e1e !important;
+  }
+
+  .mat-mdc-card {
+    background-color: #1f1f1f;
+    color: var(--light-text);
+  }
+
+  .mat-mdc-form-field-infix {
+    color: var(--light-text);
+  }
+
+  .mat-mdc-select-panel,
+  .mat-mdc-menu-panel {
+    background-color: #2a2a2a;
+  }
+}
+
+.swal2-confirm {
+  background-color: var(--primary);
+  color: var(--light-text);
+}
+
+.swal2-cancel {
+  background-color: var(--warn);
+  color: var(--light-text);
+}
+
+.swal2-confirm:hover {
+  background-color: var(--primary-dark);
+}
+
+.swal2-cancel:hover {
+  background-color: var(--warn-dark);
+}
+
+.swal-success-toast {
+  background-color: #13505B !important; // tu color primario
+  color: #fff !important;
+}
+
+.swal-error-toast {
+  background-color: #FF7F11 !important; // acento naranja
+  color: #fff !important;
+}  */
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* @use '@angular/material' as mat;
+@include mat.core();
+
+// ✅ Tipografía Manrope
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
+// ✅ Variables CSS globales (SweetAlert2 + estilos generales)
+:root {
+  --primary: #13505B;
+  --primary-light: #9FC2CC;
+  --primary-dark: #040404;
+
+  --accent: #FF7F11;
+  --accent-light: #D7D9CE;
+  --accent-dark: #cc650d;
+
+  --warn: #FF8080;
+  --warn-light: #ffc7c7;
+  --warn-dark: #c11414;
+
+  --light-text: #fff;
+  --dark-text: #040404;
+
+  --bg-light: #F8F9FA;
+  --bg-dark: #121212;
+}
+
+// ✅ Paletas Material M2 personalizadas
+$primary: mat.m2-define-palette((
+  100: #9FC2CC,
+  500: #13505B,
+  700: #0d3d48,
+  900: #040404,
+  contrast: (
+    100: #040404,
+    500: #fff,
+    700: #fff,
+    900: #fff
+  )
+));
+
+$accent: mat.m2-define-palette((
+  100: #D7D9CE,
+  500: #FF7F11,
+  700: #cc650d,
+  900: #993f00,
+  contrast: (
+    100: #040404,
+    500: #fff,
+    700: #fff,
+    900: #fff
+  )
+));
+
+$warn: mat.m2-define-palette((
+  100: #ffc7c7,
+  500: #FF8080,
+  700: #c11414,
+  900: #990000,
+  contrast: (
+    100: #040404,
+    500: #fff,
+    700: #fff,
+    900: #fff
+  )
+));
+
+// ✅ Temas Material M2
+$light-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn
+  )
+));
+
+$dark-theme: mat.m2-define-dark-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn
+  )
+));
+
+// ✅ Aplicación de temas
+.light-theme {
+  @include mat.all-component-themes($light-theme);
+  background-color: var(--bg-light);
+  color: var(--dark-text);
+
+  mat-toolbar {
+    background-color: var(--primary) !important;
+    color: var(--light-text) !important;
+
+    .mat-mdc-icon-button .mat-icon,
+    .mat-icon {
+      color: var(--light-text) !important;
+    }
+  }
+}
+
+.dark-theme {
+  @include mat.all-component-themes($dark-theme);
+  background-color: var(--bg-dark);
+  color: var(--light-text);
+
+  h1 {
+    color: var(--dark-text);
+  }
+
+  mat-toolbar {
+    background-color: #1e1e1e !important;
+  }
+
+  .mat-mdc-card {
+    background-color: #1f1f1f;
+    color: var(--light-text);
+  }
+
+  .mat-mdc-form-field-infix,
+  .mat-mdc-input-element,
+  input, textarea, select {
+    color: var(--light-text) !important;
+  }
+
+  .mat-mdc-select-panel,
+  .mat-mdc-menu-panel {
+    background-color: #2a2a2a;
+    color: var(--light-text);
+  }
+
+  .mat-mdc-button,
+  .mat-mdc-icon-button {
+    color: var(--light-text);
+  }
+}
+
+// ✅ Reset y base
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  background-color: var(--bg-light);
+  color: var(--dark-text);
+}
+
+// ✅ Botones Material
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button,
+.mat-mdc-unelevated-button {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+// ✅ Tipografía Material
+.mat-typography,
+.mat-mdc-card,
+.mat-mdc-form-field {
+  font-family: 'Manrope', sans-serif;
+}
+
+h1.mat-typography, .mat-typography h1 { font-weight: 700; }
+h2.mat-typography, .mat-typography h2 { font-weight: 600; }
+h3.mat-typography, .mat-typography h3 { font-weight: 600; }
+h4.mat-typography, .mat-typography h4 { font-weight: 500; }
+
+// ✅ SweetAlert2 personalizado
+.swal2-confirm {
+  background-color: var(--primary);
+  color: var(--light-text);
+}
+
+.swal2-cancel {
+  background-color: var(--warn);
+  color: var(--light-text);
+}
+
+.swal2-confirm:hover {
+  background-color: var(--primary-dark);
+}
+
+.swal2-cancel:hover {
+  background-color: var(--warn-dark);
+}
+
+.swal-success-toast {
+  background-color: var(--primary) !important;
+  color: var(--light-text) !important;
+}
+
+.swal-error-toast {
+  background-color: var(--accent) !important;
+  color: var(--light-text) !important;
+}
+
+// ✅ Aplicación garantizada del dark-theme a todo mediante body.dark-theme
+body.dark-theme {
+  background-color: var(--bg-dark);
+  color: var(--light-text);
+
+  mat-toolbar {
+    background-color: #1e1e1e !important;
+  }
+
+  .mat-mdc-card {
+    background-color: #1f1f1f;
+    color: var(--light-text);
+  }
+
+  .mat-mdc-form-field-infix,
+  .mat-mdc-input-element,
+  input, textarea, select {
+    background-color: #1f1f1f !important;
+    color: var(--light-text) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  .mat-mdc-select-panel,
+  .mat-mdc-menu-panel {
+    background-color: #2a2a2a;
+    color: var(--light-text);
+  }
+
+  .mat-mdc-option {
+    color: var(--light-text);
+  }
+
+  .mat-mdc-button,
+  .mat-mdc-icon-button,
+  .mat-mdc-raised-button,
+  .mat-mdc-outlined-button {
+    color: var(--light-text);
+  }
+
+  .mat-stepper-label {
+    color: var(--light-text);
+  }
+
+  .mat-mdc-dialog-container {
+    background-color: #1f1f1f;
+    color: var(--light-text);
+  }
+
+  .mat-datepicker-content {
+    background-color: #1f1f1f;
+    color: var(--light-text);
+  }
+
+  .mat-calendar-body-cell-content {
+    color: var(--light-text);
+  }
+
+  .mat-mdc-tooltip {
+    background-color: #333;
+    color: var(--light-text);
+  }
+}
+ */
+
+
+ ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+@use './themes/themes.scss' as themes;
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
+// ✅ Variables CSS globales (SweetAlert2 + estilos generales)
+:root {
+  --primary: #13505B;
+  --primary-light: #9FC2CC;
+  --primary-dark: #040404;
+
+  --accent: #FF7F11;
+  --accent-light: #D7D9CE;
+  --accent-dark: #cc650d;
+
+  --warn: #FF8080;
+  --warn-light: #ffc7c7;
+  --warn-dark: #c11414;
+
+  --light-text: #fff;
+  --dark-text: #040404;
+
+  --bg-light: #F8F9FA;
+  --bg-dark: #121212;
+}
+
+// ✅ Aplicación adicional de colores y comportamiento
+.light-theme {
+  background-color: var(--bg-light);
+  color: var(--dark-text);
+
+  mat-toolbar {
+    background-color: var(--primary) !important;
+    color: var(--light-text) !important;
+
+    .mat-mdc-icon-button .mat-icon,
+    .mat-icon {
+      color: var(--light-text) !important;
+    }
+  }
+
+  .ag-theme-alpine {
+    --ag-background-color: var(--bg-light);
+    --ag-foreground-color: var(--dark-text);
+    --ag-header-background-color: var(--primary);
+    --ag-header-foreground-color: var(--light-text);
+    --ag-row-hover-color: #f0f4f5;
+    --ag-border-color: #d3d3d3;
+  }
+}
+
+.dark-theme {
+  background-color: var(--bg-dark);
+  color: var(--light-text);
+
+  /* h1 {
+    color: var(--dark-text);
+  } */
+
+  mat-toolbar {
+    background-color: #1e1e1e !important;
+  }
+
+  .mat-mdc-card {
+    background-color: #1f1f1f;
+    color: var(--light-text);
+  }
+
+  .mat-mdc-form-field-infix,
+  .mat-mdc-input-element,
+  input, textarea, select {
+    color: var(--light-text) !important;
+  }
+
+  .mat-mdc-select-panel,
+  .mat-mdc-menu-panel {
+    background-color: #2a2a2a;
+    color: var(--light-text);
+  }
+
+  .mat-mdc-button,
+  .mat-mdc-icon-button {
+    color: var(--light-text);
+  }
+}
+
+// ✅ Reset y base
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  background-color: var(--bg-light);
+  color: var(--dark-text);
+}
+
+// ✅ Botones Material
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button,
+.mat-mdc-unelevated-button {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+// ✅ Tipografía Material
+.mat-typography,
+.mat-mdc-card,
+.mat-mdc-form-field {
+  font-family: 'Manrope', sans-serif;
+}
+
+h1.mat-typography, .mat-typography h1 { font-weight: 700; }
+h2.mat-typography, .mat-typography h2 { font-weight: 600; }
+h3.mat-typography, .mat-typography h3 { font-weight: 600; }
+h4.mat-typography, .mat-typography h4 { font-weight: 500; }
+
+// ✅ SweetAlert2 personalizado
+.swal2-confirm {
+  background-color: var(--primary);
+  color: var(--light-text);
+}
+
+.swal2-cancel {
+  background-color: var(--warn);
+  color: var(--light-text);
+}
+
+.swal2-confirm:hover {
+  background-color: var(--primary-dark);
+}
+
+.swal2-cancel:hover {
+  background-color: var(--warn-dark);
+}
+
+.swal-success-toast {
+  background-color: var(--primary) !important;
+  color: var(--light-text) !important;
+}
+
+.swal-error-toast {
+  background-color: var(--accent) !important;
+  color: var(--light-text) !important;
+}
+
+// ✅ Aplicación garantizada del dark-theme a todo mediante body.dark-theme
+body.dark-theme {
+  background-color: var(--bg-dark);
+  color: var(--light-text);
+
+  mat-toolbar {
+    background-color: #1e1e1e !important;
+  }
+
+  .mat-mdc-card {
+    background-color: #1f1f1f;
+    color: var(--light-text);
+  }
+
+  .mat-mdc-form-field-infix,
+  .mat-mdc-input-element,
+  input, textarea, select {
+    background-color: #1f1f1f !important;
+    color: var(--light-text) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  .mat-mdc-select-panel,
+  .mat-mdc-menu-panel {
+    background-color: #2a2a2a;
+    color: var(--light-text);
+  }
+
+  .mat-mdc-option {
+    color: var(--light-text);
+  }
+
+  .mat-mdc-button,
+  .mat-mdc-icon-button,
+  .mat-mdc-raised-button,
+  .mat-mdc-outlined-button {
+    color: var(--light-text);
+  }
+
+  .mat-stepper-label {
+    color: var(--light-text);
+  }
+
+  .mat-mdc-dialog-container {
+    background-color: #1f1f1f;
+    color: var(--light-text);
+  }
+
+  .mat-datepicker-content {
+    background-color: #1f1f1f;
+    color: var(--light-text);
+  }
+
+  .mat-calendar-body-cell-content {
+    color: var(--light-text);
+  }
+
+  .mat-mdc-tooltip {
+    background-color: #333;
+    color: var(--light-text);
+  }
+
+  .ag-theme-alpine {
+    --ag-background-color: var(--bg-dark);
+    --ag-foreground-color: var(--light-text);
+    --ag-header-background-color: #1e1e1e;
+    --ag-header-foreground-color: var(--light-text);
+    --ag-row-hover-color: #2a2a2a;
+    --ag-border-color: #444;
+    --ag-row-background-color: #1e1e1e;
+    --ag-striped-background-color: #1c1c1c; // para filas pares
+  }
+
+  .ag-row-even {
+    background-color: #1c1c1c !important;
+  }
+
+  .ag-row-odd {
+    background-color: #1e1e1e !important;
+  }
+
+  .ag-cell {
+    color: var(--light-text) !important;
+  }
+
+  .ag-header-cell-label {
+    color: var(--light-text) !important;
+    font-weight: 600;
+    font-family: 'Manrope', sans-serif;
+  }
+}

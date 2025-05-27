@@ -1,0 +1,91 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 2vh 2vw;
+    box-sizing: border-box;
+  }
+  
+  .form-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 2vh 2vw;
+    margin: 0;
+    background-color: #fff;
+    border-radius: 0.5vw;
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3vh;
+    gap: 2vw;
+  
+    button {
+      min-width: 10vw;
+    }
+  }
+  
+  mat-card-title {
+    padding: 0 0 1.5vh 0;
+    margin-bottom: 1vh;
+  }
+  
+  .title {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 1.2;
+    flex-grow: 1;
+  }
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2vh 2vw;
+    width: 100%;
+    align-items: flex-start;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  .full-width {
+    grid-column: span 3;
+  }
+  
+  @media (max-width: 1024px) {
+    .form-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .full-width {
+      grid-column: span 2;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .full-width {
+      grid-column: span 1;
+    }
+  }
+  
+  .role-info-card {
+    padding: 1vh 1vw;
+    margin-top: 2vh;
+    border-left: 4px solid var(--primary);
+    background-color: #f9f9f9;
+  }
+  
+  .role-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1vh 2vw;
+    padding-top: 1vh;
+    font-size: 0.95rem;
+  }

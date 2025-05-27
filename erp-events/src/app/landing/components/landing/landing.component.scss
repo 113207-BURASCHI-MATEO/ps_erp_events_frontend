@@ -1,0 +1,28 @@
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  align-items: stretch;
+  min-height: 100vh;
+}
+
+.landing-header {
+  justify-content: center;
+  gap: 1rem;
+}
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.extra-section {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin-inline: auto;
+}
+

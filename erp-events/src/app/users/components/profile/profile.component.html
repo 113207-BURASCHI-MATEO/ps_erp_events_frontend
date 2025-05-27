@@ -1,0 +1,177 @@
+<div class="form-container">
+  <mat-card class="form-card">
+    <mat-card-title class="mb-3">
+      <h1 class="title">
+        <mat-icon matListItemIcon>person</mat-icon>
+        Perfil de Usuario
+      </h1>
+    </mat-card-title>
+      
+    <mat-card-content>
+        <mat-expansion-panel class="full-width mb-5">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon class="me-2 text-primary">verified_user</mat-icon>
+                Rol asignado
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ user.role.name || 'Sin rol' }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+          
+            <div class="d-flex flex-column flex-md-row flex-wrap gap-3 p-2">
+              <div class="d-flex flex-column">
+                <span class="fw-semibold text-muted">Nombre</span>
+                <span>{{ user.role.name }}</span>
+              </div>
+          
+              <div class="d-flex flex-column">
+                <span class="fw-semibold text-muted">Descripción</span>
+                <span>{{ user.role.description }}</span>
+              </div>
+          
+              <div class="d-flex flex-column">
+                <span class="fw-semibold text-muted">Código</span>
+                <span>{{ user.role.roleCode }}</span>
+              </div>
+          
+              <div class="d-flex flex-column">
+                <span class="fw-semibold text-muted">ID</span>
+                <span>{{ user.role.idRole }}</span>
+              </div>
+            </div>
+          </mat-expansion-panel>
+      <form [formGroup]="form">
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input
+              matInput
+              formControlName="firstName"
+              [disabled]="isDisabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Apellido</mat-label>
+            <input
+              matInput
+              formControlName="lastName"
+              [disabled]="isDisabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de documento</mat-label>
+            <input
+              matInput
+              formControlName="documentType"
+              [disabled]="isDisabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Número de documento</mat-label>
+            <input
+              matInput
+              formControlName="documentNumber"
+              [disabled]="isDisabled"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" [disabled]="isDisabled" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha de nacimiento</mat-label>
+            <input
+              matInput
+              formControlName="birthDate"
+              [disabled]="isDisabled"
+            />
+          </mat-form-field>          
+         
+        </div>
+      </form>
+      <!-- Formulario de cambio de contraseña -->
+      <form
+        [formGroup]="passwordForm"
+        (ngSubmit)="changePassword()"
+        class="password-section"
+        *ngIf="showPasswordForm"
+      >
+        <div class="form-grid">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nueva contraseña</mat-label>
+            <input
+              matInput
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="newPassword"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="hidePassword = !hidePassword"
+              [attr.aria-label]="'Mostrar contraseña'"
+              [attr.aria-pressed]="!hidePassword"
+            >
+              <mat-icon>{{
+                hidePassword ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <div class="action-buttons">
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="showPasswordForm = false"
+          >
+            Cancelar
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="passwordForm.invalid"
+          >
+            Actualizar contraseña
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+    <div class="action-buttons">
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="enableForm()"
+        *ngIf="isDisabled"
+      >
+        Editar perfil
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="form.invalid || isDisabled"
+        (click)="saveChanges()"
+        *ngIf="!isDisabled"
+      >
+        Guardar cambios
+      </button>
+      <button
+        mat-stroked-button
+        color="warn"
+        type="button"
+        (click)="showPasswordForm = true"
+        *ngIf="!showPasswordForm"
+      >
+        Cambiar contraseña
+      </button>
+    </div>
+  </mat-card>
+</div>

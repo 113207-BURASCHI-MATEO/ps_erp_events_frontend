@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { EmployeeService } from '../../../services/employee.service';
@@ -95,13 +95,13 @@ export class EmployeeListComponent implements OnInit{
     this.gridApi = params.api;
   }
   
+  private employeeService = inject(EmployeeService);
+  private router = inject(Router);
+  private dialog = inject(MatDialog);
+  private exportService = inject(ExportService);
+  private alertService = inject(AlertService);
 
   constructor(
-    private employeeService: EmployeeService,
-    private router: Router,
-    private dialog: MatDialog,
-    private exportService: ExportService,
-    private alertService: AlertService,
     @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);

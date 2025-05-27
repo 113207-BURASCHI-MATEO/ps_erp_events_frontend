@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -33,12 +33,12 @@ export class SupplierFormComponent {
   supplierTypes: SupplierType[] = ['CATERING', 'DECORACION', 'SOUND', 'GASTRONOMIC', 'FURNITURE', 'ENTERTAINMENT'];
 
 
+  private fb = inject(FormBuilder);
+  private service = inject(SupplierService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private alertService = inject(AlertService);
   constructor(
-    private fb: FormBuilder,
-    private service: SupplierService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private alertService: AlertService
   ) {
     this.form = this.fb.group({
       name: ['', Validators.required],

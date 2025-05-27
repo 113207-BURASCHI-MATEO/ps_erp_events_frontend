@@ -33,7 +33,7 @@ export interface UserUpdate {
   lastName: string;
   birthDate: string; // ISO date string, e.g., '2025-05-10'
   documentNumber: string;
-  password: string;
+  password?: string;
   role: Role;
 }
 

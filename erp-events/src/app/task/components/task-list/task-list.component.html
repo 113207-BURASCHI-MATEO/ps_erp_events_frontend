@@ -32,6 +32,19 @@
           <button mat-raised-button color="accent" (click)="goToCreate()">
             <mat-icon class="m-0">add</mat-icon>
           </button>
+          <!-- <button mat-raised-button color="primary" (click)="goToCreateFile()">
+            <mat-icon class="m-0">note_add</mat-icon>
+          </button> -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Evento</mat-label>
+            <mat-select (selectionChange)="onEventSelected($event.value)">
+              @for (event of events; track event.idEvent) {
+              <mat-option [value]="event.idEvent">
+                {{ event.title }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
         </div>
   
         <div class="d-flex flex-row align-items-center gap-2 mb-3">

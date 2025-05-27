@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -34,14 +34,13 @@ export class TaskFormComponent {
   events: Event[] = [];
 
   taskStatusOptions: TaskStatus[] = ['PENDING', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
-
+  private fb = inject(FormBuilder);
+  private service = inject(TaskService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private alertService = inject(AlertService);
+  private eventService = inject(EventService);
   constructor(
-    private fb: FormBuilder,
-    private service: TaskService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private alertService: AlertService,
-    private eventService: EventService
   ) {
     this.form = this.fb.group({
       title: new FormControl('', [Validators.required]),
