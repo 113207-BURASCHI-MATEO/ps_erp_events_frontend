@@ -21,6 +21,7 @@ import { ModuleRegistry } from '@ag-grid-community/core';
 import { isPlatformBrowser } from '@angular/common';
 import { ViewDialogComponent } from '../../../shared/components/view-dialog/view-dialog.component';
 import { AlertService } from '../../../services/alert.service';
+import { renderIconField } from '../../../utils/render-icon';
 
 @Component({
   selector: 'app-file-list',
@@ -51,12 +52,19 @@ export class FileListComponent implements OnInit {
   columnDefs: ColDef<File>[] = [
     { headerName: 'ID', field: 'idFile', sortable: true, filter: true },
     { headerName: 'Nombre', field: 'fileName', sortable: true, filter: true },
-    { headerName: 'Tipo', field: 'fileType', sortable: true, filter: true },
+    {
+      headerName: 'Tipo',
+      field: 'fileType',
+      sortable: true,
+      filter: true,
+      cellRenderer: renderIconField('fileType'),
+    },
     {
       headerName: 'Contenido',
       field: 'fileContentType',
       sortable: true,
       filter: true,
+      cellRenderer: renderIconField('fileContentType'),
     },
     {
       headerName: 'Fecha Creación',
@@ -182,7 +190,7 @@ export class FileListComponent implements OnInit {
       error: (err) => {
         this.alertService.showErrorToast('Error al descargar el archivo');
         console.error('Error al descargar archivo:', err);
-      }
+      },
     });
   }
 

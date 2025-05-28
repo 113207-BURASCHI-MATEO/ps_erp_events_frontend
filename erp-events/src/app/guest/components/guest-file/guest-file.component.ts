@@ -13,6 +13,7 @@ import { Event as EventModel } from '../../../models/event.model';
 import { EventService } from '../../../services/event.service';
 import { AlertService } from '../../../services/alert.service';
 import { GuestService } from '../../../services/guest.service';
+import { DocumentType } from '../../../models/generic.model';
 
 @Component({
   selector: 'app-guest-file',
@@ -83,7 +84,7 @@ export class GuestFileComponent {
       if (!rows.length) return;
 
       const header = rows[0].split(',').map(h => h.trim().toLowerCase());
-      const expectedHeaders = ['nombre', 'apellido', 'tipo', 'email', 'nota'];
+      const expectedHeaders = ['nombre', 'apellido', 'tipo', 'email', 'tipo doc', 'documento', 'nacimiento', 'nota'];
 
       const isValidHeader = expectedHeaders.every(h => header.includes(h));
       if (!isValidHeader) {
@@ -96,6 +97,9 @@ export class GuestFileComponent {
       const typeIndex = header.indexOf('tipo');
       const emailIndex = header.indexOf('email');
       const noteIndex = header.indexOf('nota');
+      const documentIndex = header.indexOf('documento');
+      const birthIndex = header.indexOf('nacimiento');
+      const docTypeIndex = header.indexOf('tipo doc');
 
       const guests: GuestPost[] = rows.slice(1).map(line => {
         const cols = line.split(',').map(c => c.trim());
@@ -105,6 +109,9 @@ export class GuestFileComponent {
           type: cols[typeIndex] as GuestType,
           email: cols[emailIndex],
           note: cols[noteIndex] || '',
+          documentNumber: cols[documentIndex] || '',
+          birthDate: cols[birthIndex] ? new Date(cols[birthIndex]).toISOString() : '',
+          documentType: cols[docTypeIndex] as DocumentType || '',
           idEvent: this.form.value.idEvent,
         };
       });

@@ -1,4 +1,4 @@
-@use '@angular/material' as mat;
+/* @use '@angular/material' as mat;
 @include mat.core();
 
 // ✅ Paletas Material M2 personalizadas
@@ -59,10 +59,20 @@ $dark-theme: mat.m2-define-dark-theme((
 ));
 
 // ✅ Aplicación de temas
-.light-theme {
+ .light-theme {
   @include mat.all-component-themes($light-theme);
 }
 
 .dark-theme {
   @include mat.all-component-themes($dark-theme);
 }
+
+@include mat.all-component-typographies(); // genera la tipografía una sola vez
+
+.light-theme {
+  @include mat.all-component-colors($light-theme);
+}
+
+.dark-theme {
+  @include mat.all-component-colors($dark-theme);
+} */

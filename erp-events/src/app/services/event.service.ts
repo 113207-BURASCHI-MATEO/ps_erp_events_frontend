@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Event, EventPost, EventPut } from '../models/event.model';
+import { Event, EventPost, EventPut, EventStatus } from '../models/event.model';
 import { environment } from '../../environments/environment';
 import { GuestPost } from '../models/guest.model';
 @Injectable({
@@ -46,4 +46,13 @@ export class EventService {
     });
   }
 
+  changeStatus(id: number, status: EventStatus): Observable<Event> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.put<Event>(`${this.baseUrl}/${id}/status`, JSON.stringify(status), {
+      headers,
+      withCredentials: true,
+    });
+  }
 }

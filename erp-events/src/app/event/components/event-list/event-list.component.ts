@@ -11,7 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { EventService } from '../../../services/event.service';
 import { ExportService } from '../../../services/export.service';
 import { Router } from '@angular/router';
-import { Event } from '../../../models/event.model';
+import { Event, EventStatus } from '../../../models/event.model';
 import { MatDialog } from '@angular/material/dialog';
 import { OptionsComponent } from '../../../shared/components/options/options.component';
 import { AgGridAngular } from '@ag-grid-community/angular';
@@ -82,7 +82,13 @@ export class EventListComponent {
     },
     { headerName: 'Inicio', field: 'startDate', sortable: true, filter: true },
     { headerName: 'Fin', field: 'endDate', sortable: true, filter: true },
-    { headerName: 'Estado', field: 'status', sortable: true, filter: true, cellRenderer: renderIconField('eventStatus'), },
+    {
+      headerName: 'Estado',
+      field: 'status',
+      sortable: true,
+      filter: true,
+      cellRenderer: renderIconField('eventStatus'),
+    },
     {
       headerName: 'Acciones',
       cellRenderer: OptionsComponent,
@@ -95,6 +101,7 @@ export class EventListComponent {
         },
         actions: [
           { label: 'Ver', icon: 'visibility', action: 'VIEW' },
+          { label: 'Estado', icon: 'published_with_changes', action: 'STATUS' },
           { label: 'Editar', icon: 'edit', action: 'EDIT' },
           { label: 'Invitados', icon: 'room_service', action: 'GUESTS' },
           { label: 'Tareas', icon: 'inventory', action: 'TASKS' },
@@ -133,6 +140,7 @@ export class EventListComponent {
       next: (data) => {
         this.events = data;
         this.allEvents = data;
+        this.validateEventStatus();
       },
       error: (err) => {
         console.error('Error al cargar eventos', err);
@@ -151,8 +159,6 @@ export class EventListComponent {
   }
 
   goToCreate(): void {
-    console.log('Crear evento');
-
     this.router.navigate(['/events/create']);
   }
 
@@ -248,6 +254,110 @@ export class EventListComponent {
       this.router.navigate(['/tasks'], {
         queryParams: { eventId: event.idEvent },
       });
+    } else if (actionType === 'STATUS') {
+      this.changeEventStatus(event);
     }
+  }
+
+  validateEventStatus(): void {
+    const today = new Date();
+
+    this.events.forEach((event) => {
+      const startDate = new Date(event.startDate);
+      const endDate = new Date(event.endDate);
+      const status = event.status;
+
+      if (
+        startDate.toDateString() === today.toDateString() &&
+        status === 'CONFIRMED'
+      ) {
+        this.changeEventStatusByContext(event, 'ONGOING');
+      } else if (
+        endDate < today &&
+        !['FINISHED', 'CANCELLED', 'SUSPENDED', 'POSTPONED'].includes(status)
+      ) {
+        this.changeEventStatusByContext(event, 'FINISHED');
+      }
+    });
+  }
+
+  changeEventStatusByContext(
+    event: Event,
+    context: 'ONGOING' | 'FINISHED'
+  ): void {
+    const statusOptions =
+      context === 'ONGOING'
+        ? [
+            { value: 'IN_PROGRESS' as EventStatus, label: 'En Progreso' },
+            { value: 'CANCELLED' as EventStatus, label: 'Cancelado' },
+            { value: 'SUSPENDED' as EventStatus, label: 'Suspendido' },
+            { value: 'POSTPONED' as EventStatus, label: 'Pospuesto' },
+          ]
+        : [
+            { value: 'CANCELLED' as EventStatus, label: 'Cancelado' },
+            { value: 'SUSPENDED' as EventStatus, label: 'Suspendido' },
+            { value: 'POSTPONED' as EventStatus, label: 'Pospuesto' },
+          ];
+
+    this.alertService
+      .selectOption<EventStatus>(
+        'Cambiar estado del evento',
+        `Seleccione el nuevo estado del evento: ${event.title} con fecha de inicio ${new Date(event.startDate).toLocaleDateString()} y fin ${new Date(event.endDate).toLocaleDateString()}.`,
+        statusOptions
+      )
+      .then((newStatus) => {
+        if (!newStatus) return;
+        this.eventService.changeStatus(event.idEvent, newStatus).subscribe({
+          next: (updated) => {
+            this.events = this.events.map((e) =>
+              e.idEvent === updated.idEvent ? updated : e
+            );
+            this.alertService.showSuccessToast(
+              'Estado del evento actualizado.'
+            );
+          },
+          error: (err) => {
+            this.alertService.showErrorToast(
+              `Error al actualizar estado: ${err.error.message}`
+            );
+            this.changeEventStatusByContext(event, context);
+          },
+        });
+      });
+  }
+
+  changeEventStatus(event: Event): void {
+    const statusOptions = [
+      { value: 'IN_PROGRESS' as EventStatus, label: 'En Progreso' },
+      { value: 'FINISHED' as EventStatus, label: 'Finalizado' },
+      { value: 'CANCELLED' as EventStatus, label: 'Cancelado' },
+      { value: 'SUSPENDED' as EventStatus, label: 'Suspendido' },
+      { value: 'POSTPONED' as EventStatus, label: 'Pospuesto' },
+    ];
+
+    this.alertService
+      .selectOption<EventStatus>(
+        'Cambiar estado del evento',
+        `Seleccione el nuevo estado del evento: ${event.title} con fecha de inicio ${new Date(event.startDate).toLocaleDateString()} y fin ${new Date(event.endDate).toLocaleDateString()}.`,
+        statusOptions
+      )
+      .then((newStatus) => {
+        if (!newStatus) return;
+        this.eventService.changeStatus(event.idEvent, newStatus).subscribe({
+          next: (updated) => {
+            this.events = this.events.map((e) =>
+              e.idEvent === updated.idEvent ? updated : e
+            );
+            this.alertService.showSuccessToast(
+              'Estado del evento actualizado.'
+            );
+          },
+          error: (err) => {
+            this.alertService.showErrorToast(
+              `Error al actualizar estado: ${err.error.message}`
+            );
+          },
+        });
+      });
   }
 }

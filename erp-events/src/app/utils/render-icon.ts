@@ -21,6 +21,12 @@ export function renderIconField(tipo: string): (params: any) => string {
       case 'supplierType':
         ({ icono, color, texto } = getSupplierTypeIcon(valor));
         break;
+      case 'fileType':
+        ({ icono, color, texto } = getFileTypeIcon(valor));
+        break;
+      case 'fileContentType':
+        ({ icono, color, texto } = getFileContentTypeIcon(valor));
+        break;
       default:
         icono = 'help_outline';
         color = '#6c757d';
@@ -44,31 +50,37 @@ function getEventTypeIcon(type: string) {
       return { icono: 'group', color: '#9FC2CC', texto: 'Social' };
     case 'CULTURAL':
       return { icono: 'museum', color: '#D7D9CE', texto: 'Cultural' };
+    case 'SPORTS':
+      return { icono: 'sports_soccer', color: '#040404', texto: 'Deportes' };
     case 'ENTERTAINMENT':
-      return { icono: 'celebration', color: '#FF7F11', texto: 'Entretenimiento' };
+      return {
+        icono: 'celebration',
+        color: '#FF7F11',
+        texto: 'Entretenimiento',
+      };
     default:
       return { icono: 'help_outline', color: '#040404', texto: type };
   }
 }
 
-
 function getEventStatusIcon(status: string) {
   switch (status) {
-    case 'PENDING':
-      return { icono: 'schedule', color: '#9FC2CC', texto: 'Pendiente' };
+    case 'POSTPONED':
+      return { icono: 'schedule', color: '#9FC2CC', texto: 'Postpuesto' };
     case 'CONFIRMED':
       return { icono: 'check_circle', color: '#13505B', texto: 'Confirmado' };
     case 'IN_PROGRESS':
       return { icono: 'autorenew', color: '#FF7F11', texto: 'En progreso' };
     case 'CANCELLED':
       return { icono: 'cancel', color: '#D7D9CE', texto: 'Cancelado' };
-    case 'COMPLETED':
+    case 'SUSPENDED':
+      return { icono: 'pause', color: '#13505B', texto: 'Suspendido' };
+    case 'FINISHED':
       return { icono: 'done_all', color: '#040404', texto: 'Completado' };
     default:
       return { icono: 'help_outline', color: '#040404', texto: status };
   }
 }
-
 
 function getTaskStatusIcon(status: string) {
   switch (status) {
@@ -84,7 +96,6 @@ function getTaskStatusIcon(status: string) {
       return { icono: 'help_outline', color: '#040404', texto: status };
   }
 }
-
 
 function getGuestTypeIcon(type: string) {
   switch (type) {
@@ -107,7 +118,6 @@ function getGuestTypeIcon(type: string) {
   }
 }
 
-
 function getSupplierTypeIcon(type: string) {
   switch (type) {
     case 'CATERING':
@@ -121,9 +131,44 @@ function getSupplierTypeIcon(type: string) {
     case 'FURNITURE':
       return { icono: 'weekend', color: '#D7D9CE', texto: 'Mobiliario' };
     case 'ENTERTAINMENT':
-      return { icono: 'celebration', color: '#FF7F11', texto: 'Entretenimiento' };
+      return {
+        icono: 'celebration',
+        color: '#FF7F11',
+        texto: 'Entretenimiento',
+      };
     default:
       return { icono: 'help_outline', color: '#040404', texto: type };
   }
 }
 
+function getFileTypeIcon(type: string) {
+  switch (type) {
+    case 'RECEIPT':
+      return { icono: 'receipt_long', color: '#FF7F11', texto: 'Recibo' };
+    case 'BILLING':
+      return { icono: 'request_quote', color: '#D7D9CE', texto: 'Factura' };
+    case 'PAYMENT':
+      return { icono: 'payments', color: '#9FC2CC', texto: 'Pago' };
+    case 'OTHER':
+      return { icono: 'description', color: '#13505B', texto: 'Otro' };
+    default:
+      return { icono: 'help_outline', color: '#040404', texto: type };
+  }
+}
+
+function getFileContentTypeIcon(type: string) {
+  switch (type) {
+    case 'application/pdf':
+      return { icono: 'picture_as_pdf', color: '#E53935', texto: 'PDF' };
+    case 'image/jpeg':
+      return { icono: 'image', color: '#64B5F6', texto: 'JPEG' };
+    case 'image/png':
+      return { icono: 'image', color: '#81C784', texto: 'PNG' };
+    case 'image/jpg':
+      return { icono: 'image', color: '#BA68C8', texto: 'JPG' };
+    case 'text/csv':
+      return { icono: 'table_chart', color: '#FBC02D', texto: 'CSV' };
+    default:
+      return { icono: 'insert_drive_file', color: '#757575', texto: type };
+  }
+}

@@ -4,8 +4,8 @@ import { Task, TaskEventPost } from './task.model';
 import { Supplier } from './supplier.model';
 import { Employee } from './employee.model';
 
-export type EventType = 'CORPORATE' | 'SOCIAL' | 'CULTURAL' | 'ENTERTAINMENT';
-export type EventStatus = 'PENDING' | 'CONFIRMED' | 'IN_PROGRESS' | 'CANCELLED' | 'COMPLETED';
+export type EventType = 'CORPORATE' | 'SOCIAL' | 'CULTURAL' | 'ENTERTAINMENT' | 'OTHER' | 'SPORTS';
+export type EventStatus = 'CONFIRMED' | 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'SUSPENDED' | 'POSTPONED';
 
 // DTO Principal
 export interface Event {

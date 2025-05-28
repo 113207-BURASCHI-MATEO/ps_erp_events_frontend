@@ -414,7 +414,91 @@ body.dark-theme {
 /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-@use './themes/themes.scss' as themes;
+@use '@angular/material' as mat;
+@include mat.core();
+
+// ✅ Paletas Material M2 personalizadas
+$primary: mat.m2-define-palette((
+  100: #9FC2CC,
+  500: #13505B,
+  700: #0d3d48,
+  900: #040404,
+  contrast: (
+    100: #040404,
+    500: #fff,
+    700: #fff,
+    900: #fff
+  )
+));
+
+$accent: mat.m2-define-palette((
+  100: #D7D9CE,
+  500: #FF7F11,
+  700: #cc650d,
+  900: #993f00,
+  contrast: (
+    100: #040404,
+    500: #fff,
+    700: #fff,
+    900: #fff
+  )
+));
+
+$warn: mat.m2-define-palette((
+  100: #ffc7c7,
+  500: #FF8080,
+  700: #c11414,
+  900: #990000,
+  contrast: (
+    100: #040404,
+    500: #fff,
+    700: #fff,
+    900: #fff
+  )
+));
+
+// ✅ Temas Material M2
+$light-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn
+  )
+));
+
+$dark-theme: mat.m2-define-dark-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn
+  )
+));
+
+// ✅ Aplicación de temas
+/* .light-theme {
+  @include mat.all-component-themes($light-theme);
+}
+
+.dark-theme {
+  @include mat.all-component-themes($dark-theme);
+} */
+
+@include mat.all-component-typographies(); // genera la tipografía una sola vez
+
+.light-theme {
+  @include mat.all-component-colors($light-theme);
+}
+
+.dark-theme {
+  @include mat.all-component-colors($dark-theme);
+}
+
+
+
+
+
+
+//@use './themes/themes.scss' as themes;
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
 
 // ✅ Variables CSS globales (SweetAlert2 + estilos generales)
