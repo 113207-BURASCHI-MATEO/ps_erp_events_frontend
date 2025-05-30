@@ -80,8 +80,14 @@ export class EventListComponent {
       filter: true,
       cellRenderer: renderIconField('eventType'),
     },
-    { headerName: 'Inicio', field: 'startDate', sortable: true, filter: true },
-    { headerName: 'Fin', field: 'endDate', sortable: true, filter: true },
+    { headerName: 'Inicio', field: 'startDate', sortable: true, filter: true, valueFormatter: params => {
+      if (!params.value) return '';
+      return new Date(params.value).toLocaleDateString('es-AR');
+    } },
+    { headerName: 'Fin', field: 'endDate', sortable: true, filter: true, valueFormatter: params => {
+      if (!params.value) return '';
+      return new Date(params.value).toLocaleDateString('es-AR');
+    } },
     {
       headerName: 'Estado',
       field: 'status',

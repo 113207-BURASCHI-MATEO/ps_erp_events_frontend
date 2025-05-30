@@ -6,30 +6,31 @@
 
   <mat-card-content class="mat-body-1">
     <div class="details-grid">
-      <ng-container *ngFor="let key of getKeys()">
-        <ng-container *ngIf="!isArray(data[key]); else listBlock">
+      @for (key of getKeys(); track key) {
+        @if (!isArray(data[key])) {
           <div class="details-item">
-            <strong>{{ key | titlecase }}:</strong>
+            <strong>{{ translate(key) | titlecase }}:</strong>
             <span>{{ formatValue(data[key]) }}</span>
           </div>
-        </ng-container>
-
-        <ng-template #listBlock>
+        } @else {
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>
-                <mat-icon class="me-2">list</mat-icon> {{ key | titlecase }}
+                <mat-icon class="me-2">list</mat-icon> {{ translate(key) | titlecase }}
               </mat-panel-title>
             </mat-expansion-panel-header>
             <mat-list>
-              <mat-list-item *ngFor="let item of data[key]">
-                <mat-icon matListIcon color="primary">arrow_right</mat-icon>
-                {{ formatValue(item) }}
-              </mat-list-item>
+              @for (item of data[key]; track item) {
+                <mat-list-item>
+                  <mat-icon matListIcon color="primary">arrow_right</mat-icon>
+                  {{ formatValue(item) }}
+                </mat-list-item>
+              }
             </mat-list>
           </mat-expansion-panel>
-        </ng-template>
-      </ng-container>
+        }
+      }
+      
     </div>
   </mat-card-content>
 

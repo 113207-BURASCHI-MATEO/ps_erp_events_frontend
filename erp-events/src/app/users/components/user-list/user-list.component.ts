@@ -22,6 +22,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { ViewDialogComponent } from '../../../shared/components/view-dialog/view-dialog.component';
 import { AlertService } from '../../../services/alert.service';
 import { URLTargetType } from '../../../models/user.model';
+import { renderIconField } from '../../../utils/render-icon';
 
 @Component({
   selector: 'app-user-list',
@@ -63,7 +64,13 @@ export class UserListComponent {
     { headerName: 'Nombre', field: 'firstName', sortable: true, filter: true },
     { headerName: 'Apellido', field: 'lastName', sortable: true, filter: true },
     { headerName: 'Email', field: 'email', sortable: true, filter: true },
-    { headerName: 'Rol', field: 'role.name', sortable: true, filter: true },
+    {
+      headerName: 'Rol',
+      field: 'role.name',
+      sortable: true,
+      filter: true,
+      cellRenderer: renderIconField('roleName'),
+    },
     {
       headerName: 'Acciones',
       cellRenderer: OptionsComponent,

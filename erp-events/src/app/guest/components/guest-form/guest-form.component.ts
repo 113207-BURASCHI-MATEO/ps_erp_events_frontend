@@ -12,6 +12,9 @@ import { GuestService } from '../../../services/guest.service';
 import { Guest, GuestPost, GuestPut, GuestType } from '../../../models/guest.model';
 import { Event } from '../../../models/event.model';
 import { EventService } from '../../../services/event.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-guest-form',
@@ -23,7 +26,10 @@ import { EventService } from '../../../services/event.service';
     MatSelectModule,
     MatButtonModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSlideToggleModule
   ],
   templateUrl: './guest-form.component.html',
   styleUrl: './guest-form.component.scss'
@@ -49,8 +55,17 @@ export class GuestFormComponent {
       lastName: new FormControl('', [Validators.required]),
       type: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
+      phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^\+?[0-9\s-]+$/)]),
       note: new FormControl(''),
       idEvent: new FormControl(null, [Validators.required]),
+      documentType: new FormControl('', [Validators.required]),
+      documentNumber: new FormControl('', [Validators.required]),
+      birthDate: new FormControl('', [Validators.required]),
+      sector: new FormControl('', [Validators.required]),
+      seat: new FormControl(null, [Validators.required, Validators.min(1)]),
+      rowTable: new FormControl('', [Validators.required]),
+      foodRestriction: new FormControl(false),
+      foodDescription: new FormControl(''),
     });
   }
 
@@ -120,7 +135,6 @@ export class GuestFormComponent {
   loadGuest(id: number): void {
     this.service.getById(id).subscribe({
       next: (guest: Guest) => {
-        console.log('Invitado cargado:', guest);
         this.form.patchValue(guest);
       },
       error: (err) => {

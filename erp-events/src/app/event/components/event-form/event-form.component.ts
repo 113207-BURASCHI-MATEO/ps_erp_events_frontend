@@ -33,6 +33,7 @@ import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { MatStepperModule } from '@angular/material/stepper';
 import { Supplier } from '../../../models/supplier.model';
 import { SupplierService } from '../../../services/supplier.service';
+import { toLocalDateTimeString } from '../../../utils/date';
 
 @Component({
   selector: 'app-event-form',
@@ -298,30 +299,9 @@ export class EventFormComponent {
     });
   }
 
-  /* setForm(event: Event): void {
-    this.form.patchValue({
-      ...event,
-      startDate: event.startDate,
-      startTime: event.startDate.split('T')[1]?.slice(0, 5),
-      endDate: event.endDate,
-      endTime: event.endDate.split('T')[1]?.slice(0, 5),
-      clientId: event.client?.idClient,
-      locationId: event.location?.idLocation,
-    });
-    this.foundClient = event.client;
-    this.tasks = event.tasks.map(
-      (task) =>
-        ({
-          title: task.title,
-          description: task.description,
-          status: task.status,
-        } as TaskEventPost)
-    );
-    this.selectedEmployeeIds = event.employeesIds;
-  } */
 
   setForm(event: Event): void {
-    // Set event data
+
     const eventDataGroup = this.form.get('eventData') as FormGroup;
     eventDataGroup.patchValue({
       title: event.title,
@@ -334,18 +314,18 @@ export class EventFormComponent {
       endTime: event.endDate.split('T')[1]?.slice(0, 5),
     });
 
-    // Set client data
+
     if (event.client) {
       this.foundClient = event.client;
     }
 
-    // Set location data
+
     const locationDataGroup = this.form.get('locationData') as FormGroup;
     locationDataGroup.patchValue({
       locationId: event.location?.idLocation,
     });
 
-    // Set tasks
+
     this.tasks = event.tasks.map(
       (task) =>
         ({
@@ -355,36 +335,13 @@ export class EventFormComponent {
         } as TaskEventPost)
     );
 
-    // Set selected employees
+
     this.selectedEmployeeIds = event.employeesIds;
-    // Set selected suppliers
+
     this.selectedSupplierIds = event.suppliersIds;
   }
 
-  /* onSubmit(): void {
-    if (this.form.invalid) {
-      this.alertService.showErrorToast('Por favor, completa todos los campos requeridos.');
-      return;
-    }
 
-    const { isNewLocation, locationForm, clientForm, taskForm, ...baseData } =
-      this.form.value;
-
-    const startDate = this.setDateTime(baseData.startDate, baseData.startTime);
-    const endDate = this.setDateTime(baseData.endDate, baseData.endTime);
-
-    const baseEventData = {
-      ...baseData,
-      startDate: startDate,
-      endDate: endDate,
-    };
-
-    if (this.eventId) {
-      this.updateEvent(this.eventId, baseEventData);
-    } else {
-      this.createEvent(baseEventData);
-    }
-  } */
 
   onSubmit(): void {
     /* if (this.form.invalid) {
@@ -414,46 +371,6 @@ export class EventFormComponent {
       this.createEvent(baseEventData, locationData);
     }
   }
-
-  /* createEvent(baseEventData: any): void {
-    const client = this.getClient();
-    const tasks: TaskEventPost[] = this.tasks;
-    const employeeIds: number[] = this.selectedEmployeeIds;
-    //const supplierIds: number[] = this.selectedSupplierIds;
-
-    const dataPost: EventPost = {
-      title: baseEventData.title,
-      description: baseEventData.description,
-      eventType: baseEventData.eventType,
-      startDate: baseEventData.startDate,
-      endDate: baseEventData.endDate,
-      status: baseEventData.status,
-      clientId: client?.idClient ?? 0,
-      client: this.showClientForm ? (client as ClientPost) : undefined,
-      locationId: baseEventData.locationId,
-      location: this.isNewLocation
-        ? (this.form.get('locationForm')?.value as LocationPost)
-        : undefined,
-      employeeIds: employeeIds.length > 0 ? employeeIds : undefined,
-      //supplierIds: supplierIds.length > 0 ? supplierIds : undefined,
-      tasks: tasks.length > 0 ? tasks : [],
-    };
-
-    console.log('Event data to post:', dataPost);
-
-    this.eventService.create(dataPost).subscribe({
-      next: () => {
-        this.alertService.showSuccessToast('Evento creado correctamente.');
-        this.router.navigate(['/events']);
-      },
-      error: (err) => {
-        this.alertService.showErrorToast(
-          `Error al crear evento: ${err.error?.message || err.message}`
-        );
-        console.error(err);
-      },
-    });
-  } */
 
   createEvent(baseEventData: any, locationData: any): void {
     const client = this.getClient();
@@ -495,20 +412,6 @@ export class EventFormComponent {
     });
   }
 
-  /* private getClient(): any {
-    if (this.foundClient && this.foundClient.idClient) {
-      return this.foundClient;
-    }
-    if (this.form.get('clientForm')?.invalid) {
-      this.alertService.showErrorToast('Complete correctamente los datos del cliente.');
-    }
-    const clientData: ClientPost = this.form.get('clientForm')?.value;
-    clientData.documentNumber = this.form.get('clientDocumentNumber')?.value;
-    clientData.documentType = this.form.get('clientDocumentType')?.value;
-
-    return clientData;
-  } */
-
   private getClient(): any {
     if (this.foundClient && this.foundClient.idClient) {
       return this.foundClient;
@@ -527,36 +430,6 @@ export class EventFormComponent {
 
     return clientData;
   }
-
-  /* updateEvent(eventId: number, baseEventData: any): void {
-    const dataPut: EventPut = {
-      idEvent: this.eventId!,
-      title: baseEventData.title,
-      description: baseEventData.description,
-      eventType: baseEventData.eventType,
-      startDate: baseEventData.startDate,
-      endDate: baseEventData.endDate,
-      status: baseEventData.status,
-      locationId: baseEventData.locationId,
-      employeeIds: this.selectedEmployeeIds,
-      //supplierIds: this.selectedSupplierIds,
-    };
-
-    console.log('Event data to put:', dataPut);
-
-    this.eventService.update(eventId, dataPut).subscribe({
-      next: () => {
-        this.alertService.showSuccessToast('Evento actualizado correctamente.');
-        this.router.navigate(['/events']);
-      },
-      error: (err) => {
-        this.alertService.showErrorToast(
-          `Error al actualizar evento: ${err.error?.message || err.message}`
-        );
-        console.error(err);
-      },
-    });
-  } */
 
   updateEvent(eventId: number, baseEventData: any): void {
     const dataPut: EventPut = {
@@ -705,7 +578,7 @@ export class EventFormComponent {
       const [hours, minutes] = time.split('AM')[0].split(':').map(Number); // 6:00 AM
       const updatedDate = new Date(date);
       updatedDate.setHours(hours, minutes);
-      return updatedDate.toISOString();
+      return toLocalDateTimeString(updatedDate);
     } catch (error: any) {
       this.alertService.showErrorToast(`Error al cargar los horarios`);
       console.error("Error", error)

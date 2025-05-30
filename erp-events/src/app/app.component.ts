@@ -120,7 +120,7 @@ export class AppComponent {
   }
 
   profile(): void {
-    this.router.navigate(['/users/profile']);
+    this.router.navigate(['/profile']);
   }
 
   get isSidebarExpanded(): boolean {

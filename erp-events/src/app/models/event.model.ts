@@ -56,3 +56,4 @@ export interface EventPut {
   employeeIds?: number[];
   supplierIds?: number[];
 }
+

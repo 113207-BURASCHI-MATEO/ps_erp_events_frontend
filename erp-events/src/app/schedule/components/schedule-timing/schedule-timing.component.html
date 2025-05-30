@@ -1,0 +1,89 @@
+<mat-card class="employee-card mat-elevation-z4">
+    <mat-card-title>
+      <div class="card-header pe-3">
+        <mat-icon matListItemIcon>list</mat-icon>
+        <h1 class="title">Tareas Programadas del Cronograma</h1>
+  
+        <button
+          class="button-inverted-primary"
+          mat-fab
+          color="primary"
+          (click)="exportToPdf()"
+          matTooltip="Exportar a PDF"
+        >
+          <mat-icon class="m-0">picture_as_pdf</mat-icon>
+        </button>
+  
+        <button
+          class="button-inverted-primary"
+          mat-fab
+          color="primary"
+          (click)="exportToExcel()"
+          matTooltip="Exportar a Excel"
+        >
+          <mat-icon class="m-0">table_view</mat-icon>
+        </button>
+      </div>
+    </mat-card-title>
+  
+    <mat-card-content>
+      <div class="toolbar">
+        <div class="d-flex flex-column gap-2 mb-3">
+          <h2 class="mb-0">Cronograma: {{ schedule?.title }}</h2>
+          <span *ngIf="schedule?.description">{{ schedule?.description }}</span>
+        </div>
+  
+        <div class="d-flex flex-row align-items-center gap-2 mb-3">
+          <mat-form-field
+            class="search-field flex-grow-1"
+            subscriptSizing="dynamic"
+            appearance="outline"
+            style="flex: 2"
+          >
+            <mat-label>Buscar</mat-label>
+            <input
+              matInput
+              type="text"
+              id="filter-text-box"
+              placeholder="Tarea, estado, descripción, etc."
+              [(ngModel)]="searchValue"
+            />
+          </mat-form-field>
+  
+          <button
+            mat-fab
+            color="primary"
+            class="button-inverted-primary"
+            matTooltip="Buscar"
+            (click)="onSearch()"
+          >
+            <mat-icon class="m-0">search</mat-icon>
+          </button>
+        </div>
+      </div>
+  
+      @if (isBrowser) {
+        <div class="ag-theme-alpine grid-wrapper" id="myGrid">
+          <ag-grid-angular
+            [rowData]="rowData"
+            [columnDefs]="columnDefs"
+            [defaultColDef]="defaultColDef"
+            [domLayout]="'autoHeight'"
+            [animateRows]="true"
+            [pagination]="true"
+            [paginationAutoPageSize]="true"
+            [allowDragFromColumnsToolPanel]="true"
+            rowSelection="single"
+            [suppressRowClickSelection]="true"
+            (gridReady)="onGridReady($event)"
+          >
+          </ag-grid-angular>
+        </div>
+      }
+
+      <div class="action-buttons">
+        <button mat-stroked-button type="button" (click)="goBack()">Volver</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  

@@ -21,7 +21,48 @@
             <input matInput formControlName="lastName" />
           </mat-form-field>
 
-          <!-- Segunda fila -->
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de documento</mat-label>
+            <mat-select formControlName="documentType">
+              <mat-option value="DNI">DNI</mat-option>
+              <mat-option value="CUIT">CUIT</mat-option>
+              <mat-option value="PASSPORT">Pasaporte</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Número de documento</mat-label>
+            <input matInput formControlName="documentNumber" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha de nacimiento</mat-label>
+            <input
+              matInput
+              [matDatepicker]="birthDatePicker"
+              formControlName="birthDate"
+              placeholder="dd/mm/aaaa"
+            />
+            <mat-datepicker-toggle matSuffix [for]="birthDatePicker">
+              <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker
+              #birthDatePicker
+            >
+            
+            </mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="phoneNumber" />
+          </mat-form-field>
+
           <mat-form-field appearance="outline">
             <mat-label>Tipo de Invitado</mat-label>
             <mat-select formControlName="type">
@@ -33,12 +74,31 @@
             </mat-select>
           </mat-form-field>
 
+
           <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
-            <input matInput type="email" formControlName="email" />
+            <mat-label>Sector</mat-label>
+            <input matInput formControlName="sector" />
           </mat-form-field>
 
-          <!-- Tercera fila -->
+          <mat-form-field appearance="outline">
+            <mat-label>Fila o Mesa</mat-label>
+            <input matInput formControlName="rowTable" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Asiento</mat-label>
+            <input matInput formControlName="seat" />
+          </mat-form-field>
+
+          <mat-slide-toggle formControlName="foodRestriction" color="primary">
+            Restricción alimentaria
+          </mat-slide-toggle>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Descripcion alimentaria</mat-label>
+            <textarea matInput formControlName="foodDescription" rows="3"></textarea>
+          </mat-form-field>
+
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Nota</mat-label>
             <textarea matInput formControlName="note" rows="3"></textarea>

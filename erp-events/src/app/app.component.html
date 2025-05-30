@@ -97,7 +97,7 @@
             <mat-icon matListItemIcon>event_available</mat-icon>
             <span matListItemTitle *ngIf="isSidebarExpanded">Eventos</span>
           </a>
-          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.SUPERVISOR])) {
           <a
             mat-list-item
             routerLink="/employees"
@@ -115,7 +115,7 @@
             <mat-icon matListItemIcon>local_shipping</mat-icon>
             <span matListItemTitle *ngIf="isSidebarExpanded">Proveedores</span>
           </a>
-          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.EMPLOYEE])) {
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.EMPLOYEE, codes.SUPERVISOR])) {
           <a mat-list-item routerLink="/tasks" routerLinkActive="active-link">
             <mat-icon matListItemIcon>task_alt</mat-icon>
             <span matListItemTitle *ngIf="isSidebarExpanded">Tareas</span>
@@ -125,17 +125,28 @@
             <mat-icon matListItemIcon>group</mat-icon>
             <span matListItemTitle *ngIf="isSidebarExpanded">Usuarios</span>
           </a>
-          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.SUPERVISOR])) {
           <a mat-list-item routerLink="/guests" routerLinkActive="active-link">
             <mat-icon matListItemIcon>person_add</mat-icon>
             <span matListItemTitle *ngIf="isSidebarExpanded">Invitados</span>
           </a>
-          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.SUPERVISOR])) {
             <a mat-list-item routerLink="/files" routerLinkActive="active-link">
               <mat-icon matListItemIcon>inventory_2</mat-icon>
               <span matListItemTitle *ngIf="isSidebarExpanded">Archivos</span>
             </a>
-            }
+            } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+              <a mat-list-item routerLink="/payments" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>payments</mat-icon>
+                <span matListItemTitle *ngIf="isSidebarExpanded">Pagos</span>
+              </a>
+              }
+              @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.SUPERVISOR, codes.EMPLOYEE])) {
+                <a mat-list-item routerLink="/schedules" routerLinkActive="active-link">
+                  <mat-icon matListItemIcon>schedule</mat-icon>
+                  <span matListItemTitle *ngIf="isSidebarExpanded">Cronogramas</span>
+                </a>
+                }
         </mat-nav-list>
       </div>
 

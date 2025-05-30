@@ -27,6 +27,18 @@ export function renderIconField(tipo: string): (params: any) => string {
       case 'fileContentType':
         ({ icono, color, texto } = getFileContentTypeIcon(valor));
         break;
+      case 'paymentStatus':
+        ({ icono, color, texto } = getPaymentStatusIcon(valor));
+        break;
+      case 'roleName':
+        ({ icono, color, texto } = getRoleDisplayInfo(valor));
+        break;
+      case 'accessType':
+        ({ icono, color, texto } = getAccessTypeIcon(valor));
+        break;
+      case 'foodRestriction':
+        ({ icono, color, texto } = getFoodRestrictionIcon(valor));
+        break;
       default:
         icono = 'help_outline';
         color = '#6c757d';
@@ -170,5 +182,85 @@ function getFileContentTypeIcon(type: string) {
       return { icono: 'table_chart', color: '#FBC02D', texto: 'CSV' };
     default:
       return { icono: 'insert_drive_file', color: '#757575', texto: type };
+  }
+}
+
+function getPaymentStatusIcon(type: string) {
+  switch (type) {
+    case 'PAID':
+      return { icono: 'check_circle', color: '#4CAF50', texto: 'Pagado' };
+    case 'PENDING_PAYMENT':
+      return { icono: 'hourglass_empty', color: '#FFC107', texto: 'Pendiente' };
+    default:
+      return { icono: 'help_outline', color: '#9E9E9E', texto: type };
+  }
+}
+
+function getRoleDisplayInfo(role: string) {
+  switch (role) {
+    case 'SUPERADMIN':
+      return { icono: 'security', color: '#673AB7', texto: 'Superadmin' };
+    case 'ADMIN':
+      return {
+        icono: 'admin_panel_settings',
+        color: '#3F51B5',
+        texto: 'Administrador',
+      };
+    case 'SUPERVISOR':
+      return {
+        icono: 'supervisor_account',
+        color: '#03A9F4',
+        texto: 'Supervisor',
+      };
+    case 'EMPLOYEE':
+      return { icono: 'person', color: '#4CAF50', texto: 'Empleado' };
+    default:
+      return { icono: 'help_outline', color: '#9E9E9E', texto: role };
+  }
+}
+
+export function getAccessTypeIcon(type: string) {
+  switch (type) {
+    case 'ENTRY':
+      return {
+        icono: 'toggle_on',
+        color: '#4CAF50',
+        texto: 'Entrada',
+      };
+    case 'EXIT':
+      return {
+        icono: 'toggle_off',
+        color: '#F44336',
+        texto: 'Salida',
+      };
+    default:
+      return {
+        icono: 'help_outline',
+        color: '#9E9E9E',
+        texto: type ? type : 'Ausente',
+      };
+  }
+}
+
+export function getFoodRestrictionIcon(type: boolean) {
+  switch (type) {
+    case true:
+      return {
+        icono: 'verified',
+        color: '#4CAF50',
+        texto: 'Restricción',
+      };
+    case false:
+      return {
+        icono: 'block',
+        color: '#F44336',
+        texto: 'Sin restricción',
+      };
+    default:
+      return {
+        icono: 'help_outline',
+        color: '#9E9E9E',
+        texto: type ? type : 'Sin información',
+      };
   }
 }

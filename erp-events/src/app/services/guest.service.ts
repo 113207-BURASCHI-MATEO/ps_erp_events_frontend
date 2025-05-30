@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Guest, GuestPost, GuestPut } from '../models/guest.model';
+import { Guest, GuestAccess, GuestPost, GuestPut } from '../models/guest.model';
 
 @Injectable({
   providedIn: 'root',
@@ -55,5 +55,9 @@ export class GuestService {
   getGuestsFromEvent(idEvent: number): Observable<Guest[]> {
     return this.http
       .get<Guest[]>(`${this.baseUrl}/event/${idEvent}`, { withCredentials: true });
+  }
+
+  registerAccess(data: GuestAccess): Observable<Guest> {
+    return this.http.post<Guest>(`${this.baseUrl}/access`, data, { withCredentials: true });
   }
 }

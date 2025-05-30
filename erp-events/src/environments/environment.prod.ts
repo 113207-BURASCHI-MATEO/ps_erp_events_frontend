@@ -13,5 +13,7 @@ export const environment = {
     notifications: `${API}notifications`,
     guests: `${API}guests`,
     files: `${API}files`,
+    payments: `${API}payments`,
+    schedules: `${API}schedules`,
   },
 };

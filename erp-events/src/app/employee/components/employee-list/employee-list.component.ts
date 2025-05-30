@@ -70,7 +70,10 @@ export class EmployeeListComponent implements OnInit{
     { headerName: 'Doc Nº', field: 'documentNumber', sortable: true, filter: true },
     { headerName: 'Email', field: 'email', sortable: true, filter: true },
     { headerName: 'Puesto', field: 'position', sortable: true, filter: true },
-    { headerName: 'Contratación', field: 'hireDate', sortable: true, filter: true },
+    { headerName: 'Contratación', field: 'hireDate', sortable: true, filter: true, valueFormatter: params => {
+      if (!params.value) return '';
+      return new Date(params.value).toLocaleDateString('es-AR');
+    } },
     {
       headerName: 'Acciones',
       cellRenderer: OptionsComponent,

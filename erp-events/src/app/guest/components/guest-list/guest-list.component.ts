@@ -27,7 +27,6 @@ import { AlertService } from '../../../services/alert.service';
 import { Event } from '../../../models/event.model';
 import { EventService } from '../../../services/event.service';
 import { MatSelectModule } from '@angular/material/select';
-import e from 'express';
 import { renderIconField } from '../../../utils/render-icon';
 
 @Component({
@@ -177,7 +176,6 @@ export class GuestListComponent {
     this.guestService.getGuestsFromEvent(eventId).subscribe({
       next: (guests) => {
         this.guests = guests;
-        console.log(`Guests for event ${eventId}:`, guests);
       },
       error: (err) => {
         this.alertService.showErrorToast(
@@ -210,6 +208,11 @@ export class GuestListComponent {
   goHome(): void {
     this.router.navigate(['/landing']);
   }
+
+  goToCheckIn(): void {
+    this.router.navigate(['/check-in']);
+  }
+
 
   viewGuest(id: number): void {
     const guest = this.guests.find((g) => g.idGuest === id);

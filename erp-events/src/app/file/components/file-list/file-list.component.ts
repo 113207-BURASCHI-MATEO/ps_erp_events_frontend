@@ -71,6 +71,10 @@ export class FileListComponent implements OnInit {
       field: 'creationDate',
       sortable: true,
       filter: true,
+      valueFormatter: params => {
+        if (!params.value) return '';
+        return new Date(params.value).toLocaleDateString('es-AR');
+      }
     },
     {
       headerName: 'Acciones',
@@ -120,7 +124,6 @@ export class FileListComponent implements OnInit {
   loadFiles(): void {
     this.fileService.getAll().subscribe({
       next: (data) => {
-        console.log('Archivos cargados:', data);
         this.files = data;
         this.allFiles = data;
       },
