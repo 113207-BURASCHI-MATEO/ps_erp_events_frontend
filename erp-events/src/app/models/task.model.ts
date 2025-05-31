@@ -6,6 +6,9 @@ export interface Task {
   description: string;
   status: TaskStatus | string;
   idEvent: number;
+  creationDate: string;
+  updateDate: string;
+  softDelete: boolean;
 }
 
 export interface TaskPost {

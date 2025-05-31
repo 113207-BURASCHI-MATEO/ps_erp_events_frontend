@@ -254,9 +254,8 @@ export class EventFormComponent {
       next: (res) => (this.locations = res),
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar ubicaciones: ${err.error.message}`
+          `Error al cargar ubicaciones: ${err.error.readableMessage}`
         );
-        console.error('Error al cargar ubicaciones', err.err.message);
       },
     });
   }
@@ -266,9 +265,8 @@ export class EventFormComponent {
       next: (res) => (this.employees = res),
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar empleados: ${err.error.message}`
+          `Error al cargar empleados: ${err.error.readableMessage}`
         );
-        console.error('Error al cargar empleados', err.err);
       },
     });
   }
@@ -278,9 +276,8 @@ export class EventFormComponent {
       next: (res) => (this.suppliers = res),
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar proveedores: ${err.error.message}`
+          `Error al cargar proveedores: ${err.error.readableMessage}`
         );
-        console.error('Error al cargar proveedores', err.err);
       },
     });
   }
@@ -292,9 +289,8 @@ export class EventFormComponent {
       },
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar evento: ${err.error.message}`
+          `Error al cargar evento: ${err.error.readableMessage}`
         );
-        console.error('Error al cargar evento', err.error.message);
       },
     });
   }

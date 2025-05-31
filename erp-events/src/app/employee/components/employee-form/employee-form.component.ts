@@ -59,6 +59,7 @@ export class EmployeeFormComponent {
       documentType: new FormControl('', [Validators.required]),
       documentNumber: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
+      phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^\+?[0-9\s-]+$/)]),
       cuit: new FormControl('', [Validators.required]),
       birthDate: new FormControl('', [Validators.required]),
       aliasOrCbu: new FormControl('', [Validators.required]),
@@ -98,8 +99,7 @@ export class EmployeeFormComponent {
           this.router.navigate(['/employees']);
         },
         error: (err) => {
-          this.alertService.showErrorToast(`Error al actualizar empleado: ${err.error.message}`);
-          console.error('Error al actualizar empleado:', err.error.message);
+          this.alertService.showErrorToast(`Error al actualizar empleado: ${err.error.readableMessage}`);
         },
       });
     } else {
@@ -110,8 +110,7 @@ export class EmployeeFormComponent {
           this.router.navigate(['/employees']);
         },
         error: (err) => {
-          this.alertService.showErrorToast(`Error al crear empleado: ${err.error.message}`);
-          console.error('Error al crear empleado:', err.error.message);
+          this.alertService.showErrorToast(`Error al crear empleado: ${err.error.readableMessage}`);
         },
       });
     }
@@ -128,8 +127,7 @@ export class EmployeeFormComponent {
         });
       },
       error: (err) => {
-        this.alertService.showErrorToast(`Error al cargar empleado: ${err.error.message}`);
-        console.error('Error al cargar empleado', err.error.message);
+        this.alertService.showErrorToast(`Error al cargar empleado: ${err.error.readableMessage}`);
       },
     });
   }

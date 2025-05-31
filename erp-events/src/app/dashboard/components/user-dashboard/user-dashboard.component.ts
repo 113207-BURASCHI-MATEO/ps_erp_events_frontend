@@ -16,6 +16,9 @@ import { User } from '../../../models/user.model';
 import { UserService } from '../../../services/user.service';
 import { AlertService } from '../../../services/alert.service';
 import { map } from 'rxjs';
+import { COLORS } from '../../../utils/constants';
+import { formatIaResponse } from '../../../utils/ia-response-format';
+import { IaService } from '../../../services/ia.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -43,19 +46,15 @@ export class UserDashboardComponent {
     adminUsers: 0,
     regularUsers: 0,
   };
+  iaResponse: string = '';
+  colors = COLORS;
 
-  colors = [
-    '#13505B', '#9FC2CC', '#040404', '#FF7F11', '#D7D9CE', '#CC650D',
-    '#FF8080', '#FFC7C7', '#C11414', '#F8F9FA', '#FFFFFF', '#333333',
-    '#777777', '#08703B', '#FFAB91'
-  ];
+  private fb = inject(FormBuilder);
+  private userService = inject(UserService);
+  private alertService = inject(AlertService);
+  private iaService = inject(IaService);
 
-        private fb = inject(FormBuilder);
-          private userService = inject(UserService);
-          private alertService = inject(AlertService);
-
-  constructor(
-  ) {
+  constructor() {
     this.filterForm = this.fb.group({
       startDate: [null],
       endDate: [null],
@@ -69,7 +68,8 @@ export class UserDashboardComponent {
   loadData(): void {
     const { startDate, endDate } = this.filterForm.value;
 
-    this.userService.getAll()
+    this.userService
+      .getAll()
       .pipe(map((users) => this.filterUsers(users, startDate, endDate)))
       .subscribe({
         next: (filteredUsers) => {
@@ -86,6 +86,31 @@ export class UserDashboardComponent {
       });
   }
 
+  getIaResponse() {
+    const data = {
+      users: this.users,
+      kpiData: this.kpiData,
+      chartLabels: this.barChartUserDocTypeLabels,
+      chartDatasets: this.barChartUserDocTypeDatasets,
+    };
+    this.iaService.analyzdeDashboard(JSON.stringify(data)).subscribe({
+      next: (response) => {
+        this.iaResponse = response;
+      },
+      error: () => {
+        this.alertService.showErrorToast(
+          'Error al procesar la solicitud de IA. Por favor, inténtalo de nuevo más tarde.'
+        );
+        console.error('Error al procesar la solicitud de IA');
+        this.iaResponse = '';
+      },
+    });
+  }
+
+  formatIa(raw: string): string {
+    return formatIaResponse(raw);
+  }
+
   filterUsers(users: User[], start: Date | null, end: Date | null): User[] {
     if (!start && !end) return users;
     return users.filter((u) => {
@@ -96,8 +121,12 @@ export class UserDashboardComponent {
 
   calculateKPIs(): void {
     this.kpiData.totalUsers = this.users.length;
-    this.kpiData.adminUsers = this.users.filter(u => u.role.name === 'ADMIN').length;
-    this.kpiData.regularUsers = this.users.filter(u => u.role.name === 'USER').length;
+    this.kpiData.adminUsers = this.users.filter(
+      (u) => u.role.name === 'ADMIN'
+    ).length;
+    this.kpiData.regularUsers = this.users.filter(
+      (u) => u.role.name === 'USER'
+    ).length;
   }
 
   prepareChartData(): void {
@@ -165,4 +194,3 @@ export class UserDashboardComponent {
   ];
   //#endregion
 }
-

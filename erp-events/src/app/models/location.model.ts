@@ -11,6 +11,9 @@ export interface Location {
   postalCode: number;
   latitude: number;
   longitude: number;
+  creationDate: string;
+  updateDate: string;
+  softDelete: boolean;
 }
 
 export interface LocationPost {

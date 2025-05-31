@@ -62,7 +62,7 @@ export class GuestFileComponent {
         this.events = data;
       },
       error: (err) => {
-        this.alertService.showErrorToast(`Error al cargar eventos: ${err.error.message}`);
+        this.alertService.showErrorToast(`Error al cargar eventos: ${err.error.readableMessage}`);
       },
     });
   }
@@ -145,7 +145,7 @@ export class GuestFileComponent {
         this.router.navigate(['/guests']);
       },
       error: (err) => {
-        this.alertService.showErrorToast(`Error al cargar invitados: ${err.error.message}`);
+        this.alertService.showErrorToast(`Error al cargar invitados: ${err.error.readableMessage}`);
       },
     });
   }

@@ -16,6 +16,9 @@ export interface User {
   documentNumber: string;
   email: string;
   role: Role;
+  creationDate: string;
+  updateDate: string;
+  softDelete: boolean;
 }
 
 export interface UserRegister {

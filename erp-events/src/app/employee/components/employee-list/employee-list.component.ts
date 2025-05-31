@@ -120,8 +120,7 @@ export class EmployeeListComponent implements OnInit{
         this.allEmployees = data;
       },
       error: (err) => {
-        this.alertService.showErrorToast(`Error al cargar empleados: ${err.error.message}`);
-        console.error('Error al cargar empleados', err.error.message);
+        this.alertService.showErrorToast(`Error al cargar empleados: ${err.error.readableMessage}`);
       },
     });
   }
@@ -162,8 +161,7 @@ export class EmployeeListComponent implements OnInit{
             this.alertService.showSuccessToast('Empleado eliminado correctamente.');
           },
           error: (err) => {
-            this.alertService.showErrorToast(`Error al eliminar empleado ${err.error.message}`);
-            console.error('Error al eliminar empleado', err.error.message);
+            this.alertService.showErrorToast(`Error al eliminar empleado ${err.error.readableMessage}`);
           }
         });
       }

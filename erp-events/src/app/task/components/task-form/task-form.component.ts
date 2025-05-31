@@ -88,8 +88,7 @@ export class TaskFormComponent {
           this.router.navigate(['/tasks']);
         },
         error: (err) => {
-          this.alertService.showErrorToast(`Error al actualizar tarea: ${err.error.message}`);
-          console.error('Error al actualizar tarea:', err.error.message);
+          this.alertService.showErrorToast(`Error al actualizar tarea: ${err.error.readableMessage}`);
         },
       });
     } else {
@@ -100,8 +99,7 @@ export class TaskFormComponent {
           this.router.navigate(['/tasks']);
         },
         error: (err) => {
-          this.alertService.showErrorToast(`Error al crear tarea: ${err.error.message}`);
-          console.error('Error al crear tarea:', err.error.message);
+          this.alertService.showErrorToast(`Error al crear tarea: ${err.error.readableMessage}`);
         },
       });
     }
@@ -113,8 +111,7 @@ export class TaskFormComponent {
         this.form.patchValue(task);
       },
       error: (err) => {
-        this.alertService.showErrorToast(`Error al cargar tarea: ${err.error.message}`);
-        console.error('Error al cargar tarea', err.error.message);
+        this.alertService.showErrorToast(`Error al cargar tarea: ${err.error.readableMessage}`);
       },
     });
   }

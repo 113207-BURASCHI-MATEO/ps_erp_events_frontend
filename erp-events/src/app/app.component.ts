@@ -142,11 +142,11 @@ export class AppComponent {
       },
       error: (err: any) => {
         this.alertService.showErrorToast(
-          `Error al marcar como leída: ${err.error.message}`
+          `Error al marcar como leída: ${err.error.readableMessage}`
         );
         console.error(
           'Error al marcar notificación como leída:',
-          err.error.message
+          err.error.readableMessage
         );
       },
     });

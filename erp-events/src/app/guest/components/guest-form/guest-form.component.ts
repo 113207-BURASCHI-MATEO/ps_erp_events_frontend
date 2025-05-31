@@ -113,8 +113,7 @@ export class GuestFormComponent {
           this.router.navigate(['/guests']);
         },
         error: (err) => {
-          this.alertService.showErrorToast(`Error al actualizar invitado: ${err.error.message}`);
-          console.error('Error al actualizar invitado:', err.error.message);
+          this.alertService.showErrorToast(`Error al actualizar invitado: ${err.error.readableMessage}`);
         },
       });
     } else {
@@ -125,8 +124,7 @@ export class GuestFormComponent {
           this.router.navigate(['/guests']);
         },
         error: (err) => {
-          this.alertService.showErrorToast(`Error al crear invitado: ${err.error.message}`);
-          console.error('Error al crear invitado:', err.error.message);
+          this.alertService.showErrorToast(`Error al crear invitado: ${err.error.readableMessage}`);
         },
       });
     }
@@ -138,8 +136,7 @@ export class GuestFormComponent {
         this.form.patchValue(guest);
       },
       error: (err) => {
-        this.alertService.showErrorToast(`Error al cargar invitado: ${err.error.message}`);
-        console.error('Error al cargar invitado', err.error.message);
+        this.alertService.showErrorToast(`Error al cargar invitado: ${err.error.readableMessage}`);
       },
     });
   }

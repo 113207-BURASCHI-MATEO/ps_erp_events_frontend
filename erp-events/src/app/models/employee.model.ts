@@ -7,6 +7,7 @@ export interface Employee {
   documentType: DocumentType | string;
   documentNumber: string;
   email: string;
+  phoneNumber: string;
   cuit: string;
   birthDate: string;
   aliasCbu: string;

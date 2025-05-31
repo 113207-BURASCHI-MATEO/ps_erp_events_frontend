@@ -30,10 +30,6 @@
           </a>
 
           @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
-          <!-- <a mat-list-item routerLink="/dashboards" routerLinkActive="active-link">
-              <mat-icon matListItemIcon>speed</mat-icon>
-              <span matListItemTitle *ngIf="isSidebarExpanded">Estadisticas</span>
-            </a> -->
           <a mat-list-item [matMenuTriggerFor]="dashboardMenu">
             <mat-icon matListItemIcon>speed</mat-icon>
             <span matListItemTitle *ngIf="isSidebarExpanded">Estadisticas</span>

@@ -16,6 +16,9 @@ import { Supplier } from '../../../models/supplier.model';
 import { SupplierService } from '../../../services/supplier.service';
 import { AlertService } from '../../../services/alert.service';
 import { map } from 'rxjs';
+import { COLORS } from '../../../utils/constants';
+import { IaService } from '../../../services/ia.service';
+import { formatIaResponse } from '../../../utils/ia-response-format';
 
 @Component({
   selector: 'app-supplier-dashboard',
@@ -54,15 +57,13 @@ export class SupplierDashboardComponent {
     },
   };
 
-  colors = [
-    '#13505B', '#9FC2CC', '#040404', '#FF7F11', '#D7D9CE', '#CC650D',
-    '#FF8080', '#FFC7C7', '#C11414', '#F8F9FA', '#FFFFFF', '#333333',
-    '#777777', '#08703B', '#FFAB91'
-  ];
+  iaResponse: string = '';
+  colors = COLORS;
 
     private fb = inject(FormBuilder);
       private supplierService = inject(SupplierService);
       private alertService = inject(AlertService);
+      private iaService = inject(IaService);
 
   constructor(
   ) {
@@ -97,12 +98,37 @@ export class SupplierDashboardComponent {
       });
   }
 
+  getIaResponse() {
+      const data = {
+        suppliers: this.suppliers,
+        kpiData: this.kpiData,
+        chartLabels: this.chartLabels,
+        chartDatasets: this.chartDatasets,
+      }
+      this.iaService.analyzdeDashboard(JSON.stringify(data)).subscribe({
+        next: (response) => {
+          this.iaResponse = response;
+        },
+        error: () => {
+          this.alertService.showErrorToast(
+            'Error al procesar la solicitud de IA. Por favor, inténtalo de nuevo más tarde.')
+          console.error('Error al procesar la solicitud de IA');
+          this.iaResponse = "";
+        }
+      });
+    }
+  
+    formatIa(raw: string): string {
+      return formatIaResponse(raw);
+    }
+  
+
   filterSuppliers(suppliers: Supplier[], start: Date | null, end: Date | null): Supplier[] {
-    /* if (!start && !end) return suppliers;
-    return suppliers.filter((s) => {
-      const createdDate = new Date(s['createdAt']); // Ajusta esto según tu modelo
+    if (!start && !end) return suppliers;
+    return suppliers.filter((s: Supplier) => {
+      const createdDate = new Date(s['creationDate']);
       return (!start || createdDate >= start) && (!end || createdDate <= end);
-    }); */
+    });
     return suppliers;
   }
 

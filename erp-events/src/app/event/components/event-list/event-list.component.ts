@@ -324,7 +324,7 @@ export class EventListComponent {
           },
           error: (err) => {
             this.alertService.showErrorToast(
-              `Error al actualizar estado: ${err.error.message}`
+              `Error al actualizar estado: ${err.error.readableMessage}`
             );
             this.changeEventStatusByContext(event, context);
           },
@@ -360,7 +360,7 @@ export class EventListComponent {
           },
           error: (err) => {
             this.alertService.showErrorToast(
-              `Error al actualizar estado: ${err.error.message}`
+              `Error al actualizar estado: ${err.error.readableMessage}`
             );
           },
         });

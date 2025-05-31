@@ -10,6 +10,9 @@ export interface Supplier {
   aliasCbu: string;
   supplierType: SupplierType | string;
   address: string;
+  creationDate: string;
+  updateDate: string;
+  softDelete: boolean;
 }
 
 export interface SupplierPost {

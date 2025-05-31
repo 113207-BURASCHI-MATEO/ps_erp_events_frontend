@@ -194,9 +194,8 @@ export class FileFormComponent {
       },
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar archivo: ${err.error.message}`
+          `Error al cargar archivo: ${err.error.readableMessage}`
         );
-        console.error('Error al cargar archivo', err.error.message);
       },
     });
   }
@@ -224,9 +223,8 @@ export class FileFormComponent {
       next: (res) => (this.clients = res),
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar clientes: ${err.error.message}`
+          `Error al cargar clientes: ${err.error.readableMessage}`
         );
-        console.error('Error al cargar clientes:', err);
       },
     });
   }
@@ -236,9 +234,8 @@ export class FileFormComponent {
       next: (res) => (this.suppliers = res),
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar proveedores: ${err.error.message}`
+          `Error al cargar proveedores: ${err.error.readableMessage}`
         );
-        console.error('Error al cargar proveedores:', err);
       },
     });
   }
@@ -248,9 +245,8 @@ export class FileFormComponent {
       next: (res) => (this.employees = res),
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar empleados: ${err.error.message}`
+          `Error al cargar empleados: ${err.error.readableMessage}`
         );
-        console.error('Error al cargar empleados:', err);
       },
     });
   }

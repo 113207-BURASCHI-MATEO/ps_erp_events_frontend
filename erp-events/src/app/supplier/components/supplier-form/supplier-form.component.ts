@@ -80,8 +80,7 @@ export class SupplierFormComponent {
           this.router.navigate(['/suppliers']);
         },
         error: (err) => {
-          this.alertService.showErrorToast(`Error al actualizar proveedor: ${err.error.message}`);
-          console.error('Error al actualizar proveedor:', err.error.message);
+          this.alertService.showErrorToast(`Error al actualizar proveedor: ${err.error.readableMessage}`);
         },
       });
     } else {
@@ -92,8 +91,7 @@ export class SupplierFormComponent {
           this.router.navigate(['/suppliers']);
         },
         error: (err) => {
-          this.alertService.showErrorToast(`Error al crear proveedor: ${err.error.message}`);
-          console.error('Error al crear proveedor:', err.error.message);
+          this.alertService.showErrorToast(`Error al crear proveedor: ${err.error.readableMessage}`);
         },
       });
     }
@@ -105,8 +103,7 @@ export class SupplierFormComponent {
         this.form.patchValue(sup); // {...sup}
       },
       error: (err) => {
-        this.alertService.showErrorToast(`Error al cargar proveedor: ${err.error.message}`);
-        console.error('Error al cargar proveedor:', err.error.message);
+        this.alertService.showErrorToast(`Error al cargar proveedor: ${err.error.readableMessage}`);
       },
     });
   }

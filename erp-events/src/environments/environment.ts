@@ -15,5 +15,6 @@ export const environment = {
     files: `${API}files`,
     payments: `${API}payments`,
     schedules: `${API}schedules`,
+    ia: `${API}ia`,
   },
 };

@@ -187,7 +187,7 @@ export class ScheduleFormComponent {
       },
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar cronograma: ${err.error.message}`
+          `Error al cargar cronograma: ${err.error.readableMessage}`
         );
       },
     });

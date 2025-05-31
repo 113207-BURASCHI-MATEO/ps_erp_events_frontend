@@ -8,7 +8,6 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class ClientService {
-  //private baseUrl = 'http://localhost:8080/clients';
 
   private baseUrl: string = `${
     environment.production

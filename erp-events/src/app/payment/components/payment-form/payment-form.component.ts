@@ -76,9 +76,8 @@ export class PaymentFormComponent {
       },
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar clientes: ${err.error.message}`
+          `Error al cargar clientes: ${err.error.readableMessage}`
         );
-        console.error('Error al cargar clientes:', err.error.message);
       },
     });
   }
@@ -99,9 +98,8 @@ export class PaymentFormComponent {
       },
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al crear pago: ${err.error.message}`
+          `Error al crear pago: ${err.error.readableMessage}`
         );
-        console.error('Error al crear pago:', err.error.message);
       },
     });
   }

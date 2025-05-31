@@ -104,8 +104,7 @@ export class ScheduleListComponent implements OnInit {
         this.allSchedules = data;
       },
       error: (err) => {
-        this.alertService.showErrorToast(`Error al cargar cronogramas: ${err.error.message}`);
-        console.error('Error al cargar cronogramas', err.error.message);
+        this.alertService.showErrorToast(`Error al cargar cronogramas: ${err.error.readableMessage}`);
       },
     });
   }
@@ -150,8 +149,7 @@ export class ScheduleListComponent implements OnInit {
             this.alertService.showSuccessToast('Cronograma eliminado correctamente.');
           },
           error: (err) => {
-            this.alertService.showErrorToast(`Error al eliminar cronograma: ${err.error.message}`);
-            console.error('Error al eliminar cronograma', err.error.message);
+            this.alertService.showErrorToast(`Error al eliminar cronograma: ${err.error.readableMessage}`);
           },
         });
       }

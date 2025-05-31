@@ -16,6 +16,9 @@ import { Task } from '../../../models/task.model';
 import { TaskService } from '../../../services/task.service';
 import { AlertService } from '../../../services/alert.service';
 import { map } from 'rxjs';
+import { COLORS } from '../../../utils/constants';
+import { IaService } from '../../../services/ia.service';
+import { formatIaResponse } from '../../../utils/ia-response-format';
 
 @Component({
   selector: 'app-task-dashboard',
@@ -33,7 +36,7 @@ import { map } from 'rxjs';
     MatIconModule,
   ],
   templateUrl: './task-dashboard.component.html',
-  styleUrl: './task-dashboard.component.scss'
+  styleUrl: './task-dashboard.component.scss',
 })
 export class TaskDashboardComponent {
   tasks: Task[] = [];
@@ -46,7 +49,9 @@ export class TaskDashboardComponent {
   };
 
   chartLabels: string[] = [];
-  chartDatasets: ChartDataset<'bar'>[] = [{ data: [], label: 'Tareas por Estado' }];
+  chartDatasets: ChartDataset<'bar'>[] = [
+    { data: [], label: 'Tareas por Estado' },
+  ];
 
   chartOptions: ChartOptions = {
     responsive: true,
@@ -54,20 +59,15 @@ export class TaskDashboardComponent {
       legend: { display: true, position: 'top' },
     },
   };
+  iaResponse: string = '';
+  colors = COLORS;
 
-  colors = [
-    '#13505B', '#9FC2CC', '#040404', '#FF7F11', '#D7D9CE', '#CC650D',
-    '#FF8080', '#FFC7C7', '#C11414', '#F8F9FA', '#FFFFFF', '#333333',
-    '#777777', '#08703B', '#FFAB91'
-  ];
+  private fb = inject(FormBuilder);
+  private taskService = inject(TaskService);
+  private alertService = inject(AlertService);
+  private iaService = inject(IaService);
 
-      private fb = inject(FormBuilder);
-        private taskService = inject(TaskService);
-        private alertService = inject(AlertService);
-  
-
-  constructor(
-  ) {
+  constructor() {
     this.filterForm = this.fb.group({
       startDate: [null],
       endDate: [null],
@@ -81,7 +81,8 @@ export class TaskDashboardComponent {
   loadData(): void {
     const { startDate, endDate } = this.filterForm.value;
 
-    this.taskService.getAll()
+    this.taskService
+      .getAll()
       .pipe(map((tasks) => this.filterTasks(tasks, startDate, endDate)))
       .subscribe({
         next: (filteredTasks) => {
@@ -98,12 +99,37 @@ export class TaskDashboardComponent {
       });
   }
 
+  getIaResponse() {
+    const data = {
+      tasks: this.tasks,
+      kpiData: this.kpiData,
+      chartLabels: this.chartLabels,
+      chartDatasets: this.chartDatasets,
+    };
+    this.iaService.analyzdeDashboard(JSON.stringify(data)).subscribe({
+      next: (response) => {
+        this.iaResponse = response;
+      },
+      error: () => {
+        this.alertService.showErrorToast(
+          'Error al procesar la solicitud de IA. Por favor, inténtalo de nuevo más tarde.'
+        );
+        console.error('Error al procesar la solicitud de IA');
+        this.iaResponse = '';
+      },
+    });
+  }
+
+  formatIa(raw: string): string {
+    return formatIaResponse(raw);
+  }
+
   filterTasks(tasks: Task[], start: Date | null, end: Date | null): Task[] {
-    /* if (!start && !end) return tasks;
-    return tasks.filter((t) => {
-      const createdDate = new Date(t['createdAt']); // Asegúrate de tener este campo
+    if (!start && !end) return tasks;
+    return tasks.filter((t: Task) => {
+      const createdDate = new Date(t['creationDate']);
       return (!start || createdDate >= start) && (!end || createdDate <= end);
-    }); */
+    });
     return tasks;
   }
 
@@ -134,7 +160,9 @@ export class TaskDashboardComponent {
       return acc;
     }, {} as Record<number, number>);
 
-    this.barChartTaskEventLabels = Object.keys(eventCounts).map(e => `Evento ${e}`);
+    this.barChartTaskEventLabels = Object.keys(eventCounts).map(
+      (e) => `Evento ${e}`
+    );
     this.barChartTaskEventDatasets[0].data = Object.values(eventCounts);
   }
 

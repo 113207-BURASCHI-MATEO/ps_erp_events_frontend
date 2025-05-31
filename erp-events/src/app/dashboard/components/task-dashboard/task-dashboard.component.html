@@ -5,23 +5,46 @@
   
     <mat-card-content>
       <!-- Filtros -->
-      <form [formGroup]="filterForm" class="filter-form">
-        <mat-form-field appearance="outline">
-          <mat-label>Desde</mat-label>
-          <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
-          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-          <mat-datepicker #startPicker></mat-datepicker>
-        </mat-form-field>
-  
-        <mat-form-field appearance="outline">
-          <mat-label>Hasta</mat-label>
-          <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
-          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-          <mat-datepicker #endPicker></mat-datepicker>
-        </mat-form-field>
-  
-        <button mat-raised-button color="primary" (click)="applyFilters()">Aplicar</button>
-      </form>
+      <div class="d-flex align-items-baseline justify-content-between">
+        <form [formGroup]="filterForm" class="filter-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Desde</mat-label>
+            <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+          </mat-form-field>
+    
+          <mat-form-field appearance="outline">
+            <mat-label>Hasta</mat-label>
+            <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+          </mat-form-field>
+    
+          <button mat-raised-button color="primary" (click)="applyFilters()">Aplicar</button>
+        </form>
+        <button
+        class="button-inverted-primary"
+        mat-fab
+        color="primary"
+        (click)="getIaResponse()"
+        matTooltip="Asistente IA"
+      >
+        <mat-icon class="m-0">psychology</mat-icon>
+      </button>
+      </div>
+      @if (iaResponse) {
+        <mat-card class="mt-3 p-3">
+          <div>
+            <h5 class="title-ia">
+              <mat-icon class="me-1">psychology</mat-icon>
+              Respuesta del Asistente:
+            </h5>
+            <p class="ia-text" [innerHTML]="formatIa(iaResponse)"></p>
+          </div>
+        </mat-card>
+        }
+      
   
       <!-- KPIs -->
       <div class="kpi-grid">

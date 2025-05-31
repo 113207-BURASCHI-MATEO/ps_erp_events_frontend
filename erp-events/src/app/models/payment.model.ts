@@ -8,6 +8,9 @@ export interface Payment {
   detail?: string;
   status: PaymentStatus;
   reviewNote: string; // URL
+  creationDate: string;
+  updateDate: string;
+  softDelete: boolean;
 }
 
 export interface PaymentPost {

@@ -10,6 +10,9 @@ export interface Client {
   documentNumber: string;
   aliasCbu: string;
   events: number[];
+  creationDate: string;
+  updateDate: string;
+  softDelete: boolean;
 }
 
 export interface ClientPost {

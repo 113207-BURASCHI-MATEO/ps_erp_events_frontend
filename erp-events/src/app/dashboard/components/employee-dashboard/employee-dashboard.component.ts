@@ -15,6 +15,9 @@ import { map } from 'rxjs';
 import { AlertService } from '../../../services/alert.service';
 import { MatIconModule } from '@angular/material/icon';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { COLORS } from '../../../utils/constants';
+import { IaService } from '../../../services/ia.service';
+import { formatIaResponse } from '../../../utils/ia-response-format';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -55,15 +58,13 @@ export class EmployeeDashboardComponent {
     },
   };
 
-  colors = [
-    '#13505B', '#9FC2CC', '#040404', '#FF7F11', '#D7D9CE',
-    '#CC650D', '#FF8080', '#FFC7C7', '#C11414', '#F8F9FA',
-    '#FFFFFF', '#333333', '#777777', '#08703B', '#FFAB91'
-  ];
+  iaResponse: string = '';
+  colors = COLORS;
 
   private fb = inject(FormBuilder);
   private employeeService = inject(EmployeeService);
   private alertService = inject(AlertService);
+  private iaService = inject(IaService);
 
   constructor(
   ) {
@@ -90,12 +91,36 @@ export class EmployeeDashboardComponent {
         },
         error: (err) => {
           this.alertService.showErrorToast(
-            `Error al cargar empleados: ${err.error.message}`
+            `Error al cargar empleados: ${err.error.readableMessage}`
           );
           console.error('Error al cargar empleados:', err);
         },
       });
   }
+
+  getIaResponse() {
+      const data = {
+        employees: this.employees,
+        kpiData: this.kpiData,
+        chartLabels: this.chartLabels,
+        chartDatasets: this.chartDatasets,
+      }
+      this.iaService.analyzdeDashboard(JSON.stringify(data)).subscribe({
+        next: (response) => {
+          this.iaResponse = response;
+        },
+        error: () => {
+          this.alertService.showErrorToast(
+            'Error al procesar la solicitud de IA. Por favor, inténtalo de nuevo más tarde.')
+          console.error('Error al procesar la solicitud de IA');
+          this.iaResponse = "";
+        }
+      });
+    }
+  
+    formatIa(raw: string): string {
+      return formatIaResponse(raw);
+    }
 
   filterEmployees(employees: Employee[], start: Date | null, end: Date | null): Employee[] {
     if (!start && !end) return employees;

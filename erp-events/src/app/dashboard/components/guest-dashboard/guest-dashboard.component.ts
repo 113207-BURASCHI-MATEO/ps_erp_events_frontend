@@ -15,6 +15,9 @@ import { map } from 'rxjs';
 import { AlertService } from '../../../services/alert.service';
 import { MatIconModule } from '@angular/material/icon';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { COLORS } from '../../../utils/constants';
+import { IaService } from '../../../services/ia.service';
+import { formatIaResponse } from '../../../utils/ia-response-format';
 
 @Component({
   selector: 'app-guest-dashboard',
@@ -32,7 +35,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
     MatIconModule,
   ],
   templateUrl: './guest-dashboard.component.html',
-  styleUrl: './guest-dashboard.component.scss'
+  styleUrl: './guest-dashboard.component.scss',
 })
 export class GuestDashboardComponent {
   guests: Guest[] = [];
@@ -55,19 +58,16 @@ export class GuestDashboardComponent {
       legend: { display: true, position: 'top' },
     },
   };
+  iaResponse: string = '';
 
-  colors = [
-    '#13505B', '#9FC2CC', '#040404', '#FF7F11', '#D7D9CE', '#CC650D',
-    '#FF8080', '#FFC7C7', '#C11414', '#F8F9FA', '#FFFFFF', '#333333',
-    '#777777', '#08703B', '#FFAB91'
-  ];
+  colors = COLORS;
 
   private fb = inject(FormBuilder);
-    private guestService = inject(GuestService);
-    private alertService = inject(AlertService);
+  private guestService = inject(GuestService);
+  private alertService = inject(AlertService);
+  private iaService = inject(IaService);
 
-  constructor(
-  ) {
+  constructor() {
     this.filterForm = this.fb.group({
       startDate: [null],
       endDate: [null],
@@ -81,7 +81,8 @@ export class GuestDashboardComponent {
   loadData(): void {
     const { startDate, endDate } = this.filterForm.value;
 
-    this.guestService.getAll()
+    this.guestService
+      .getAll()
       .pipe(map((guests) => this.filterGuests(guests, startDate, endDate)))
       .subscribe({
         next: (filteredGuests) => {
@@ -98,20 +99,48 @@ export class GuestDashboardComponent {
       });
   }
 
+  getIaResponse() {
+    const data = {
+      guests: this.guests,
+      kpiData: this.kpiData,
+      chartLabels: this.chartLabels,
+      chartDatasets: this.chartDatasets,
+    };
+    this.iaService.analyzdeDashboard(JSON.stringify(data)).subscribe({
+      next: (response) => {
+        this.iaResponse = response;
+      },
+      error: () => {
+        this.alertService.showErrorToast(
+          'Error al procesar la solicitud de IA. Por favor, inténtalo de nuevo más tarde.'
+        );
+        console.error('Error al procesar la solicitud de IA');
+        this.iaResponse = '';
+      },
+    });
+  }
+
+  formatIa(raw: string): string {
+    return formatIaResponse(raw);
+  }
+
   filterGuests(guests: Guest[], start: Date | null, end: Date | null): Guest[] {
-    /* if (!start && !end) return guests;
-    return guests.filter((g) => {
-      const createdDate = new Date(g['createdAt']); // Ajusta esto según el modelo real
-      return (!start || createdDate >= start) && (!end || createdDate <= end);
-    }); */
-    return guests;
+    if (!start && !end) return guests;
+    return guests.filter((g: Guest) => {
+      const birthDate = new Date(g.birthDate);
+      return (!start || birthDate >= start) && (!end || birthDate <= end);
+    });
   }
 
   calculateKPIs(): void {
     this.kpiData.totalGuests = this.guests.length;
-    this.kpiData.vipGuests = this.guests.filter(g => g.type === 'VIP').length;
-    this.kpiData.staffGuests = this.guests.filter(g => g.type === 'STAFF').length;
-    this.kpiData.familyGuests = this.guests.filter(g => g.type === 'FAMILY').length;
+    this.kpiData.vipGuests = this.guests.filter((g) => g.type === 'VIP').length;
+    this.kpiData.staffGuests = this.guests.filter(
+      (g) => g.type === 'STAFF'
+    ).length;
+    this.kpiData.familyGuests = this.guests.filter(
+      (g) => g.type === 'FAMILY'
+    ).length;
   }
 
   prepareChartData(): void {

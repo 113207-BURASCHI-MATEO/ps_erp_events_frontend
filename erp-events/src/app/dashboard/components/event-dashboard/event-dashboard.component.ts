@@ -18,6 +18,9 @@ import { map } from 'rxjs';
 import { AlertService } from '../../../services/alert.service';
 import { MatIconModule } from '@angular/material/icon';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { COLORS } from '../../../utils/constants';
+import { IaService } from '../../../services/ia.service';
+import { formatIaResponse } from '../../../utils/ia-response-format';
 
 @Component({
   selector: 'app-event-dashboard',
@@ -46,7 +49,7 @@ export class EventDashboardComponent {
     pendingEvents: 0,
     cancelledEvents: 0,
   };
-
+  iaResponse: string = '';
   chartLabels: string[] = [];
   chartDatasets: ChartDataset<'bar'>[] = [
     { data: [], label: 'Eventos por Estado' },
@@ -59,27 +62,12 @@ export class EventDashboardComponent {
     },
   };
 
-  colors = [
-    '#13505B',  // Primary - Midnight Green
-    '#9FC2CC',  // Primary Light
-    '#040404',  // Primary Dark (Almost Black)
-    '#FF7F11',  // Accent - Vibrant Orange
-    '#D7D9CE',  // Accent Light - Soft Gray
-    '#CC650D',  // Accent Dark - Dark Orange
-    '#FF8080',  // Warn - Soft Red
-    '#FFC7C7',  // Warn Light - Light Red
-    '#C11414',  // Warn Dark - Strong Red
-    '#F8F9FA',  // Background Light Gray
-    '#FFFFFF',  // Pure White
-    '#333333',  // Dark Text
-    '#777777',  // Medium Gray Text
-    '#08703B',  // Success / Confirmation Green
-    '#FFAB91'   // Extra Accent - Soft Coral
-  ];
+  colors = COLORS;
 
   private fb = inject(FormBuilder);
   private eventService = inject(EventService);
   private alertService = inject(AlertService);
+  private iaService = inject(IaService);
 
   constructor(
   ) {
@@ -112,6 +100,30 @@ export class EventDashboardComponent {
           console.error('Error al cargar eventos:', err);
         },
       });
+  }
+
+  getIaResponse() {
+    const data = {
+      events: this.events,
+      kpiData: this.kpiData,
+      chartLabels: this.chartLabels,
+      chartDatasets: this.chartDatasets,
+    }
+    this.iaService.analyzdeDashboard(JSON.stringify(data)).subscribe({
+      next: (response) => {
+        this.iaResponse = response;
+      },
+      error: () => {
+        this.alertService.showErrorToast(
+          'Error al procesar la solicitud de IA. Por favor, inténtalo de nuevo más tarde.')
+        console.error('Error al procesar la solicitud de IA');
+        this.iaResponse = "";
+      }
+    });
+  }
+
+  formatIa(raw: string): string {
+    return formatIaResponse(raw);
   }
 
   filterEvents(events: Event[], start: Date | null, end: Date | null): Event[] {

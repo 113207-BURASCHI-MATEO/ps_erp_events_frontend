@@ -64,7 +64,7 @@ export class RegisterComponent {
         },
         error: (err) => {
           console.error('Error en el registro', err);
-          this.alertService.showErrorToast(`Error: ${err.error.message}`);
+          this.alertService.showErrorToast(`Error: ${err.error.readableMessage}`);
         }
       });
     } else {

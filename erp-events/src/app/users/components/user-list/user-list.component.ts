@@ -116,9 +116,8 @@ export class UserListComponent {
         this.allUsers = data;
       },
       error: (err) => {
-        console.error('Error fetching users:', err.error.message);
         this.alertService.showErrorToast(
-          `Error al cargar usuarios: ${err.error.message}`
+          `Error al cargar usuarios: ${err.error.readableMessage}`
         );
       },
     });
@@ -196,9 +195,8 @@ export class UserListComponent {
           },
           error: (err) => {
             this.alertService.showErrorToast(
-              `Error al actualizar el usuario: ${err.error.message}`
+              `Error al actualizar el usuario: ${err.error.readableMessage}`
             );
-            console.error('Error al actualizar el usuario', err.error.message);
           },
         });
       });

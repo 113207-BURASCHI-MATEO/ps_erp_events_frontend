@@ -242,9 +242,8 @@ export class TaskListComponent implements OnInit {
           },
           error: (err) => {
             this.alertService.showErrorToast(
-              `Error al actualizar la tarea: ${err.error.message}`
+              `Error al actualizar la tarea: ${err.error.readableMessage}`
             );
-            console.error('Error al actualizar la tarea', err.error.message);
           },
         });
       });
@@ -259,9 +258,8 @@ export class TaskListComponent implements OnInit {
       },
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar las tareas del evento: ${err.error.message}`
+          `Error al cargar las tareas del evento: ${err.error.readableMessage}`
         );
-        console.error('Error al cargar las tareas del evento', err);
       },
     });
   }

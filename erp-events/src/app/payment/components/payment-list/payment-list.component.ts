@@ -129,9 +129,8 @@ export class PaymentListComponent implements OnInit {
       },
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar pagos: ${err.error.message}`
+          `Error al cargar pagos: ${err.error.readableMessage}`
         );
-        console.error('Error al cargar pagos', err.error.message);
       },
     });
   }
@@ -178,9 +177,8 @@ export class PaymentListComponent implements OnInit {
       },
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al cargar cliente: ${err.error.message}`
+          `Error al cargar cliente: ${err.error.readableMessage}`
         );
-        console.error('Error al cargar cliente', err.error.message);
       },
     });
   }
@@ -202,9 +200,8 @@ export class PaymentListComponent implements OnInit {
       },
       error: (err) => {
         this.alertService.showErrorToast(
-          `Error al actualizar estado: ${err.error.message}`
+          `Error al actualizar estado: ${err.error.readableMessage}`
         );
-        console.error('Error al actualizar estado', err.error.message);
       },
     });
   }

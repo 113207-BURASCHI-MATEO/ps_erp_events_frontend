@@ -23,6 +23,9 @@ export interface Guest {
   documentNumber: string;
   birthDate: string;
   acreditation: EventsGuests;
+  creationDate: string;
+  updateDate: string;
+  softDelete: boolean;
 }
 
 export interface GuestPost {
@@ -78,6 +81,7 @@ export interface EventsGuests {
   seat: number;  
   foodRestriction: boolean;
   foodDescription?: string;           
-  // creationDate?: string;     
-  // updateDate?: string;
+  creationDate: string;
+  updateDate: string;
+  softDelete: boolean;
 }
