@@ -33,7 +33,7 @@ export const EmployeeDictionary: { [key: string]: string } = {
   position: 'Posición',
   creationdate: 'Fecha de Creación',
   updatedate: 'Fecha de Actualización',
-  softdelete: 'Eliminado',
+  softdelete: 'Estado de registro',
 };
 
 // EventType
@@ -65,7 +65,7 @@ export const EventDictionary: { [key: string]: string } = {
   startdate: 'Fecha de Inicio',
   enddate: 'Fecha de Fin',
   status: 'Estado',
-  softdelete: 'Eliminado',
+  softdelete: 'Estado de registro',
   creationdate: 'Fecha de Creación',
   updatedate: 'Fecha de Actualización',
   client: 'Cliente',
@@ -102,7 +102,7 @@ export const FileDictionary: { [key: string]: string } = {
   filecontenttype: 'Tipo de Contenido',
   fileurl: 'URL del Archivo',
   reviewnote: 'Nota de Revisión',
-  softdelete: 'Eliminado',
+  softdelete: 'Estado de registro',
   creationdate: 'Fecha de Creación',
   updatedate: 'Fecha de Actualización',
   supplierid: 'ID Proveedor',
@@ -356,7 +356,7 @@ export const GenericDictionary: { [key: string]: string } = {
   position: 'Posición',
   creationdate: 'Fecha de Creación',
   updatedate: 'Fecha de Actualización',
-  softdelete: 'Eliminado',
+  softdelete: 'Estado de registro',
 
   // EventType
   corporate: 'Corporativo',
@@ -481,6 +481,9 @@ export const GenericDictionary: { [key: string]: string } = {
   furniture: 'Mobiliario',
 
   // Supplier
+  name: 'Nombre',
+  address: 'Dirección',
+  suppliertype: 'Tipo de proveedor',
   idsupplier: 'Proveedor ID',
 
   // TaskStatus

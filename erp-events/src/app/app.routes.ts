@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './auth/guards/auth.guard';
-import { roleGuard } from './auth/guards/role.guard';
+import { authGuard } from './components/auth/guards/auth.guard';
+import { roleGuard } from './components/auth/guards/role.guard';
 import { URLTargetType } from './models/user.model';
 import { switchMap } from 'rxjs';
 
@@ -8,15 +8,15 @@ export const routes: Routes = [
 
   {
     path: 'register',
-    loadComponent: () => import('./auth/components/register/register.component').then(m => m.RegisterComponent)
+    loadComponent: () => import('./components/auth/components/register/register.component').then(m => m.RegisterComponent)
   },
   {
     path: 'recover-password',
-    loadComponent: () => import('./auth/components/recovery-password/recovery-password.component').then(m => m.RecoveryPasswordComponent)
+    loadComponent: () => import('./components/auth/components/recovery-password/recovery-password.component').then(m => m.RecoveryPasswordComponent)
   },
   {
     path: 'reset-password',
-    loadComponent: () => import('./auth/components/reset-password/reset-password.component').then(m => m.ResetPasswordComponent)
+    loadComponent: () => import('./components/auth/components/reset-password/reset-password.component').then(m => m.ResetPasswordComponent)
   },
   {
     path: '',
@@ -25,12 +25,12 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    loadComponent: () => import('./auth/components/login/login.component').then(m => m.LoginComponent)
+    loadComponent: () => import('./components/auth/components/login/login.component').then(m => m.LoginComponent)
   },
   {
     path: 'landing',
     loadComponent: () =>
-      import('./landing/components/landing/landing.component').then(m => m.LandingComponent),
+      import('./components/landing/components/landing/landing.component').then(m => m.LandingComponent),
     canActivate: [authGuard],
     //canMatch: [roleGuard],
     //data: { allowedRoleCodes: Object.values(URLTargetType) }
@@ -38,7 +38,7 @@ export const routes: Routes = [
   {
     path: 'conditions',
     loadComponent: () =>
-      import('./landing/components/conditions/conditions.component').then(m => m.ConditionsComponent),
+      import('./components/landing/components/conditions/conditions.component').then(m => m.ConditionsComponent),
     canActivate: [authGuard],
     //canMatch: [roleGuard],
     //data: { allowedRoleCodes: Object.values(URLTargetType) }
@@ -46,7 +46,7 @@ export const routes: Routes = [
   {
     path: 'faq',
     loadComponent: () =>
-      import('./landing/components/faq/faq.component').then(m => m.FaqComponent),
+      import('./components/landing/components/faq/faq.component').then(m => m.FaqComponent),
     canActivate: [authGuard],
     //canMatch: [roleGuard],
     //data: { allowedRoleCodes: Object.values(URLTargetType) }
@@ -54,7 +54,7 @@ export const routes: Routes = [
   {
     path: 'employees',
     loadComponent: () =>
-      import('./employee/components/employee-list/employee-list.component').then(m => m.EmployeeListComponent),
+      import('./components/employee/components/employee-list/employee-list.component').then(m => m.EmployeeListComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN, URLTargetType.SUPERVISOR] }
@@ -62,14 +62,14 @@ export const routes: Routes = [
   {
     path: 'employees/create',
     loadComponent: () =>
-      import('./employee/components/employee-form/employee-form.component').then(m => m.EmployeeFormComponent),
+      import('./components/employee/components/employee-form/employee-form.component').then(m => m.EmployeeFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN, URLTargetType.SUPERVISOR] }
   },
   {
     path: 'employees/edit/:id',
-    loadComponent: () => import('./employee/components/employee-form/employee-form.component').then(m => m.EmployeeFormComponent),
+    loadComponent: () => import('./components/employee/components/employee-form/employee-form.component').then(m => m.EmployeeFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN, URLTargetType.SUPERVISOR] }
@@ -77,7 +77,7 @@ export const routes: Routes = [
   {
     path: 'suppliers',
     loadComponent: () =>
-      import('./supplier/components/supplier-list/supplier-list.component').then(m => m.SupplierListComponent),
+      import('./components/supplier/components/supplier-list/supplier-list.component').then(m => m.SupplierListComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -85,7 +85,7 @@ export const routes: Routes = [
   {
     path: 'suppliers/create',
     loadComponent: () =>
-      import('./supplier/components/supplier-form/supplier-form.component').then(m => m.SupplierFormComponent),
+      import('./components/supplier/components/supplier-form/supplier-form.component').then(m => m.SupplierFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -93,7 +93,7 @@ export const routes: Routes = [
   {
     path: 'suppliers/edit/:id',
     loadComponent: () =>
-      import('./supplier/components/supplier-form/supplier-form.component').then(m => m.SupplierFormComponent),
+      import('./components/supplier/components/supplier-form/supplier-form.component').then(m => m.SupplierFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -101,7 +101,7 @@ export const routes: Routes = [
   {
     path: 'events',
     loadComponent: () =>
-      import('./event/components/event-list/event-list.component').then(m => m.EventListComponent),
+      import('./components/event/components/event-list/event-list.component').then(m => m.EventListComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -109,7 +109,7 @@ export const routes: Routes = [
   {
     path: 'events/create',
     loadComponent: () =>
-      import('./event/components/event-form/event-form.component').then(m => m.EventFormComponent),
+      import('./components/event/components/event-form/event-form.component').then(m => m.EventFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -117,7 +117,31 @@ export const routes: Routes = [
   {
     path: 'events/edit/:id',
     loadComponent: () =>
-      import('./event/components/event-form/event-form.component').then(m => m.EventFormComponent),
+      import('./components/event/components/event-form/event-form.component').then(m => m.EventFormComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'events/account/:id',
+    loadComponent: () =>
+      import('./components/account/components/concept-list/concept-list.component').then(m => m.ConceptListComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'events/account/:id/concepts/create',
+    loadComponent: () =>
+      import('./components/account/components/concept-form/concept-form.component').then(m => m.ConceptFormComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'events/account/:id/concepts/edit/:conceptId',
+    loadComponent: () =>
+      import('./components/account/components/concept-form/concept-form.component').then(m => m.ConceptFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -125,7 +149,7 @@ export const routes: Routes = [
   {
     path: 'tasks',
     loadComponent: () =>
-      import('./task/components/task-list/task-list.component').then(m => m.TaskListComponent),
+      import('./components/task/components/task-list/task-list.component').then(m => m.TaskListComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN, , URLTargetType.SUPERVISOR, URLTargetType.EMPLOYEE] }
@@ -133,7 +157,7 @@ export const routes: Routes = [
   {
     path: 'tasks/create',
     loadComponent: () =>
-      import('./task/components/task-form/task-form.component').then(m => m.TaskFormComponent),
+      import('./components/task/components/task-form/task-form.component').then(m => m.TaskFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN, URLTargetType.SUPERVISOR, URLTargetType.EMPLOYEE] }
@@ -141,7 +165,7 @@ export const routes: Routes = [
   {
     path: 'tasks/edit/:id',
     loadComponent: () =>
-      import('./task/components/task-form/task-form.component').then(m => m.TaskFormComponent),
+      import('./components/task/components/task-form/task-form.component').then(m => m.TaskFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN, URLTargetType.SUPERVISOR, URLTargetType.EMPLOYEE] }
@@ -149,7 +173,7 @@ export const routes: Routes = [
   {
     path: 'users',
     loadComponent: () =>
-      import('./users/components/user-list/user-list.component').then(m => m.UserListComponent),
+      import('./components/users/components/user-list/user-list.component').then(m => m.UserListComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -157,7 +181,7 @@ export const routes: Routes = [
   {
     path: 'profile',
     loadComponent: () =>
-      import('./users/components/profile/profile.component').then(m => m.ProfileComponent),
+      import('./components/users/components/profile/profile.component').then(m => m.ProfileComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN, URLTargetType.EMPLOYEE, URLTargetType.SUPERVISOR] }
@@ -165,15 +189,7 @@ export const routes: Routes = [
   {
     path: 'dashboards',
     loadComponent: () =>
-      import('./dashboard/components/general/general.component').then(m => m.GeneralComponent),
-    canActivate: [authGuard],
-    canMatch: [roleGuard],
-    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
-  },
-  {
-    path: 'dashboards',
-    loadComponent: () =>
-      import('./dashboard/components/general/general.component').then(m => m.GeneralComponent),
+      import('./components/dashboard/components/event-dashboard/event-dashboard.component').then(m => m.EventDashboardComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -181,7 +197,7 @@ export const routes: Routes = [
   {
     path: 'dashboards/events',
     loadComponent: () =>
-      import('./dashboard/components/event-dashboard/event-dashboard.component').then(m => m.EventDashboardComponent),
+      import('./components/dashboard/components/event-dashboard/event-dashboard.component').then(m => m.EventDashboardComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -189,7 +205,7 @@ export const routes: Routes = [
   {
     path: 'dashboards/employees',
     loadComponent: () =>
-      import('./dashboard/components/employee-dashboard/employee-dashboard.component').then(m => m.EmployeeDashboardComponent),
+      import('./components/dashboard/components/employee-dashboard/employee-dashboard.component').then(m => m.EmployeeDashboardComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -197,7 +213,7 @@ export const routes: Routes = [
   {
     path: 'dashboards/tasks',
     loadComponent: () =>
-      import('./dashboard/components/task-dashboard/task-dashboard.component').then(m => m.TaskDashboardComponent),
+      import('./components/dashboard/components/task-dashboard/task-dashboard.component').then(m => m.TaskDashboardComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -205,7 +221,7 @@ export const routes: Routes = [
   {
     path: 'dashboards/suppliers',
     loadComponent: () =>
-      import('./dashboard/components/supplier-dashboard/supplier-dashboard.component').then(m => m.SupplierDashboardComponent),
+      import('./components/dashboard/components/supplier-dashboard/supplier-dashboard.component').then(m => m.SupplierDashboardComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -213,7 +229,7 @@ export const routes: Routes = [
   {
     path: 'dashboards/users',
     loadComponent: () =>
-      import('./dashboard/components/user-dashboard/user-dashboard.component').then(m => m.UserDashboardComponent),
+      import('./components/dashboard/components/user-dashboard/user-dashboard.component').then(m => m.UserDashboardComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -221,7 +237,7 @@ export const routes: Routes = [
   {
     path: 'dashboards/guests',
     loadComponent: () =>
-      import('./dashboard/components/guest-dashboard/guest-dashboard.component').then(m => m.
+      import('./components/dashboard/components/guest-dashboard/guest-dashboard.component').then(m => m.
         GuestDashboardComponent
       ),
     canActivate: [authGuard],
@@ -231,7 +247,7 @@ export const routes: Routes = [
   {
     path: 'guests',
     loadComponent: () =>
-      import('./guest/components/guest-list/guest-list.component').then(m => m.GuestListComponent),
+      import('./components/guest/components/guest-list/guest-list.component').then(m => m.GuestListComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN, URLTargetType.SUPERVISOR] }
@@ -239,7 +255,7 @@ export const routes: Routes = [
   {
     path: 'guests/create',
     loadComponent: () =>
-      import('./guest/components/guest-form/guest-form.component').then(m => m.GuestFormComponent),
+      import('./components/guest/components/guest-form/guest-form.component').then(m => m.GuestFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -247,7 +263,7 @@ export const routes: Routes = [
   {
     path: 'guests/create/file',
     loadComponent: () =>
-      import('./guest/components/guest-file/guest-file.component').then(m => m.GuestFileComponent),
+      import('./components/guest/components/guest-file/guest-file.component').then(m => m.GuestFileComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -255,7 +271,7 @@ export const routes: Routes = [
   {
     path: 'guests/edit/:idGuest/:idEvent',
     loadComponent: () =>
-      import('./guest/components/guest-form/guest-form.component').then(m => m.GuestFormComponent),
+      import('./components/guest/components/guest-form/guest-form.component').then(m => m.GuestFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -263,7 +279,7 @@ export const routes: Routes = [
   {
     path: 'check-in',
     loadComponent: () =>
-      import('./guest/components/guest-check-in/guest-check-in.component').then(m => m.GuestCheckInComponent),
+      import('./components/guest/components/guest-check-in/guest-check-in.component').then(m => m.GuestCheckInComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN, URLTargetType.SUPERVISOR, URLTargetType.EMPLOYEE] }
@@ -271,7 +287,7 @@ export const routes: Routes = [
   {
     path: 'files',
     loadComponent: () =>
-      import('./file/components/file-list/file-list.component').then(m => m.FileListComponent),
+      import('./components/file/components/file-list/file-list.component').then(m => m.FileListComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -279,7 +295,7 @@ export const routes: Routes = [
   {
     path: 'files/create',
     loadComponent: () =>
-      import('./file/components/file-form/file-form.component').then(m => m.FileFormComponent),
+      import('./components/file/components/file-form/file-form.component').then(m => m.FileFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -287,7 +303,15 @@ export const routes: Routes = [
   {
     path: 'files/edit/:id',
     loadComponent: () =>
-      import('./file/components/file-form/file-form.component').then(m => m.FileFormComponent),
+      import('./components/file/components/file-form/file-form.component').then(m => m.FileFormComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
+  },
+  {
+    path: 'files/entity/:entityType/:entityId',
+    loadComponent: () =>
+      import('./components/file/components/file-list/file-list.component').then(m => m.FileListComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -295,7 +319,7 @@ export const routes: Routes = [
   {
     path: 'payments',
     loadComponent: () =>
-      import('./payment/components/payment-list/payment-list.component').then(m => m.PaymentListComponent),
+      import('./components/payment/components/payment-list/payment-list.component').then(m => m.PaymentListComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -303,7 +327,7 @@ export const routes: Routes = [
   {
     path: 'payments/create',
     loadComponent: () =>
-      import('./payment/components/payment-form/payment-form.component').then(m => m.PaymentFormComponent),
+      import('./components/payment/components/payment-form/payment-form.component').then(m => m.PaymentFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN] }
@@ -311,7 +335,7 @@ export const routes: Routes = [
   {
     path: 'schedules',
     loadComponent: () =>
-      import('./schedule/components/schedule-list/schedule-list.component').then(m => m.ScheduleListComponent),
+      import('./components/schedule/components/schedule-list/schedule-list.component').then(m => m.ScheduleListComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN,  URLTargetType.SUPERVISOR, URLTargetType.EMPLOYEE] }
@@ -319,7 +343,7 @@ export const routes: Routes = [
   {
     path: 'schedules/create',
     loadComponent: () =>
-      import('./schedule/components/schedule-form/schedule-form.component').then(m => m.ScheduleFormComponent),
+      import('./components/schedule/components/schedule-form/schedule-form.component').then(m => m.ScheduleFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN,  URLTargetType.SUPERVISOR, URLTargetType.EMPLOYEE] }
@@ -327,7 +351,7 @@ export const routes: Routes = [
   {
     path: 'schedules/edit/:id',
     loadComponent: () =>
-      import('./schedule/components/schedule-form/schedule-form.component').then(m => m.ScheduleFormComponent),
+      import('./components/schedule/components/schedule-form/schedule-form.component').then(m => m.ScheduleFormComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN,  URLTargetType.SUPERVISOR, URLTargetType.EMPLOYEE] }
@@ -335,11 +359,35 @@ export const routes: Routes = [
   {
     path: 'schedules/timing/:scheduleId/:eventId',
     loadComponent: () =>
-      import('./schedule/components/schedule-timing/schedule-timing.component').then(m => m.ScheduleTimingComponent),
+      import('./components/schedule/components/schedule-timing/schedule-timing.component').then(m => m.ScheduleTimingComponent),
     canActivate: [authGuard],
     canMatch: [roleGuard],
     data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN,  URLTargetType.SUPERVISOR, URLTargetType.EMPLOYEE] }
-  }
+  },
+  {
+    path: 'clients',
+    loadComponent: () =>
+      import('./components/client/components/client-list/client-list.component').then(m => m.ClientListComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN, URLTargetType.SUPERVISOR] }
+  },
+  {
+    path: 'clients/create',
+    loadComponent: () =>
+      import('./components/client/components/client-form/client-form.component').then(m => m.ClientFormComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN,  URLTargetType.SUPERVISOR] }
+  },
+  {
+    path: 'clients/edit/:id',
+    loadComponent: () =>
+      import('./components/client/components/client-form/client-form.component').then(m => m.ClientFormComponent),
+    canActivate: [authGuard],
+    canMatch: [roleGuard],
+    data: { allowedRoleCodes: [URLTargetType.SUPERADMIN , URLTargetType.ADMIN,  URLTargetType.SUPERVISOR] }
+  },
 ];
 
 

@@ -1,0 +1,71 @@
+.faq-card {
+    max-width: 1200px;
+    margin: 32px auto;
+    padding: 24px;
+    background-color: var(--light-text);
+    color: var(--dark-text);
+  }
+  
+  .title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary);
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  
+  .faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  
+  section h2 {
+    color: var(--primary);
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  
+  section p {
+    color: var(--dark-text);
+    text-align: justify;
+    line-height: 1.6;
+  }
+  
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  
+  button[mat-raised-button] {
+    background-color: var(--primary);
+    color: var(--light-text);
+    font-weight: 600;
+  
+    &:hover {
+      background-color: var(--primary-dark);
+    }
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .image-container-pet {
+    display: flex;
+    align-items: center;
+  }
+  
+  .image-container-pet img {
+    width: 100px;
+    height: auto;
+  }

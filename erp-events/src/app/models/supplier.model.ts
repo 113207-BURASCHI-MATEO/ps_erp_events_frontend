@@ -1,4 +1,4 @@
-export type SupplierType = 'CATERING' | 'DECORACION' | 'SOUND' | 'GASTRONOMIC' | 'FURNITURE' | 'ENTERTAINMENT';
+export type SupplierType = 'CATERING' | 'DECORATION' | 'SOUND' | 'GASTRONOMIC' | 'FURNITURE' | 'ENTERTAINMENT';
 
 
 export interface Supplier {

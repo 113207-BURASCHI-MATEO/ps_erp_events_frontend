@@ -1,0 +1,22 @@
+.title {
+  color:var(--primary);
+  font-size: 36px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.image-container-pet {
+  display: flex;
+  align-items: center;
+}
+
+.image-container-pet img {
+  width: 150px;
+  height: auto;
+}

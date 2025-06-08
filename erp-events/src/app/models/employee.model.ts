@@ -13,6 +13,7 @@ export interface Employee {
   aliasCbu: string;
   hireDate: string;
   position: string;
+  address: string;
   creationDate: string;
   updateDate: string;
   softDelete: boolean;
@@ -30,6 +31,7 @@ export interface EmployeePost {
   password: string;
   hireDate: string;
   position: string;
+  address: string;
 }
 
 export interface EmployeePut {
@@ -44,4 +46,5 @@ export interface EmployeePut {
   aliasCbu: string;
   hireDate: string;
   position: string;
+  address: string;
 }

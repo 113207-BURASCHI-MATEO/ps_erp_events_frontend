@@ -1,0 +1,104 @@
+.form-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 2vh 2vw;
+  box-sizing: border-box;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 100%;
+  padding: 2vh 2vw;
+  margin: 0;
+  background-color: #fff;
+  border-radius: 0.5vw;
+}
+
+mat-card-title {
+  padding: 0 0 1.5vh 0;
+  margin-bottom: 1vh;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  flex-grow: 1;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); // 3 columnas iguales
+  gap: 2vh 2vw; // espacio entre filas y columnas
+  width: 100%;
+  align-items: flex-start;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+// Campo que ocupa toda la fila
+.full-width {
+  grid-column: span 3;
+}
+
+// Botonera
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3vh;
+  gap: 2vw;
+
+  button {
+    min-width: 10vw;
+  }
+}
+
+// Responsive
+@media (max-width: 1024px) {
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr); // 2 columnas en tablets
+  }
+
+  .full-width {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr; // 1 columna en mobile
+  }
+
+  .full-width {
+    grid-column: span 1;
+  }
+
+  .action-buttons {
+    flex-direction: column-reverse;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.image-container-pet {
+  display: flex;
+  align-items: center;
+}
+
+.image-container-pet img {
+  width: 50px;
+  height: auto;
+}

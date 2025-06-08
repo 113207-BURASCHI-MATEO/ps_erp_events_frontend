@@ -16,6 +16,7 @@ export interface File {
   supplierId?: number;
   clientId?: number;
   employeeId?: number;
+  paymentId?: number;
 }
 
 export interface FilePost {
@@ -27,6 +28,7 @@ export interface FilePost {
   supplierId?: number;
   clientId?: number;
   employeeId?: number;
+  paymentId?: number;
 }
 
 export interface FilePut {
@@ -40,6 +42,7 @@ export interface FilePut {
   supplierId?: number;
   clientId?: number;
   employeeId?: number;
+  paymentId?: number;
 }
 
 export interface BlobWithMetadata {

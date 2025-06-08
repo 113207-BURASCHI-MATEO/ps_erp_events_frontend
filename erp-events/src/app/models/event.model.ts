@@ -3,6 +3,7 @@ import { Location, LocationPost } from './location.model';
 import { Task, TaskEventPost } from './task.model';
 import { Supplier } from './supplier.model';
 import { Employee } from './employee.model';
+import { Account } from './account.model';
 
 export type EventType = 'CORPORATE' | 'SOCIAL' | 'CULTURAL' | 'ENTERTAINMENT' | 'OTHER' | 'SPORTS';
 export type EventStatus = 'CONFIRMED' | 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'SUSPENDED' | 'POSTPONED';
@@ -27,6 +28,7 @@ export interface Event {
   suppliers: Supplier[];
   guests: number[];
   tasks: Task[];
+  account: Account;
 }
 
 export interface EventPost {

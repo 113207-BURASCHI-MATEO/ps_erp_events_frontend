@@ -1,7 +1,6 @@
 @if (isAuthenticated$ | async ) {
-<!-- Navbar -->
 
-<mat-sidenav-container class="app-container">
+<!-- <mat-sidenav-container class="app-container">
   <mat-sidenav
     mode="side"
     [opened]="true"
@@ -11,9 +10,7 @@
     }"
     class="app-sidenav"
   >
-    <!-- Sidebar Content -->
     <div class="d-flex flex-column h-100">
-      <!-- Header/Title -->
       <div class="p-3 d-flex align-items-center" routerLink="/landing">
         <mat-icon>event</mat-icon>
         <span class="mat-subtitle-1 fw-bold ms-2 mb-0" *ngIf="isSidebarExpanded"
@@ -21,7 +18,6 @@
         >
       </div>
 
-      <!-- Navigation Menu -->
       <div class="flex-grow-1">
         <mat-nav-list>
           <a mat-list-item routerLink="/landing" routerLinkActive="active-link">
@@ -93,6 +89,11 @@
             <mat-icon matListItemIcon>event_available</mat-icon>
             <span matListItemTitle *ngIf="isSidebarExpanded">Eventos</span>
           </a>
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          <a mat-list-item routerLink="/clients" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>supervised_user_circle</mat-icon>
+            <span matListItemTitle *ngIf="isSidebarExpanded">Clientes</span>
+          </a>
           } @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.SUPERVISOR])) {
           <a
             mat-list-item
@@ -111,7 +112,8 @@
             <mat-icon matListItemIcon>local_shipping</mat-icon>
             <span matListItemTitle *ngIf="isSidebarExpanded">Proveedores</span>
           </a>
-          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.EMPLOYEE, codes.SUPERVISOR])) {
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.EMPLOYEE,
+          codes.SUPERVISOR])) {
           <a mat-list-item routerLink="/tasks" routerLinkActive="active-link">
             <mat-icon matListItemIcon>task_alt</mat-icon>
             <span matListItemTitle *ngIf="isSidebarExpanded">Tareas</span>
@@ -127,26 +129,33 @@
             <span matListItemTitle *ngIf="isSidebarExpanded">Invitados</span>
           </a>
           } @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.SUPERVISOR])) {
-            <a mat-list-item routerLink="/files" routerLinkActive="active-link">
-              <mat-icon matListItemIcon>inventory_2</mat-icon>
-              <span matListItemTitle *ngIf="isSidebarExpanded">Archivos</span>
-            </a>
-            } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
-              <a mat-list-item routerLink="/payments" routerLinkActive="active-link">
-                <mat-icon matListItemIcon>payments</mat-icon>
-                <span matListItemTitle *ngIf="isSidebarExpanded">Pagos</span>
-              </a>
-              }
-              @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.SUPERVISOR, codes.EMPLOYEE])) {
-                <a mat-list-item routerLink="/schedules" routerLinkActive="active-link">
-                  <mat-icon matListItemIcon>schedule</mat-icon>
-                  <span matListItemTitle *ngIf="isSidebarExpanded">Cronogramas</span>
-                </a>
-                }
+          <a mat-list-item routerLink="/files" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>inventory_2</mat-icon>
+            <span matListItemTitle *ngIf="isSidebarExpanded">Archivos</span>
+          </a>
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          <a
+            mat-list-item
+            routerLink="/payments"
+            routerLinkActive="active-link"
+          >
+            <mat-icon matListItemIcon>payments</mat-icon>
+            <span matListItemTitle *ngIf="isSidebarExpanded">Pagos</span>
+          </a>
+          } @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.SUPERVISOR,
+          codes.EMPLOYEE])) {
+          <a
+            mat-list-item
+            routerLink="/schedules"
+            routerLinkActive="active-link"
+          >
+            <mat-icon matListItemIcon>schedule</mat-icon>
+            <span matListItemTitle *ngIf="isSidebarExpanded">Cronogramas</span>
+          </a>
+          }
         </mat-nav-list>
       </div>
 
-      <!-- Toggle Button at Bottom -->
       <div class="mt-auto border-top pt-2 pb-2">
         <button
           mat-button
@@ -163,7 +172,6 @@
     </div>
   </mat-sidenav>
 
-  <!-- Main Content -->
   <mat-sidenav-content
     [ngClass]="{
       'content-expanded': !isSidebarExpanded,
@@ -195,7 +203,6 @@
         }
       </button>
 
-      <!-- Menú de Notificaciones -->
       <mat-menu #notificationMenu="matMenu">
         @if (notifications.length > 0) { @for (notification of notifications;
         track notification.idNotification) {
@@ -248,20 +255,290 @@
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
+</mat-sidenav-container> -->
+
+<mat-sidenav-container class="app-container">
+  <mat-sidenav
+    mode="over"
+    [opened]="isSidebarExpanded"
+    (closed)="onSidenavClosed()"
+    class="app-sidenav hamburger-menu"
+    position="start"
+  >
+
+    <div class="d-flex flex-column h-100">
+    
+      <div class="p-3 d-flex justify-content-between align-items-center border-bottom">
+        <div class="d-flex align-items-center" routerLink="/landing">
+          <div class="image-container-pet">
+            <img src="assets/logotipo.png" alt="ERP Eventos" />
+          </div>
+          <!-- <mat-icon>event</mat-icon> -->
+          <span class="mat-subtitle-1 fw-bold ms-2 mb-0">Evana</span>
+        </div>
+        <button mat-icon-button (click)="closeSidebar()" class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="flex-grow-1 overflow-auto">
+        <mat-nav-list>
+          <a mat-list-item routerLink="/landing" routerLinkActive="active-link" (click)="closeSidebar()">
+            <mat-icon matListItemIcon>home</mat-icon>
+            <span matListItemTitle>Inicio</span>
+          </a>
+
+          @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          <a mat-list-item [matMenuTriggerFor]="dashboardMenu" class="menu-trigger-button">
+            <mat-icon matListItemIcon>speed</mat-icon>
+            <span matListItemTitle>
+              Estadísticas
+              <mat-icon matListItemIcon class="ms-auto" style="vertical-align: middle;">keyboard_arrow_right</mat-icon>
+            </span>
+          </a>
+      
+          <mat-menu #dashboardMenu="matMenu" xPosition="after">
+            <a mat-menu-item routerLink="/dashboards/events" routerLinkActive="active-link" (click)="closeSidebar()">
+              <mat-icon matListItemIcon>analytics</mat-icon>
+              <span>Eventos</span>
+            </a>
+            <a mat-menu-item routerLink="/dashboards/employees" routerLinkActive="active-link" (click)="closeSidebar()">
+              <mat-icon matListItemIcon>bar_chart</mat-icon>
+              <span>Empleados</span>
+            </a>
+            <a mat-menu-item routerLink="/dashboards/tasks" routerLinkActive="active-link" (click)="closeSidebar()">
+              <mat-icon matListItemIcon>stacked_bar_chart</mat-icon>
+              <span>Tareas</span>
+            </a>
+            <a mat-menu-item routerLink="/dashboards/suppliers" routerLinkActive="active-link" (click)="closeSidebar()">
+              <mat-icon matListItemIcon>data_thresholding</mat-icon>
+              <span>Proveedores</span>
+            </a>
+            <a mat-menu-item routerLink="/dashboards/users" routerLinkActive="active-link" (click)="closeSidebar()">
+              <mat-icon matListItemIcon>query_stats</mat-icon>
+              <span>Usuarios</span>
+            </a>
+            <a mat-menu-item routerLink="/dashboards/guests" routerLinkActive="active-link" (click)="closeSidebar()">
+              <mat-icon matListItemIcon>insert_chart</mat-icon>
+              <span>Invitados</span>
+            </a>
+          </mat-menu>
+          }
+      
+          @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          <a mat-list-item routerLink="/clients" routerLinkActive="active-link" (click)="closeSidebar()">
+            <mat-icon matListItemIcon>supervised_user_circle</mat-icon>
+            <span matListItemTitle>Clientes</span>
+          </a>
+          }
+      
+          @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          <a mat-list-item routerLink="/events" routerLinkActive="active-link" (click)="closeSidebar()">
+            <mat-icon matListItemIcon>event_available</mat-icon>
+            <span matListItemTitle>Eventos</span>
+          </a>
+          }
+      
+          @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.SUPERVISOR])) {
+          <a mat-list-item routerLink="/guests" routerLinkActive="active-link" (click)="closeSidebar()">
+            <mat-icon matListItemIcon>person_add</mat-icon>
+            <span matListItemTitle>Invitados</span>
+          </a>
+          }
+      
+          @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.EMPLOYEE, codes.SUPERVISOR])) {
+          <a mat-list-item routerLink="/tasks" routerLinkActive="active-link" (click)="closeSidebar()">
+            <mat-icon matListItemIcon>task_alt</mat-icon>
+            <span matListItemTitle>Tareas</span>
+          </a>
+          }
+      
+          @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.SUPERVISOR, codes.EMPLOYEE])) {
+          <a mat-list-item routerLink="/schedules" routerLinkActive="active-link" (click)="closeSidebar()">
+            <mat-icon matListItemIcon>schedule</mat-icon>
+            <span matListItemTitle>Cronogramas</span>
+          </a>
+          }
+      
+          @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.SUPERVISOR])) {
+          <a mat-list-item routerLink="/employees" routerLinkActive="active-link" (click)="closeSidebar()">
+            <mat-icon matListItemIcon>engineering</mat-icon>
+            <span matListItemTitle>Empleados</span>
+          </a>
+          }
+      
+          @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          <a mat-list-item routerLink="/suppliers" routerLinkActive="active-link" (click)="closeSidebar()">
+            <mat-icon matListItemIcon>local_shipping</mat-icon>
+            <span matListItemTitle>Proveedores</span>
+          </a>
+          }
+      
+          @if(hasRole([codes.SUPERADMIN, codes.ADMIN, codes.SUPERVISOR])) {
+          <a mat-list-item routerLink="/files" routerLinkActive="active-link" (click)="closeSidebar()">
+            <mat-icon matListItemIcon>inventory_2</mat-icon>
+            <span matListItemTitle>Archivos</span>
+          </a>
+          }
+      
+          @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          <a mat-list-item routerLink="/payments" routerLinkActive="active-link" (click)="closeSidebar()">
+            <mat-icon matListItemIcon>payments</mat-icon>
+            <span matListItemTitle>Pagos</span>
+          </a>
+          }
+      
+          @if(hasRole([codes.SUPERADMIN, codes.ADMIN])) {
+          <a mat-list-item routerLink="/users" routerLinkActive="active-link" (click)="closeSidebar()">
+            <mat-icon matListItemIcon>group</mat-icon>
+            <span matListItemTitle>Usuarios</span>
+          </a>
+          }
+      
+        </mat-nav-list>
+      </div>
+      
+
+      <!-- Footer Info -->
+      <div class="mt-auto border-top pt-3 pb-3 px-3">
+        <div class="d-flex align-items-center">
+          <!-- <mat-icon class="me-2">info</mat-icon> -->
+          <img src="assets/pet_5.png" alt="ERP Eventos" class="me-2"/>
+          <span class="small text-muted">Evana v1.0</span>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content class="content-full-width">
+    <mat-toolbar color="primary">
+      <!-- Hamburger Menu Button -->
+      <button
+        mat-icon-button
+        (click)="toggleSidebar()"
+        class="hamburger-button me-2"
+        matTooltip="Menú"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <div class="image-container-pet">
+        <img src="assets/logotipo.png" alt="ERP Eventos" />
+      </div>
+
+      <span routerLink="/landing" >Evana</span>
+      <span class="flex-grow-1"></span>
+
+      <button
+        mat-icon-button
+        (click)="toggleDarkMode()"
+        class="me-2"
+        matTooltip="Modo oscuro"
+      >
+        <mat-icon>{{ isDarkMode ? "dark_mode" : "light_mode" }}</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="notificationMenu"
+        class="me-2"
+        matTooltip="Notificaciones"
+      >
+        @if(notifications.length > 0) {
+        <mat-icon  matBadgeColor="accent">notifications</mat-icon>
+        } @else {
+        <mat-icon>notifications_off</mat-icon>
+        }
+      </button>
+
+      <!-- Menú de Notificaciones -->
+      <mat-menu #notificationMenu="matMenu" class="notification-menu">
+ <!--        <div class="notification-header px-3 py-2 border-bottom">
+          <h6 class="mb-0">Notificaciones HOLA</h6>
+        </div> -->
+        
+        @if (notifications.length > 0) { 
+          @for (notification of notifications; track notification.idNotification) {
+            <div class="notification-item px-3 py-2 border-bottom">
+              <div class="notification-content">
+                <strong class="d-block">{{ notification.subject }}</strong>
+                <small class="text-muted">{{ notification.dateSend | date }}</small>
+              </div>
+              <div class="notification-actions mt-2">
+                <mat-checkbox
+                  [checked]="notification.statusSend === 'VISUALIZED'"
+                  [disabled]="notification.statusSend === 'VISUALIZED'"
+                  (change)="markAsRead(notification)"
+                  class="me-2"
+                >
+                  Leído
+                </mat-checkbox>
+                <button
+                  mat-stroked-button
+                  color="primary"
+                  size="small"
+                  (click)="viewNotification(notification)"
+                >
+                  Ver
+                </button>
+              </div>
+            </div>
+          }
+        } @else {
+          <div class="px-3 py-4 text-center text-muted">
+            <mat-icon class="mb-2">notifications_off</mat-icon>
+            <p class="mb-0">No hay notificaciones</p>
+          </div>
+        }
+      </mat-menu>
+
+      <button mat-icon-button [matMenuTriggerFor]="userMenu" matTooltip="Usuario">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="profile()">
+          <mat-icon>person</mat-icon>
+          <span>Perfil</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Cerrar sesión</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+
+    <div class="content-container p-3">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>
 
-} @else { 
-    @if ((currentUrl$ | async) === '/register') {
-      <app-register></app-register>
+} @else { @if ((currentUrl$ | async) === '/register') {
+<app-register></app-register>
+} @else { @if ((currentUrl$ | async) === '/recover-password') {
+<app-recovery-password></app-recovery-password>
+} @else { @if ((currentUrl$ | async) === '/reset-password') {
+<app-reset-password></app-reset-password>
+} @else {
+<app-login></app-login>
+} } } }
+
+
+
+
+<!-- @if (isAuthenticated$ | async) {
+  @if (isMobile$ | async) {
+    <app-hamburguer-nav></app-hamburguer-nav>
   } @else {
-      @if ((currentUrl$ | async) === '/recover-password') {
-        <app-recovery-password></app-recovery-password>
-    } @else {
-        @if ((currentUrl$ | async) === '/reset-password') {
-          <app-reset-password></app-reset-password>
-      } @else {
-          <app-login></app-login>
-      }
-    }
-  } 
-}
+    <app-sidebar-nav></app-sidebar-nav>
+  }
+} @else {
+  @switch(currentUrl$ | async) {
+    @case ('/register') {<app-register></app-register>}
+    @case ('/recover-password') {<app-recovery-password></app-recovery-password>}
+    @case ('/reset-password') {<app-reset-password></app-reset-password>}
+    @default {<app-login></app-login>}
+  }
+} -->

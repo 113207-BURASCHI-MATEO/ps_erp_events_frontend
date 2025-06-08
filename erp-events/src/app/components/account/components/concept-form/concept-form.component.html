@@ -1,0 +1,111 @@
+<div class="form-container">
+  <mat-card class="form-card">
+    <mat-card-title class="mb-3">
+      <div class="card-header pe-3">
+        <h1 class="title">
+          <mat-icon matListItemIcon>article</mat-icon>
+          {{ conceptId ? 'Editar Concepto' : 'Nuevo Concepto' }}
+        </h1>
+        <div class="image-container-pet">
+          <img src="assets/pet.png" alt="ERP Eventos" />
+        </div>
+      </div>
+    </mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <!-- Primera fila -->
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha contable</mat-label>
+            <input
+              matInput
+              [matDatepicker]="accountingDatePicker"
+              formControlName="accountingDate"
+              placeholder="dd/mm/aaaa"
+            />
+            <mat-datepicker-toggle matSuffix [for]="accountingDatePicker">
+              <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #accountingDatePicker></mat-datepicker>
+            <mat-error>
+              <app-form-field-error [control]="form.get('accountingDate')"></app-form-field-error>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Concepto</mat-label>
+            <mat-select formControlName="concept">
+              <mat-option value="STAFF">Personal</mat-option>
+              <mat-option value="CLEANNING">Limpieza</mat-option>
+              <mat-option value="CATERING">Catering</mat-option>
+              <mat-option value="FEE">Honorarios</mat-option>
+              <mat-option value="SECURITY">Seguridad</mat-option>
+              <mat-option value="SPEAKERS">Oradores</mat-option>
+              <mat-option value="EVENT_HALL">Salón</mat-option>
+              <mat-option value="SOUND_STAFF">Sonido</mat-option>
+              <mat-option value="DECORATION">Decoración</mat-option>
+              <mat-option value="DRINK_BAR">Bar</mat-option>
+              <mat-option value="OTHER">Otro</mat-option>
+            </mat-select>
+            <mat-error>
+              <app-form-field-error [control]="form.get('concept')"></app-form-field-error>
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Segunda fila -->
+          <mat-form-field appearance="outline">
+            <mat-label>Comentarios</mat-label>
+            <input matInput formControlName="comments" />
+            <mat-error>
+              <app-form-field-error [control]="form.get('comments')"></app-form-field-error>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Monto</mat-label>
+            <input matInput type="number" formControlName="amount" />
+            <mat-error>
+              <app-form-field-error [control]="form.get('amount')"></app-form-field-error>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Archivo (opcional)</mat-label>
+            <input
+              type="text"
+              matInput
+              [matAutocomplete]="auto"
+              formControlName="idFile"
+            />
+            <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
+              @for (file of filteredFiles; track file.idFile) {
+                <mat-option [value]="file.idFile">
+                  {{ file.fileName }}
+                </mat-option>
+              }
+            </mat-autocomplete>
+            <mat-error>
+              <app-form-field-error [control]="form.get('idFile')"></app-form-field-error>
+            </mat-error>
+          </mat-form-field>
+          
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="action-buttons">
+          <button mat-stroked-button type="button" (click)="goBack()">
+            Volver
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid"
+          >
+            {{ conceptId ? 'Guardar cambios' : 'Crear concepto' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

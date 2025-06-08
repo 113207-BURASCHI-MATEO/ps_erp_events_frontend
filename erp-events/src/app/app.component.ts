@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { LoginComponent } from './auth/components/login/login.component';
+import { LoginComponent } from './components/auth/components/login/login.component';
 import { AuthService } from './services/auth.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { URLTargetType, User } from './models/user.model';
@@ -20,13 +20,12 @@ import { NotificationService } from './services/notification.service';
 import { Notification } from './models/notification.model';
 import { AlertService } from './services/alert.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { NotificationDialogComponent } from './landing/components/notification-dialog/notification-dialog.component';
+import { NotificationDialogComponent } from './components/landing/components/notification-dialog/notification-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { filter, map } from 'rxjs';
-import { RegisterComponent } from './auth/components/register/register.component';
-import e from 'express';
-import { RecoveryPasswordComponent } from "./auth/components/recovery-password/recovery-password.component";
-import { ResetPasswordComponent } from './auth/components/reset-password/reset-password.component';
+import { RegisterComponent } from './components/auth/components/register/register.component';
+import { RecoveryPasswordComponent } from './components/auth/components/recovery-password/recovery-password.component';
+import { ResetPasswordComponent } from './components/auth/components/reset-password/reset-password.component';
 
 @Component({
   selector: 'app-root',
@@ -49,8 +48,8 @@ import { ResetPasswordComponent } from './auth/components/reset-password/reset-p
     LoginComponent,
     RegisterComponent,
     RecoveryPasswordComponent,
-    ResetPasswordComponent
-],
+    ResetPasswordComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -103,17 +102,17 @@ export class AppComponent {
     });
   }
 
-  toggleSidebar(): void {
-    this.sidebarService.toggle();
-  }
+  // toggleSidebar(): void {
+  //  this.sidebarService.toggle();
+  //}
 
-  expandSidebar(): void {
-    this.sidebarService.expand();
-  }
+  //expandSidebar(): void {
+  //  this.sidebarService.expand();
+  //}
 
-  collapseSidebar(): void {
-    this.sidebarService.collapse();
-  }
+  //collapseSidebar(): void {
+  //  this.sidebarService.collapse();
+  //}
 
   logout(): void {
     this.authService.logout();
@@ -166,11 +165,31 @@ export class AppComponent {
     if (this.isDarkMode) {
       body.classList.remove('dark-theme');
       body.classList.add('light-theme');
-
     } else {
       body.classList.remove('light-theme');
       body.classList.add('dark-theme');
     }
     this.isDarkMode = !this.isDarkMode;
   }
+
+  // Variables
+  //isSidebarOpen = false;
+
+  // Métodos
+  toggleSidebar(): void {
+    //this.isSidebarOpen = !this.isSidebarOpen;
+    this.sidebarService.toggle();
+  }
+
+  closeSidebar(): void {
+    //this.isSidebarOpen = false;
+    this.sidebarService.collapse();
+  }
+
+  onSidenavClosed(): void {
+    //this.isSidebarOpen = false;
+    this.sidebarService.collapse();
+  }
+
+  isMobile = false;
 }

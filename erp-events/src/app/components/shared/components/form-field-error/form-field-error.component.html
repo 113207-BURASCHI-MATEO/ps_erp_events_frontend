@@ -1,0 +1,24 @@
+@if (control?.errors && (control?.touched || control?.dirty)) { @if
+(control?.hasError('required')) {
+<span>Este campo es obligatorio</span>
+} @if (control?.hasError('pattern')) {
+<span>Formato inválido</span>
+} @if (control?.hasError('email')) {
+<span>Email inválido</span>
+} @if (control?.hasError('minlength')) {
+<span>
+  Mínimo {{ control?.getError("minlength")?.requiredLength }} caracteres
+</span>
+} @if (control?.hasError('invalidCheckDigit')) {
+<span>
+  {{ control?.getError("invalidCheckDigit") }}
+</span>
+} @if (control?.hasError('invalidLength')) {
+<span>
+  {{ control?.getError("invalidLength") }}
+</span>
+} @if (control?.hasError('invalidType')) {
+<span>
+  {{ control?.getError("invalidType") }}
+</span>
+} }

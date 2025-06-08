@@ -1,96 +1,123 @@
-/* Estilos para la sidebar */
-
-::ng-deep .mat-mdc-list-item {
-  padding-left: 16px !important;
-}
-
 ::ng-deep #mat-menu-panel-2 {
   margin-left: 5vw !important;
 }
 
+
 .app-container {
   height: 100vh;
+  overflow: hidden;
+}
+
+.hamburger-menu {
+  width: 230px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.content-full-width {
   width: 100%;
 }
 
-.app-sidenav {
-  transition: width 0.3s ease;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  overflow-x: hidden;
+.hamburger-button {
+  transition: transform 0.2s ease;
 }
 
-.sidebar-expanded {
-  width: 240px;
+.hamburger-button:hover {
+  transform: scale(1.1);
 }
 
-.sidebar-collapsed {
-  width: 60px;
+.close-button {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
 }
 
-/* Ajustes para el contenido principal */
-.content-container {
-  min-height: calc(100vh - 64px);
-  //background-color: #f5f5f5;
-  transition: margin-left 0.3s ease;
+.close-button:hover {
+  opacity: 1;
 }
 
-/* Transición para mat-sidenav-content */
-mat-sidenav-content {
-  transition: margin-left 0.3s ease;
+.menu-trigger-button {
+  width: 100%;
+  text-align: left;
+  justify-content: flex-start;
 }
 
-.content-expanded {
-  margin-left: 60px !important; /* Corresponde al ancho de la sidebar colapsada */
+.menu-trigger-button .ms-auto {
+  margin-left: auto !important;
 }
 
-.content-normal {
-  margin-left: 240px !important; /* Corresponde al ancho de la sidebar expandida */
+.notification-menu {
+  width: 350px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
-/* Enlace activo en la navegación */
-.active-link {
-  background-color: rgba(0, 0, 0, 0.04);
-  border-left: 3px solid #3f51b5;
+.notification-header {
+  background-color: var(--mdc-theme-surface, #fafafa);
+  font-weight: 500;
 }
-
-/* Botón de toggle */
-.toggle-button {
-  color: rgba(0, 0, 0, 0.7);
-  border-radius: 0;
-}
-
-.toggle-button:hover {
-  background-color: rgba(0, 0, 0, 0.04);
-}
-
-/* Para centrar iconos cuando la sidebar está colapsada */
-.sidebar-collapsed .mat-icon {
-  margin: 0 auto;
-}
-
-/* Ajuste para el área de contenido */
-mat-sidenav-content {
-  overflow-x: hidden;
-}
-
-/* NOTIFICACIONES */
 
 .notification-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1vw;
+  transition: background-color 0.2s ease;
 }
 
-.notification-content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+.notification-item:hover {
+  background-color: var(--mdc-theme-surface, #f5f5f5);
 }
 
 .notification-actions {
   display: flex;
   align-items: center;
-  gap: 1vw;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .hamburger-menu {
+    width: 100vw;
+  }
+  
+  .notification-menu {
+    width: 300px;
+  }
+}
+
+.active-link {
+  background-color: var(--mdc-theme-primary, #1976d2) !important;
+  color: white !important;
+}
+
+.active-link mat-icon {
+  color: white !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .notification-header {
+    background-color: var(--mdc-theme-surface, #424242);
+  }
+  
+  .notification-item:hover {
+    background-color: var(--mdc-theme-surface, #616161);
+  }
+}
+
+img {
+  width: 25px;
+  height: auto;
+}
+
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.image-container-pet {
+  display: flex;
+  align-items: center;
+}
+
+.image-container-pet img {
+  width: 50px;
+  height: auto;
 }

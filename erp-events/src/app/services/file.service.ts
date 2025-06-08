@@ -24,6 +24,30 @@ export class FileService {
       .pipe(map((response) => response.content as FileModel[]));
   }
 
+  getAllBySupplier(supplierId: number): Observable<FileModel[]> {
+    return this.http
+      .get<any>(`${this.baseUrl}/supplier/${supplierId}`, { withCredentials: true })
+      .pipe(map((response) => response.content as FileModel[]));
+  }
+
+  getAllByClient(clientId: number): Observable<FileModel[]> {
+    return this.http
+      .get<any>(`${this.baseUrl}/client/${clientId}`, { withCredentials: true })
+      .pipe(map((response) => response.content as FileModel[]));
+  }
+
+  getAllByEmployee(employeeId: number): Observable<FileModel[]> {
+    return this.http
+      .get<any>(`${this.baseUrl}/employee/${employeeId}`, { withCredentials: true })
+      .pipe(map((response) => response.content as FileModel[]));
+  }
+
+  getAllByPayment(paymentId: number): Observable<FileModel[]> {
+    return this.http
+      .get<any>(`${this.baseUrl}/payment/${paymentId}`, { withCredentials: true })
+      .pipe(map((response) => response.content as FileModel[]));
+  }
+
   getById(id: number): Observable<FileModel> {
     return this.http.get<FileModel>(`${this.baseUrl}/${id}`, {
       withCredentials: true,
@@ -57,6 +81,16 @@ export class FileService {
   getByEmployee(employeeId: number, fileId: number): Observable<Blob> {
     return this.http.get(
       `${this.baseUrl}/employee/${employeeId}/file/${fileId}`,
+      {
+        responseType: 'blob',
+        withCredentials: true,
+      }
+    ) as Observable<Blob>;
+  }
+
+  getByPayment(paymentId: number, fileId: number): Observable<Blob> {
+    return this.http.get(
+      `${this.baseUrl}/payment/${paymentId}/file/${fileId}`,
       {
         responseType: 'blob',
         withCredentials: true,

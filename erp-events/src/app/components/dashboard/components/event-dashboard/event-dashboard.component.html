@@ -1,0 +1,224 @@
+<mat-card class="dashboard-card mat-elevation-z4">
+  <mat-card-title>
+    <h1 class="title">
+      <mat-icon>insights</mat-icon> KPIs y Reportes de Eventos
+    </h1>
+  </mat-card-title>
+
+  <mat-card-content>
+
+    <div class="d-flex align-items-baseline justify-content-between">
+      <form [formGroup]="filterForm" class="filter-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Desde</mat-label>
+          <input
+            matInput
+            [matDatepicker]="startPicker"
+            formControlName="startDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="startPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Hasta</mat-label>
+          <input
+            matInput
+            [matDatepicker]="endPicker"
+            formControlName="endDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="endPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="applyFilters()">
+          Aplicar
+        </button>
+      </form>
+
+      <button
+        class="button-inverted-primary"
+        mat-fab
+        color="primary"
+        (click)="getIaResponse()"
+        matTooltip="Asistente IA"
+      >
+        <mat-icon class="m-0">psychology</mat-icon>
+      </button>
+    </div>
+
+    @if (iaResponse) {
+    <mat-card class="mt-3 p-3">
+      <div>
+        <h5 class="title-ia">
+          <mat-icon class="me-1">psychology</mat-icon>
+          Respuesta del Asistente:
+        </h5>
+        <p class="ia-text" [innerHTML]="formatIa(iaResponse)"></p>
+      </div>
+    </mat-card>
+    }
+
+
+    <div class="kpi-grid">
+      <mat-card class="kpi-card primary">
+        <div class="d-flex flex-row justify-content-between gap-2 align-content-center">
+          <mat-icon matListItemIcon>event</mat-icon>
+          <p class="lead">Total de Eventos</p>
+        </div>
+        <h2 class="display-6 fs-1">{{ kpiData.totalEvents }}</h2>
+      </mat-card>
+    
+      <mat-card class="kpi-card accent">
+        <div class="d-flex flex-row justify-content-between gap-2 align-content-center">
+          <mat-icon matListItemIcon>check_circle</mat-icon>
+          <p class="lead">Confirmados</p>
+        </div>
+        <h2 class="display-6 fs-1">{{ kpiData.confirmedEvents }}</h2>
+      </mat-card>
+    
+      <mat-card class="kpi-card warn">
+        <div class="d-flex flex-row justify-content-between gap-2 align-content-center">
+          <mat-icon matListItemIcon>pending</mat-icon>
+          <p class="lead">Pendientes</p>
+        </div>
+        <h2 class="display-6 fs-1">{{ kpiData.pendingEvents }}</h2>
+      </mat-card>
+    
+      <mat-card class="kpi-card error">
+        <div class="d-flex flex-row justify-content-between gap-2 align-content-center">
+          <mat-icon matListItemIcon>cancel</mat-icon>
+          <p class="lead">Cancelados</p>
+        </div>
+        <h2 class="display-6 fs-1">{{ kpiData.cancelledEvents }}</h2>
+      </mat-card>
+    </div>
+    
+
+    <div class="kpi-grid">
+      <mat-card class="kpi-card info">
+        <div class="d-flex flex-row justify-content-between gap-2 align-content-center">
+          <mat-icon matListItemIcon>schedule</mat-icon>
+          <p class="lead">Duración Prom.</p>
+        </div>
+        <h2 class="display-6 fs-1">{{ kpiData.averageDurationHours }} h</h2>
+      </mat-card>
+    
+      <mat-card class="kpi-card accent">
+        <div class="d-flex flex-row justify-content-between gap-2 align-content-center">
+          <mat-icon matListItemIcon>group</mat-icon>
+          <p class="lead">Invitados Prom.</p>
+        </div>
+        <h2 class="display-6 fs-1">{{ kpiData.averageGuests }}</h2>
+      </mat-card>
+    
+      <mat-card class="kpi-card warn">
+        <div class="d-flex flex-row justify-content-between gap-2 align-content-center">
+          <mat-icon matListItemIcon>badge</mat-icon>
+          <p class="lead">Empleados Prom.</p>
+        </div>
+        <h2 class="display-6 fs-1">{{ kpiData.averageEmployees }}</h2>
+      </mat-card>
+    
+      <mat-card class="kpi-card error">
+        <div class="d-flex flex-row justify-content-between gap-2 align-content-center">
+          <mat-icon matListItemIcon>assignment</mat-icon>
+          <p class="lead">Tareas Prom.</p>
+        </div>
+        <h2 class="display-6 fs-1">{{ kpiData.tasksPerEvent }}</h2>
+      </mat-card>
+    
+      <mat-card class="kpi-card info">
+        <div class="d-flex flex-row justify-content-between gap-2 align-content-center">
+          <mat-icon matListItemIcon>delete</mat-icon>
+          <p class="lead">Soft Deleted</p>
+        </div>
+        <h2 class="display-6 fs-1">{{ kpiData.eventsWithSoftDelete }}</h2>
+      </mat-card>
+    </div>
+    
+    <div class="charts-container mt-5">
+      <div class="chart-container">
+        <canvas
+          baseChart
+          height="220px"
+          [type]="'pie'"
+          [datasets]="pieChartEventStatusDatasets"
+          [labels]="pieChartEventStatusLabels"
+          [options]="pieChartOptions"
+          [plugins]="pieChartPlugins"
+        ></canvas>
+      </div>
+
+      <div class="chart-container">
+        <canvas
+          baseChart
+          height="220px"
+          [type]="'bar'"
+          [datasets]="barChartEventTypeDatasets"
+          [labels]="barChartEventTypeLabels"
+          [options]="barChartOptions"
+          [plugins]="pieChartPlugins"
+        ></canvas>
+      </div>
+    </div>
+
+    <div class="charts-container mt-5">
+      <div class="chart-container">
+        <canvas
+          baseChart
+          height="220px"
+          [type]="'bar'"
+          [datasets]="barChartByLocationDatasets"
+          [labels]="barChartByLocationLabels"
+          [options]="barChartOptions"
+          [plugins]="pieChartPlugins"
+        ></canvas>
+      </div>
+    
+      <div class="chart-container">
+        <canvas
+          baseChart
+          height="220px"
+          [type]="'bar'"
+          [datasets]="barChartByClientDatasets"
+          [labels]="barChartByClientLabels"
+          [options]="barChartOptions"
+          [plugins]="pieChartPlugins"
+        ></canvas>
+      </div>
+    </div>
+    
+
+    <div class="charts-container mt-5">
+      <div class="chart-container">
+        <canvas baseChart height="220px"
+          [type]="'line'"
+          [datasets]="lineChartEventsPerMonthDatasets"
+          [labels]="lineChartEventsPerMonthLabels"
+          [options]="lineChartOptions"
+          [plugins]="pieChartPlugins">
+        </canvas>
+      </div>
+    
+      <div class="chart-container">
+        <canvas baseChart height="220px"
+          [type]="'scatter'"
+          [datasets]="scatterChartDurationVsGuestsDatasets"
+          [options]="scatterChartOptions">
+        </canvas>
+      </div>
+    </div>
+  </mat-card-content>
+  <div class="card-header-img pe-3">
+    <div class="image-container-pet">
+      <img src="assets/pet_4.png" alt="ERP Eventos" />
+    </div>
+  </div>
+</mat-card>

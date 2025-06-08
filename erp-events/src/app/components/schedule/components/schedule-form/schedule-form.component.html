@@ -1,0 +1,223 @@
+<!-- <div class="form-container">
+  <mat-card class="form-card">
+    <mat-card-title class="mb-3">
+      <h1 class="title">
+        <mat-icon matListItemIcon>upload_file</mat-icon>
+        Cargar Cronograma desde Archivo
+      </h1>
+    </mat-card-title>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Título del Cronograma</mat-label>
+            <input matInput formControlName="title" placeholder="Ej: Cronograma Principal" />
+          </mat-form-field>
+
+  
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descripción</mat-label>
+            <textarea
+              matInput
+              formControlName="description"
+              placeholder="Detalle del cronograma"
+              rows="4"
+            ></textarea>
+          </mat-form-field>
+
+    
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Evento Asociado</mat-label>
+            <mat-select formControlName="idEvent" (selectionChange)="onEventChange()">
+              @for (event of events; track event.idEvent) {
+              <mat-option [value]="event.idEvent">
+                {{ event.title }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+        <div class="mat-elevation-z2 p-3 full-width">
+          <h4>Seleccionar tareas del evento</h4>
+          <div class="task-grid">
+            @for (task of tasks; track task.idTask) {
+              <div class="task-item">
+                <mat-checkbox
+                  [checked]="taskSchedule[task.idTask]"
+                  (change)="updateTaskSchedule(task, $event.checked ? '' : null)"
+                >
+                  {{ task.title }}
+                </mat-checkbox>
+        
+                @if (taskSchedule.hasOwnProperty(task.idTask)) {
+                  <mat-form-field appearance="outline" class="time-field">
+                    <mat-label>Horario</mat-label>
+                    <input
+                      matInput
+                      type="time"
+                      [value]="taskSchedule[task.idTask]"
+                      (input)="updateTaskSchedule(task, $any($event.target).value)"
+                    />
+                  </mat-form-field>
+                }
+              </div>
+            }
+          </div>
+        </div>
+        
+        <div class="file-input-container full-width">
+          <mat-label>Archivo CSV</mat-label>
+          <input
+            formControlName="file"
+            type="file"
+            (change)="onFileSelected($event)"
+            accept=".csv"
+            class="file-input"
+          />
+        </div>
+      </div>
+
+        <div class="action-buttons">
+          <button mat-stroked-button type="button" (click)="goBack()">Volver</button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            
+          >
+            Cargar Cronograma
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+ -->
+
+<div class="form-container">
+  <mat-card class="form-card">
+    <mat-card-title class="mb-3">
+      <div class="card-header pe-3">
+        <h1 class="title">
+          <mat-icon matListItemIcon>upload_file</mat-icon>
+          Cargar Cronograma desde Archivo
+        </h1>
+        <div class="image-container-pet">
+          <img src="assets/pet.png" alt="ERP Eventos" />
+        </div>
+      </div>
+    </mat-card-title>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Título del Cronograma</mat-label>
+            <input
+              matInput
+              formControlName="title"
+              placeholder="Ej: Cronograma Principal"
+            />
+            <mat-error>
+              <app-form-field-error
+                [control]="form.get('title')"
+              ></app-form-field-error>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descripción</mat-label>
+            <textarea
+              matInput
+              formControlName="description"
+              placeholder="Detalle del cronograma"
+              rows="4"
+            ></textarea>
+            <mat-error>
+              <app-form-field-error
+                [control]="form.get('description')"
+              ></app-form-field-error>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Evento Asociado</mat-label>
+            <mat-select
+              formControlName="idEvent"
+              (selectionChange)="onEventChange()"
+            >
+              @for (event of events; track event.idEvent) {
+              <mat-option [value]="event.idEvent">
+                {{ event.title }}
+              </mat-option>
+              }
+            </mat-select>
+            <mat-error>
+              <app-form-field-error
+                [control]="form.get('idEvent')"
+              ></app-form-field-error>
+            </mat-error>
+          </mat-form-field>
+
+          <div class="mat-elevation-z2 p-3 full-width">
+            <h4>Seleccionar tareas del evento</h4>
+            <div class="task-grid">
+              @for (task of tasks; track task.idTask) {
+              <div class="task-item">
+                <mat-checkbox
+                  [checked]="taskSchedule[task.idTask]"
+                  (change)="
+                    updateTaskSchedule(task, $event.checked ? '' : null)
+                  "
+                >
+                  {{ task.title }}
+                </mat-checkbox>
+
+                @if (taskSchedule.hasOwnProperty(task.idTask)) {
+                <mat-form-field appearance="outline" class="time-field">
+                  <mat-label>Horario</mat-label>
+                  <input
+                    matInput
+                    type="time"
+                    [value]="taskSchedule[task.idTask]"
+                    (input)="
+                      updateTaskSchedule(task, $any($event.target).value)
+                    "
+                  />
+                </mat-form-field>
+                }
+              </div>
+              }
+            </div>
+          </div>
+
+          <div class="file-input-container full-width">
+            <mat-label>Archivo CSV</mat-label>
+            <input
+              formControlName="file"
+              type="file"
+              (change)="onFileSelected($event)"
+              accept=".csv"
+              class="file-input"
+            />
+            <mat-error>
+              <app-form-field-error
+                [control]="form.get('file')"
+              ></app-form-field-error>
+            </mat-error>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button mat-stroked-button type="button" (click)="goBack()">
+            Volver
+          </button>
+          <button mat-raised-button color="primary" type="submit">
+            Cargar Cronograma
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

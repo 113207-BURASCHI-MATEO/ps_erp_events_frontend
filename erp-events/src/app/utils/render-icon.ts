@@ -39,6 +39,9 @@ export function renderIconField(tipo: string): (params: any) => string {
       case 'foodRestriction':
         ({ icono, color, texto } = getFoodRestrictionIcon(valor));
         break;
+        case 'accountingConcept':
+          ({ icono, color, texto } = getAccountingConceptIcon(valor));
+          break;
       default:
         icono = 'help_outline';
         color = '#6c757d';
@@ -71,7 +74,7 @@ function getEventTypeIcon(type: string) {
         texto: 'Entretenimiento',
       };
     default:
-      return { icono: 'help_outline', color: '#040404', texto: type };
+      return { icono: 'help_outline', color: '#040404', texto: type ? type : 'S/D' };
   }
 }
 
@@ -90,7 +93,7 @@ function getEventStatusIcon(status: string) {
     case 'FINISHED':
       return { icono: 'done_all', color: '#040404', texto: 'Completado' };
     default:
-      return { icono: 'help_outline', color: '#040404', texto: status };
+      return { icono: 'help_outline', color: '#040404', texto: status ? status : 'S/D' };
   }
 }
 
@@ -105,7 +108,7 @@ function getTaskStatusIcon(status: string) {
     case 'CANCELLED':
       return { icono: 'cancel', color: '#D7D9CE', texto: 'Cancelada' };
     default:
-      return { icono: 'help_outline', color: '#040404', texto: status };
+      return { icono: 'help_outline', color: '#040404', texto: status ? status : 'S/D' };
   }
 }
 
@@ -126,7 +129,7 @@ function getGuestTypeIcon(type: string) {
     case 'OTHER':
       return { icono: 'person_outline', color: '#D7D9CE', texto: 'Otro' };
     default:
-      return { icono: 'help_outline', color: '#040404', texto: type };
+      return { icono: 'help_outline', color: '#040404', texto: type ? type : 'S/D' };
   }
 }
 
@@ -134,7 +137,7 @@ function getSupplierTypeIcon(type: string) {
   switch (type) {
     case 'CATERING':
       return { icono: 'restaurant', color: '#FF7F11', texto: 'Catering' };
-    case 'DECORACION':
+    case 'DECORATION':
       return { icono: 'brush', color: '#D7D9CE', texto: 'Decoración' };
     case 'SOUND':
       return { icono: 'graphic_eq', color: '#9FC2CC', texto: 'Sonido' };
@@ -149,7 +152,7 @@ function getSupplierTypeIcon(type: string) {
         texto: 'Entretenimiento',
       };
     default:
-      return { icono: 'help_outline', color: '#040404', texto: type };
+      return { icono: 'help_outline', color: '#040404', texto: type ? type : 'S/D' };
   }
 }
 
@@ -164,7 +167,7 @@ function getFileTypeIcon(type: string) {
     case 'OTHER':
       return { icono: 'description', color: '#13505B', texto: 'Otro' };
     default:
-      return { icono: 'help_outline', color: '#040404', texto: type };
+      return { icono: 'help_outline', color: '#040404', texto: type ? type : 'S/D' };
   }
 }
 
@@ -181,7 +184,7 @@ function getFileContentTypeIcon(type: string) {
     case 'text/csv':
       return { icono: 'table_chart', color: '#FBC02D', texto: 'CSV' };
     default:
-      return { icono: 'insert_drive_file', color: '#757575', texto: type };
+      return { icono: 'insert_drive_file', color: '#757575', texto: type ? type : 'S/D' };
   }
 }
 
@@ -192,7 +195,7 @@ function getPaymentStatusIcon(type: string) {
     case 'PENDING_PAYMENT':
       return { icono: 'hourglass_empty', color: '#FFC107', texto: 'Pendiente' };
     default:
-      return { icono: 'help_outline', color: '#9E9E9E', texto: type };
+      return { icono: 'help_outline', color: '#9E9E9E', texto: type ? type : 'S/D' };
   }
 }
 
@@ -215,7 +218,7 @@ function getRoleDisplayInfo(role: string) {
     case 'EMPLOYEE':
       return { icono: 'person', color: '#4CAF50', texto: 'Empleado' };
     default:
-      return { icono: 'help_outline', color: '#9E9E9E', texto: role };
+      return { icono: 'help_outline', color: '#9E9E9E', texto: role ? role : 'S/D' };
   }
 }
 
@@ -260,7 +263,39 @@ export function getFoodRestrictionIcon(type: boolean) {
       return {
         icono: 'help_outline',
         color: '#9E9E9E',
-        texto: type ? type : 'Sin información',
+        texto: type ? type : 'S/D',
       };
   }
 }
+
+export function getAccountingConceptIcon(concept: string) {
+  switch (concept) {
+    case 'PAYMENT':
+      return { icono: 'payments', color: '#9FC2CC', texto: 'Pago' };
+    case 'STAFF':
+      return { icono: 'badge', color: '#13505B', texto: 'Personal' };
+    case 'CLEANNING':
+      return { icono: 'cleaning_services', color: '#4CAF50', texto: 'Limpieza' };
+    case 'CATERING':
+      return { icono: 'restaurant', color: '#FF9800', texto: 'Catering' };
+    case 'FEE':
+      return { icono: 'receipt', color: '#9C27B0', texto: 'Honorarios' };
+    case 'SECURITY':
+      return { icono: 'security', color: '#f44336', texto: 'Seguridad' };
+    case 'SPEAKERS':
+      return { icono: 'record_voice_over', color: '#3F51B5', texto: 'Oradores' };
+    case 'EVENT_HALL':
+      return { icono: 'domain', color: '#795548', texto: 'Salón' };
+    case 'SOUND_STAFF':
+      return { icono: 'surround_sound', color: '#607D8B', texto: 'Sonido' };
+    case 'DECORATION':
+      return { icono: 'palette', color: '#E91E63', texto: 'Decoración' };
+    case 'DRINK_BAR':
+      return { icono: 'local_bar', color: '#00BCD4', texto: 'Bar' };
+    case 'OTHER':
+      return { icono: 'more_horiz', color: '#9E9E9E', texto: 'Otro' };
+    default:
+      return { icono: 'help_outline', color: '#000000', texto: concept ? concept : 'S/D' };
+  }
+}
+

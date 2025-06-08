@@ -16,5 +16,7 @@ export const environment = {
     payments: `${API}payments`,
     schedules: `${API}schedules`,
     ia: `${API}ia`,
+    accounts: `${API}accounts`,
+    concepts: `${API}concepts`,
   },
 };

@@ -1,0 +1,147 @@
+.dashboard-card {
+  max-width: 80vw;
+  margin: 3vh auto;
+  padding: 1vh 1vw;
+}
+
+.filter-form {
+  display: flex;
+  gap: 1.5vw;
+  margin-bottom: 3vh;
+  align-items: baseline;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1vw;
+  margin: 2vh 0;
+}
+
+.charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2vw;
+  margin: 3vh 0;
+}
+
+.chart-container {
+  flex: 1 1 25vw;
+  max-width: 40vw;
+  min-width: 300px; // Asegura que no sea demasiado pequeño en pantallas chicas
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--light-text);
+  background-color: var(--primary);
+  padding: 2vh 2vw;
+  border-radius: 0.5vw;
+
+  .kpi-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kpi-icon {
+    font-size: 4vw;
+    margin-bottom: 1vh;
+  }
+
+  .kpi-text h3 {
+    font-size: 4vw;
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .kpi-text p {
+    margin: 0;
+    font-size: 1.2vw;
+    font-weight: 500;
+  }
+
+  &.primary {
+    background-color: var(--primary);
+  }
+  &.accent {
+    background-color: var(--accent);
+  }
+  &.warn {
+    background-color: var(--warn-light);
+    color: var(--dark-text);
+  }
+  &.error {
+    background-color: var(--warn-dark);
+  }
+}
+.title-ia {
+  color:var(--primary);
+  font-size: 1.5vw;
+  font-weight: 400;
+}
+
+.ia-text {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .d-flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button-inverted-primary[mat-fab] {
+    align-self: center;
+    margin-top: 1rem;
+  }
+
+  .filter-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .chart-container {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .title-ia {
+    font-size: 1.3rem;
+  }
+  
+  .kpi-text h3 {
+    font-size: 1.5rem;
+  }
+  
+  .kpi-text p {
+    font-size: 1rem;
+  }
+  
+}
+
+.card-header-img {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.image-container-pet {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.image-container-pet img {
+  width: 100px;
+  height: auto;
+}

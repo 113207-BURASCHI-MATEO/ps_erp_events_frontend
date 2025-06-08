@@ -33,7 +33,6 @@ export class ScheduleService {
   }
 
   create(dto: TimeSchedulePost): Observable<TimeSchedule> {
-    console.log('Creating schedule with DTO:', dto);
     return this.http.post<TimeSchedule>(this.baseUrl, dto, {
       withCredentials: true,
     });

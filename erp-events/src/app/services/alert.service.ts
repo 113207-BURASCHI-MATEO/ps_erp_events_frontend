@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
   providedIn: 'root',
 })
 export class AlertService {
+
   constructor() {}
 
   delete(entity: string): Promise<boolean> {
@@ -12,6 +13,7 @@ export class AlertService {
       title: `¿Está seguro de eliminar ${entity}?`,
       text: 'Esta acción no se puede deshacer.',
       icon: 'warning',
+      imageAlt: 'Advertencia',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -77,7 +79,9 @@ export class AlertService {
     return Swal.fire({
       title,
       html,
-      icon: 'info',
+      //icon: 'info',
+      imageUrl: 'assets/pet_7.png',
+      imageWidth: 100,
       showCancelButton: true,
       confirmButtonText: 'Confirmar',
       cancelButtonText: 'Cancelar',
