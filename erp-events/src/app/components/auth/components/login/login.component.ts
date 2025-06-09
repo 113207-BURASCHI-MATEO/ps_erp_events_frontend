@@ -47,7 +47,7 @@ export class LoginComponent {
         },
         error: (err) => {
           console.error('Error al iniciar sesión', err);
-          this.alertService.showErrorToast(`Error: ${err.error.readableMessage}`);
+          this.alertService.showErrorToast(`Error al iniciar sesión`);
         }
       });
     } else {
